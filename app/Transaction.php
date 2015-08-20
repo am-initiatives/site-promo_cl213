@@ -21,21 +21,21 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $protected = ['credited_account_id', 'debited_account_id'];
+    protected $protected = [];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['amount', 'wording', 'active'];
+    protected $fillable = ['credited_account_id', 'debited_account_id', 'amount', 'wording', 'active'];
 
     /**
-     * The attributes excluded from the model's JSON form.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $dates = ['deleted_at'];
 
 
 

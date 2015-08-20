@@ -21,15 +21,14 @@ class Account extends Model
      *
      * @var array
      */
-    protected $fillable = ['description', 'restricted', 'active'];
+    protected $fillable = ['user_id', 'description', 'restricted', 'active'];
 
     /**
-     * The attributes excluded from the model's JSON form.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $hidden = [];
-
+    protected $dates = ['deleted_at'];
 
 
 
@@ -93,7 +92,7 @@ class Account extends Model
             $isCredit = ($this->id == $t->credited_account_id);
             $table[] = array(
                 'type' => $isCredit ? 'credit' : 'debit',
-                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y')),
+                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y &agrave; %H:%m')),
                 'wording' => $t->wording,
                 'amount' => ($isCredit ? '' : '-').$t->amount,
                 'account' => $isCredit ? $t->debited->description : $t->credited->description,
@@ -104,8 +103,13 @@ class Account extends Model
     }
 
 
-
-
+    /**
+     * Get the user to whom belongs the account.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
 
     /**
      * Get credits for the account.

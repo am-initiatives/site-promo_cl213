@@ -52,15 +52,17 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('/', ['as' => 'loginwithgoogle', 'uses' => 'HomeController@index']);
 
     // Profil
+    Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
+    Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
 
     // Liste promss
 
     // Buqueur
     Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'AccountController@show']);
 
-    Route::get('transfers', ['as' => 'transfers.index', 'uses' => 'TransferController@index']);
-    Route::get('transfers/create', ['as' => 'transfers.create', 'uses' => 'TransferController@create']);
-    Route::post('transfers', ['as' => 'transfers.store', 'uses' => 'TransferController@store']);
+    Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
+    Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
+    Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
 });
 
 
@@ -76,5 +78,9 @@ Route::get('test', function () {
 
     // dd($accounts[1]->recap());
 
-    return Html::linkRoute('login', 'Revenir');
+    // return Html::linkRoute('login', 'Revenir');
+
+    dd(json_encode(['transactions']));
+
+    dd(Auth::user()->account);
 });

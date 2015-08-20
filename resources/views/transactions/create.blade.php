@@ -2,21 +2,21 @@
 
 @section('content')
 
-{!! Form::open(array('route' => ['transfers.store'])) !!}
+{!! Form::open(array('route' => ['transactions.store'])) !!}
     <div class="row">
         <div class="small-6 columns">
             <label>Compte à débiter
-                {!! Form::select('size', $debitables) !!}
+                {!! Form::select('debited', $debitables) !!}
             </label>
         </div>
         <div class="small-6 columns">
             <label>Compte à créditer
-                {!! Form::select('size', $creditables) !!}
+                {!! Form::select('credited', $creditables) !!}
             </label>
         </div>
     </div>
     <div class="row">
-        <div class="small-7 columns">
+        <div class="small-9 columns">
             <label>Libellé
                 {!! Form::text('wording') !!}
             </label>

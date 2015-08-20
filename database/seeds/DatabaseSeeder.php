@@ -16,15 +16,33 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->insert(
             array(
-                array('username' => 'admin', 'password' => '$2y$10$AX84e0sgeXDoiiskAxhHXuSLonGlGyowjuyGm08BlLA/U484LCdKy', 'email' => 'corentin.gitton@gadz.org', 'google_id' => NULL, 'given_name' => 'Corentin', 'family_name' => 'GITTON', 'nickname' => 'Tarmak 154', 'information' => '[]', 'active' => 1, 'permissions' => '[]'),
-                array('username' => 'user', 'password' => '$2y$10$AX84e0sgeXDoiiskAxhHXuSLonGlGyowjuyGm08BlLA/U484LCdKy', 'email' => 'corentin.gitton@gamil.com', 'google_id' => NULL, 'given_name' => 'User', 'family_name' => 'RANDOM', 'nickname' => 'User', 'information' => '[]', 'active' => 0, 'permissions' => '[]'),
+                array('username' => 'admin', 'password' => '$2y$10$AX84e0sgeXDoiiskAxhHXuSLonGlGyowjuyGm08BlLA/U484LCdKy', 'email' => 'admin@cl213.fr', 'google_id' => NULL, 'given_name' => 'Admin', 'last_name' => 'ADMIN', 'nickname' => 'Admin', 'information' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
+                array('username' => 'user', 'password' => '$2y$10$AX84e0sgeXDoiiskAxhHXuSLonGlGyowjuyGm08BlLA/U484LCdKy', 'email' => 'corentin.gitton@gamil.com', 'google_id' => NULL, 'given_name' => 'User', 'last_name' => 'RANDOM', 'nickname' => 'User', 'information' => '[]', 'active' => 0, 'permissions' => '[]'),
             ));
 
         DB::table('accounts')->insert(
             array(
-                array('user_id' => NULL, 'description' => 'Compte de Prom\'sss', 'restricted' => 0, 'active' => 1),
-                array('user_id' => 1, 'description' => 'Compte de Tarmak 154', 'restricted' => 1, 'active' => 1),
-                array('user_id' => 2, 'description' => 'Compte de User', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Prom\'sss', 'restricted' => 0, 'active' => 1),
+                array('user_id' => 1, 'description' => 'Tarmak 154', 'restricted' => 1, 'active' => 1),
+                array('user_id' => 2, 'description' => 'User', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Bidule', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Bousin', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Gourou', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Voiré', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Michel', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Zapneu', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Cochone', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Nicole', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Gorgu', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Fofo', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Balou', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Girafe', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Popole', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Francis', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Pétrolette', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Jiji', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Kouala', 'restricted' => 1, 'active' => 1),
+                array('user_id' => NULL, 'description' => 'Poyo', 'restricted' => 1, 'active' => 1),
             ));
 
         DB::table('transactions')->insert(

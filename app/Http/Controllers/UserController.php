@@ -7,13 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Contracts\Auth\Guard;
-use App\Account as Account;
-use App\Transaction as Transaction;
+use App\User;
 
-class TransferController extends Controller
+class UserController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -21,23 +18,9 @@ class TransferController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::orderBy('created_at', 'desc')->get();
+        $data['users'] = User::all();
 
-        $table = [];
-
-        foreach ($transactions as $t) {
-            $table[] = array(
-                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y')),
-                'wording' => $t->wording,
-                'amount' => $t->amount,
-                'credited' => $t->credited->description,
-                'debited' => $t->debited->description,
-                );
-        }
-
-        $data['transactions'] = $table;
-
-        return view('transfers.index', $data);
+        return view('users.index', $data);
     }
 
     /**
@@ -47,16 +30,7 @@ class TransferController extends Controller
      */
     public function create()
     {
-        // Check user
-        $account_ids = [1,3];
-
-        $creditables = Account::all();
-        $debitables = Account::find($account_ids);
-
-        $data['creditables'] = array_combine($creditables->pluck('id')->toArray(), $creditables->pluck('description')->toArray()) ;
-        $data['debitables'] = array_combine($debitables->pluck('id')->toArray(), $debitables->pluck('description')->toArray()) ;
-
-        return view('transfers.create', $data);
+        //
     }
 
     /**
@@ -78,7 +52,9 @@ class TransferController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['user'] = User::find($id);
+
+        return view('users.show', $data);
     }
 
     /**

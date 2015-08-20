@@ -21,7 +21,7 @@
             <label for="rememberCheckboxSwitch"></label>
         </div>
 
-        <div class="left" style="margin-top: 5px; margin-left: 10px;">
+        <div class="left show-for-medium-up" style="margin-top: 5px; margin-left: 10px;">
             <span>Rester connecté</span>
         </div>
 
@@ -33,6 +33,6 @@
 
 <hr style="margin-top:0px" />
 
-<a href="google" class="small-12 medium radius alert button">Se connecter avec Google</a>
+<a href="google" class="small-12 medium radius alert button">Se connecter avec Gadz.org</a>
 
 @endsection

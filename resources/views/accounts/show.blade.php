@@ -7,9 +7,8 @@
 @unless(count($transactions))
     <p>Aucune opération sur ce compte pour le moment.</p>
 @else
-	<h4>Résumé du compte :</h4>
-
-    <table class="table table-striped">
+    <table class="small-12">
+        <caption>Résumé du compte</caption>
         <thead>
             <th>Date</th>
             <th>Libellé</th>
