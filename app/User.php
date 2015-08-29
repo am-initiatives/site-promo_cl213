@@ -45,6 +45,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
 
+    public static function getPositions()
+    {
+        $users = self::whereNotNull('pos')->get();
+
+        $positions = [];
+
+        foreach ($users as $user) {
+            $position = $user->getPosition();
+
+            $positions[] = [
+                $user->getTitle(),
+                $position[0],
+                $position[1],
+            ];
+        }
+
+        return $positions;
+    }
+
+
+
+
 
     private function permissions()
     {
@@ -121,9 +143,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getTitle()
     {
         if ($this->nickname == '')
-            return $this->last_name . ' ' . $this->first_name;
-        else
+            return $this->first_name . ' ' . $this->last_name;
             return $this->nickname;
+    }
+
+    public function getPosition()
+    {
+        return json_decode($this->pos, true);
     }
 
 

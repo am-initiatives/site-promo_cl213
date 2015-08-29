@@ -37,7 +37,7 @@ Html::macro('solde', function($value, $unit = NULL)
 
 
 
-// Authentication routes...
+// Routes d'authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
     Route::post('login', ['as' => 'auth.signin', 'uses' => 'Auth\AuthController@postLogin']);
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
 });
 
-
+// Routes authentifiées
 Route::group(['middleware' => ['auth', 'active']], function()
 {
     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
@@ -65,8 +65,14 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
 });
 
+Route::get('map', function () {
+    return view('map');
+});
 
 
+Route::get('pass', function () {
+    dd(Hash::make('HMlar\'sssT154'));
+});
 
 
 
@@ -78,7 +84,7 @@ Route::get('test', function () {
 
     // dd($accounts[1]->recap());
 
-    // return Html::linkRoute('login', 'Revenir');
+    // return Html::linkroute('auth.login', 'Revenir');
 
     dd(json_encode(['transactions']));
 

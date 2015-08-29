@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name', 20);
             $table->string('last_name', 20);
             $table->string('nickname', 20);
+            $table->string('pos', 30)->nullable();
             $table->text('info');
             
             $table->boolean('active');

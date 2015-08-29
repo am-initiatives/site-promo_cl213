@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, max-width=, initial-scale=1.0" />
-        <title>CL213 | Acceuil</title>
+        <title>CL213 | {{ $page_title or "Accueil" }}</title>
         <link rel="stylesheet" href="{{ URL::to('foundation-5.5.2/css/foundation.css') }}" />
         <link rel="stylesheet" href="{{ URL::to('template/master.css') }}" />
 

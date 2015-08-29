@@ -116,10 +116,10 @@ class AuthController extends Controller
                         // On ajoute l'id pour les futures connexions
                         $user->forceFill(['google_id' => $result['id'], 'active' => 1])->save();
                     } else {
-                        return response('Utilisateur inconnu.<br/>'.Html::linkRoute('login', 'Revenir'));
+                        return response('Utilisateur inconnu.<br/>'.Html::linkroute('auth.login', 'Revenir'));
                     }
                 } else {
-                    return response('L\'adresse doit être une adresse gadz.org valide.<br/>'.Html::linkRoute('login', 'Revenir'));
+                    return response('L\'adresse doit être une adresse gadz.org valide.<br/>'.Html::linkroute('auth.login', 'Revenir'));
                 }
             }
 

@@ -35,3 +35,7 @@ body {
 	margin: 10px;
 	margin-top: 25px;
 }
+
+#map {
+	height: 100%;
+}

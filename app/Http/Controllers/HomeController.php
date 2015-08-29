@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 
 use Auth;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -19,7 +20,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['user'] = Auth::user()->load('account');;
+        $data['user'] = Auth::user()->load('account');
+        $data['positions'] = json_encode(User::getPositions());
 
         return view('home', $data);
     }

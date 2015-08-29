@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-	<div class="row" style="margin-top: 15px">
+	<div class="row">
 		<a href="{{ route('accounts.show', $user->account->id) }}">
 			<div class="columns medium-4">
 				<div class="panel" style="text-align: center;">
@@ -16,5 +16,10 @@
 				</div>
 			</div>
 		</a>
+	</div>
+	<div class="row">
+		<div class="small-12" style="height: 600px;">
+			@include('google.map')
+		</div>
 	</div>
 @endsection
