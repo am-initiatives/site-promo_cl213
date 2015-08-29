@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form method="POST" action="/auth/login">
+<form method="POST" action="{{ route('auth.signin') }}">
     {!! csrf_field() !!}
 
     <div>

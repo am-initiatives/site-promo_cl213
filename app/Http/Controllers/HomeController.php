@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+
+use Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -16,6 +19,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['user'] = Auth::user()->load('account');;
+
+        return view('home', $data);
     }
 }

@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['password', 'email', 'phone', 'given_name', 'last_name', 'surname', 'information', 'active', 'permissions'];
+    protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'google_info', 'info', 'active', 'permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -90,6 +90,40 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return true;
 
         return in_array($required, $permissions);
+    }
+
+
+
+
+    public function getGoogleInfo()
+    {
+        if ($this->google_info) {
+            $info = json_decode($this->google_info, true);
+            return $info;
+        } else {
+            return null;
+        }
+    }
+
+
+    public function getPictureLink()
+    {
+        if ($this->picture) {
+            return url('uploads/pictures',$this->picture);
+        } else if ($google_info = $this->getGoogleInfo() and isset($google_info['picture'])) {
+            return $google_info['picture'];
+        } else {
+            return url('images/default_picture.png');
+        }
+    }
+
+
+    public function getTitle()
+    {
+        if ($this->nickname == '')
+            return $this->last_name . ' ' . $this->first_name;
+        else
+            return $this->nickname;
     }
 
 

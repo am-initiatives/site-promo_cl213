@@ -104,31 +104,29 @@ class AuthController extends Controller
             // Send a request with it
             $result = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);
 
-            // Verify if the domain is Gadz.org
-            if (@$result['hd'] == 'gadz.org') {
-                $user = User::where('google_id', $result['id'])->first();
-                if ($user) {
-                    Auth::login($user);
-                    return redirect()->intended('/');
-                }
-                elseif ($user = User::where('email', $result['email'])->first()) {
-                    // dd('coucou');
-                    $user->forceFill(['google_id' => $result['id'], 'active' => 1])->save();
-                    //dd($user);
-                    Auth::login($user);
-                    return redirect()->intended('/');
-                }
-                else {
-                    return response('Utilisateur inconnu.<br/>'.Html::linkRoute('login', 'Revenir'));
+
+
+            $user = User::where('google_id', $result['id'])->first();
+            // Si l'utilisateur a une adresse Gadz.org, on vérifie si son adresse est connue
+            if (!$user) {
+                if (isset($result['hd']) and $result['hd'] == 'gadz.org') {
+                    $user = User::where('email', $result['email'])->first();
+
+                    if($user) {
+                        // On ajoute l'id pour les futures connexions
+                        $user->forceFill(['google_id' => $result['id'], 'active' => 1])->save();
+                    } else {
+                        return response('Utilisateur inconnu.<br/>'.Html::linkRoute('login', 'Revenir'));
+                    }
+                } else {
+                    return response('L\'adresse doit être une adresse gadz.org valide.<br/>'.Html::linkRoute('login', 'Revenir'));
                 }
             }
-            else {
-                return response('L\'adresse doit être une adresse gadz.org valide.<br/>'.Html::linkRoute('login', 'Revenir'));
-            }
-        }
-        // if not ask for permission first
-        else
-        {
+
+            $user->update(['google_info' => json_encode($result)]);
+            Auth::login($user);
+            return redirect()->intended('/');
+        } else { // if not ask for permission first
             // get googleService authorization
             $url = $googleService->getAuthorizationUri();
 
@@ -146,7 +144,7 @@ class AuthController extends Controller
 //   "email" => "corentin.gitton@gadz.org"
 //   "verified_email" => true
 //   "name" => "Corentin Gitton"
-//   "given_name" => "Corentin"
+//   "first_name" => "Corentin"
 //   "family_name" => "Gitton"
 //   "picture" => "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
 //   "locale" => "fr"

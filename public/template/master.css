@@ -29,3 +29,9 @@ body {
 		margin: auto;
 	}
 }
+
+
+#content {
+	margin: 10px;
+	margin-top: 25px;
+}

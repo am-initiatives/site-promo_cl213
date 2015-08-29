@@ -52,12 +52,13 @@ class Account extends Model
         return $this->active;
     }
 
+
     /**
-     * Return current account balance.
+     * Return current account transactions.
      *
      * @return bool|int
      */
-    public function transactions()
+    public function getTransactions()
     {
         $credits = $this->credits;
         $debits = $this->debits;
@@ -71,10 +72,23 @@ class Account extends Model
      *
      * @return bool|int
      */
-    public function balance()
+    public function getBalance()
     {
         return $this->credits->sum('amount') - $this->debits->sum('amount');
     }
+
+    public function getTitle()
+    {
+        if ($this->user) {
+            return $this->user->getTitle();
+        } else {
+            return $this->description;
+        }
+    }
+
+
+
+
 
     /**
      * Return current account history.
@@ -83,7 +97,7 @@ class Account extends Model
      */
     public function recap()
     {
-        $transactions = $this->transactions();
+        $transactions = $this->getTransactions();
         $transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
 
         $table = [];

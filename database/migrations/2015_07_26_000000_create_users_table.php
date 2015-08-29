@@ -18,12 +18,14 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('google_id')->nullable()->unique();
 
-            $table->string('given_name', 20);
+            $table->string('google_id')->nullable()->unique();
+            $table->text('google_info')->nullable();
+
+            $table->string('first_name', 20);
             $table->string('last_name', 20);
             $table->string('nickname', 20);
-            $table->text('information');
+            $table->text('info');
             
             $table->boolean('active');
             $table->boolean('hidden');

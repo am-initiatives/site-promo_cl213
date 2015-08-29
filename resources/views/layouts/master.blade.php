@@ -7,9 +7,7 @@
         <link rel="stylesheet" href="{{ URL::to('foundation-5.5.2/css/foundation.css') }}" />
         <link rel="stylesheet" href="{{ URL::to('template/master.css') }}" />
 
-        <script src="{{ URL::to('foundation-5.5.2/js/vendor/modernizr.js') }}" async></script>
-        <script src="{{ URL::to('foundation-5.5.2/js/vendor/jquery.js') }}" async></script>
-        <script src="{{ URL::to('foundation-5.5.2/js/foundation.min.js') }}" async></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="container">
@@ -29,6 +27,11 @@
                 @yield('content')
             </div>
         </div>
+
+
+        <script src="{{ URL::to('foundation-5.5.2/js/vendor/modernizr.js') }}"></script>
+        <script src="{{ URL::to('foundation-5.5.2/js/vendor/jquery.js') }}"></script>
+        <script src="{{ URL::to('foundation-5.5.2/js/foundation.min.js') }}"></script>
         
         <script>
             $(document).foundation();

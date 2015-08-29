@@ -39,17 +39,16 @@ Html::macro('solde', function($value, $unit = NULL)
 
 // Authentication routes...
 Route::group(['prefix' => 'auth'], function () {
-    Route::get('login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
-    Route::post('login', 'Auth\AuthController@postLogin');
-    Route::get('google', ['as' => 'loginwithgoogle', 'uses' => 'Auth\AuthController@getLoginWithGoogle']);
-    Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
+    Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::post('login', ['as' => 'auth.signin', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::get('google', ['as' => 'auth.google', 'uses' => 'Auth\AuthController@getLoginWithGoogle']);
+    Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
 });
 
 
 Route::group(['middleware' => ['auth', 'active']], function()
 {
-    // Route::get('/', ['as' => 'home', function () {return view('welcome');}]);
-    Route::get('/', ['as' => 'loginwithgoogle', 'uses' => 'HomeController@index']);
+    Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
     // Profil
     Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
@@ -58,6 +57,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
     // Liste promss
 
     // Buqueur
+    Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'AccountController@index']);
     Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'AccountController@show']);
 
     Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);

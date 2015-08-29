@@ -18,7 +18,9 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
+        $data['accounts'] = Account::all();
+
+        return view('accounts.index', $data);
     }
 
     /**
@@ -52,7 +54,7 @@ class AccountController extends Controller
     {
         if ($account = Account::find($id)) {
             $data['transactions'] = $account->recap();
-            $data['solde'] = $account->balance();
+            $data['solde'] = $account->getBalance();
         }
         else {
             $data['transactions'] = [];
