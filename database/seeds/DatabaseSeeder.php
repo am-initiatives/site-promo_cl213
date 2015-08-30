@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
+use Carbon\Carbon;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -16,15 +18,16 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->insert(
             array(
-                array('username' => 'admin', 'password' => Hash::make('password'), 'email' => 'webmaster@cl213.fr', 'google_id' => null, 'first_name' => 'Admin', 'last_name' => 'Istrateur', 'nickname' => '', 'pos'=> '[46.0898885, 6.5359716]', 'info' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
-                array('username' => 'tarmak', 'password' => Hash::make('password'), 'email' => 'corentin.gitton@gadz.org', 'google_id' => '103503349814606129144', 'first_name' => 'Corentin', 'last_name' => 'Gitton', 'nickname' => 'Tarmak 154', 'pos'=> '[49.04108, 9.30777]', 'info' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
-                array('username' => 'iwazaru', 'password' => Hash::make('password'), 'email' => 'mathieu.tudisco@gadz.org', 'google_id' => null, 'first_name' => 'Mathieu', 'last_name' => 'Tudisco', 'nickname' => 'Iwazaru 134', 'pos'=> '[48.8178079, 2.3332474]', 'info' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
-                array('username' => 'user1', 'password' => Hash::make('random'), 'email' => 'user1@gadz.org', 'google_id' => null, 'first_name' => 'User1', 'last_name' => 'User1', 'nickname' => 'User1', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
-                array('username' => 'user2', 'password' => Hash::make('random'), 'email' => 'user2@gadz.org', 'google_id' => null, 'first_name' => 'User2', 'last_name' => 'User2', 'nickname' => 'User2', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
-                array('username' => 'user3', 'password' => Hash::make('random'), 'email' => 'user3@gadz.org', 'google_id' => null, 'first_name' => 'User3', 'last_name' => 'User3', 'nickname' => 'User3', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
-                array('username' => 'user4', 'password' => Hash::make('random'), 'email' => 'user4@gadz.org', 'google_id' => null, 'first_name' => 'User4', 'last_name' => 'User4', 'nickname' => 'User4', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
-                array('username' => 'user5', 'password' => Hash::make('random'), 'email' => 'user5@gadz.org', 'google_id' => null, 'first_name' => 'User5', 'last_name' => 'User5', 'nickname' => 'User5', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
-                array('username' => 'user6', 'password' => Hash::make('random'), 'email' => 'user6@gadz.org', 'google_id' => null, 'first_name' => 'User6', 'last_name' => 'User6', 'nickname' => 'User6', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'admin', 'password' => Hash::make('password'), 'email' => 'webmaster@cl213.fr', 'google_id' => null, 'first_name' => 'Admin', 'last_name' => 'Istrateur', 'nickname' => '', 'pos'=> '[46.0898885, 6.5359716]', 'info' => '[]', 'active' => 1, 'hidden' => 1, 'permissions' => '["admin"]'),
+                array('username' => 'tarmak', 'password' => '', 'email' => 'corentin.gitton@gadz.org', 'google_id' => '103503349814606129144', 'first_name' => 'Corentin', 'last_name' => 'Gitton', 'nickname' => 'Tarmak 154', 'pos'=> '[49.04108, 9.30777]', 'info' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
+                array('username' => 'iwazaru', 'password' => '', 'email' => 'mathieu.tudisco@gadz.org', 'google_id' => null, 'first_name' => 'Mathieu', 'last_name' => 'Tudisco', 'nickname' => 'Iwazaru 134', 'pos'=> '[48.8178079, 2.3332474]', 'info' => '[]', 'active' => 1, 'hidden' => 1, 'permissions' => '["admin"]'),
+                array('username' => 'notsip', 'password' => '', 'email' => 'robin.chauvet@gadz.org', 'google_id' => null, 'first_name' => 'Robin', 'last_name' => 'Chauvet', 'nickname' => 'Notsip 32', 'pos'=> null, 'info' => '[]', 'active' => 1, 'permissions' => '["admin"]'),
+                array('username' => 'user1', 'password' => '', 'email' => 'user1@gadz.org', 'google_id' => null, 'first_name' => 'User1', 'last_name' => 'User1', 'nickname' => 'User1', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'user2', 'password' => '', 'email' => 'user2@gadz.org', 'google_id' => null, 'first_name' => 'User2', 'last_name' => 'User2', 'nickname' => 'User2', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'user3', 'password' => '', 'email' => 'user3@gadz.org', 'google_id' => null, 'first_name' => 'User3', 'last_name' => 'User3', 'nickname' => 'User3', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'user4', 'password' => '', 'email' => 'user4@gadz.org', 'google_id' => null, 'first_name' => 'User4', 'last_name' => 'User4', 'nickname' => 'User4', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'user5', 'password' => '', 'email' => 'user5@gadz.org', 'google_id' => null, 'first_name' => 'User5', 'last_name' => 'User5', 'nickname' => 'User5', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'user6', 'password' => '', 'email' => 'user6@gadz.org', 'google_id' => null, 'first_name' => 'User6', 'last_name' => 'User6', 'nickname' => 'User6', 'pos'=> null, 'info' => '[]', 'active' => 0, 'permissions' => '["admin"]'),
             ));
 
         DB::table('accounts')->insert(
@@ -82,6 +85,11 @@ class DatabaseSeeder extends Seeder
                 array('credited_account_id' => 1, 'debited_account_id' => 3, 'amount' => 415, 'wording' => 'aliquip ex ea commodo', 'active' => 1, 'created_at' => '2015-08-01 03:52:35'),
                 array('credited_account_id' => 3, 'debited_account_id' => 1, 'amount' => 415, 'wording' => 'consequat. Duis aute irure', 'active' => 1, 'created_at' => '2015-08-01 04:52:35'),
                 array('credited_account_id' => 2, 'debited_account_id' => 3, 'amount' => 1545, 'wording' => 'dolor in reprehenderit in', 'active' => 1, 'created_at' => '2015-08-01 05:52:35'),
+            ));
+
+        DB::table('posts')->insert(
+            array(
+                array('user_id' => 2, 'category' => 'general', 'title' => null, 'body' => 'Site en cours de dévloppement, de nouvelles fonctionnalités arriveront au fûr et à mesure.', 'created_at' => Carbon::now()->subMinutes(154), 'updated_at' => Carbon::now()->subMinutes(154)),
             ));
 
         Model::reguard();

@@ -21,7 +21,8 @@ function setMarkers(map) {
         var marker = new google.maps.Marker({
             position: {lat: user[1], lng: user[2]},
             map: map,
-            title: user[0]
+            title: user[0],
+            animation: google.maps.Animation.DROP
         });
     }
 }

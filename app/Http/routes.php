@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-setlocale(LC_TIME, 'French');
+Carbon\Carbon::setLocale('fr');
 
 
 Html::macro('solde', function($value, $unit = NULL)
@@ -19,6 +19,22 @@ Html::macro('solde', function($value, $unit = NULL)
     $color = $value < 0 ? '#A00' : '#08A';
 
     return '<strong style="color: '.$color.'">'.join(" ", $solde).'</strong>';
+});
+
+
+Html::macro('diff', function($date)
+{
+    if ($date->diffInDays() <= 7) {
+        if ($date->isYesterday()) {
+            $result = 'hier, à ' . $date->format('G:i');
+        } else {
+            $result = $date->diffForHumans(null, true);
+        }
+    } else {
+        $result = $date->format('j M Y , g:ia');
+    }
+
+    return ucfirst($result);
 });
 
 
@@ -63,11 +79,16 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
     Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
     Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
+
+    // Map plein écran
+    Route::get('tools/map', ['as'=>'tools.map', function () {
+        return view('tools.map');
+    }]);
+    Route::get('tools/map/full', ['as'=>'tools.map.full', function () {
+        return view('tools.full-map');
+    }]);
 });
 
-Route::get('map', function () {
-    return view('map');
-});
 
 
 Route::get('pass', function () {
@@ -77,16 +98,5 @@ Route::get('pass', function () {
 
 
 Route::get('test', function () {
-    // $pass = Hash::make('password');
-    // dd($pass);
-
-    // $accounts = App\Account::all();
-
-    // dd($accounts[1]->recap());
-
-    // return Html::linkroute('auth.login', 'Revenir');
-
-    dd(json_encode(['transactions']));
-
-    dd(Auth::user()->account);
+    //
 });

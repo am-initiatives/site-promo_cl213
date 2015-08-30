@@ -29,7 +29,7 @@ class TransactionController extends Controller
 
         foreach ($transactions as $t) {
             $table[] = array(
-                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y &agrave; %H:%m')),
+                'date' => utf8_encode($t->created_at->diffForHumans()),
                 'wording' => $t->wording,
                 'amount' => $t->amount,
                 'credited' => $t->credited->description,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use Auth;
 
+use Log;
+
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -116,10 +118,12 @@ class AuthController extends Controller
                         // On ajoute l'id pour les futures connexions
                         $user->forceFill(['google_id' => $result['id'], 'active' => 1])->save();
                     } else {
+                        Log::info('Connexion via Google refusée : '.$result['name'].' | '.$result['id'].' (Utilisateur inconnu');
                         return response('Utilisateur inconnu.<br/>'.Html::linkroute('auth.login', 'Revenir'));
                     }
                 } else {
-                    return response('L\'adresse doit être une adresse gadz.org valide.<br/>'.Html::linkroute('auth.login', 'Revenir'));
+                    Log::info('Connexion via Google refusée : '.$result['name'].' | '.$result['id'].' (L\'adresse n\'est pas une adresse Gadz.org)');
+                    return response('Le compte Google doit être lié à une adresse Gadz.org connue.<br/>'.Html::linkroute('auth.login', 'Revenir').'<br/>Si tu es connecté seulement avec un compte Google standard, connecte-toi d\'abord sur : '.Html::link('http://mail.gadz.org'));
                 }
             }
 

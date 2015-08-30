@@ -10,9 +10,12 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Scopes\HiddenTrait;
+
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword, SoftDeletes;
+    use HiddenTrait;
 
     /**
      * The database table used by the model.
@@ -147,6 +150,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $this->nickname;
     }
 
+    public function getLink()
+    {
+        return route('users.show', $this->id);
+    }
+
+    public function getLinkTitle()
+    {
+        return '<a href="'.$this->getLink().'">'.$this->getTitle().'</a>';
+    }
+
     public function getPosition()
     {
         return json_decode($this->pos, true);
@@ -176,5 +189,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function account()
     {
         return $this->hasOne('App\Account', 'user_id');
+    }
+
+    /**
+     * Get the user to whom belongs the account.
+     */
+    public function user()
+    {
+        return $this->hasMany('App\Post', 'user_id');
     }
 }

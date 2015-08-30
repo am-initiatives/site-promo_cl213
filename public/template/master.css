@@ -39,3 +39,20 @@ body {
 #map {
 	height: 100%;
 }
+
+
+/* Posts */
+
+.panel.post {
+	padding: 10px;
+}
+.panel.post .header {
+	font-size: smaller;
+}
+.panel.post .header .picture {
+	display: inline-block;
+}
+.panel.post .header .info {
+	display: inline-block;
+	vertical-align: bottom;
+}
