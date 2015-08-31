@@ -1,6 +1,6 @@
 <?php $user = Auth::user(); ?>
 
-<div class="fixed">
+<div class="contained-to-grid">
     <nav class="top-bar" data-topbar role="navigation">
         <ul class="title-area">
             <li class="name">

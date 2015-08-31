@@ -60,3 +60,10 @@ body {
 	display: inline-block;
 	vertical-align: bottom;
 }
+
+
+/* Map */
+
+.place {
+	margin-bottom: 4px;
+}

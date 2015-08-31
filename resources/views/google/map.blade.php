@@ -1,11 +1,13 @@
 <div id="map"></div>
+@section('scripts')
+@parent
 <script type="text/javascript">
 
 function initMap() {
     var france = new google.maps.LatLng(46.2157467, 2.2088258);
 
     var mapOptions = {
-      zoom: 6,
+      zoom: 5,
       center: france
     }
 
@@ -14,7 +16,7 @@ function initMap() {
     setMarkers(window.map);
 }
 
-var users = {!! $positions or [] !!};
+var users = {!! $positions or "[]" !!};
 
 function setMarkers(map) {
     for (var i = 0; i < users.length; i++) {
@@ -28,43 +30,43 @@ function setMarkers(map) {
     }
 }
 
-function getFromAdress(address) {
-    $.ajax({
-        url: "https://maps.googleapis.com/maps/api/geocode/json",
-        context: document.body,
-        data: {
-            key:"{{ env('API_KEY') }}",
-            address:address
-        }
-    }).done(function(data) {
-        if (typeof window.marker != 'undefined') {
-            window.marker.setMap(null);
-        }
 
-        var location = data["results"][0]["geometry"]["location"];
-        var bounds = data["results"][0]["geometry"]["bounds"];
+function setNewMarker(location, bounds) {
+    if (typeof window.marker != 'undefined') {
+        window.marker.setMap(null);
+    }
 
-        if (typeof bounds != 'undefined') {
-            var northeast = new google.maps.LatLng(bounds["northeast"]["lat"],bounds["northeast"]["lng"]);
-            var southwest = new google.maps.LatLng(bounds["southwest"]["lat"],bounds["southwest"]["lng"]);
-            var formatBounds = new google.maps.LatLngBounds(southwest, northeast);
-            window.map.fitBounds(formatBounds);
-        } else {
-            window.map.panTo(location);
-            window.map.setZoom(16);
-        }
-
-        window.marker = new google.maps.Marker({
-            position: location,
-            map: window.map,
-            title: "Ma position",
-            animation: google.maps.Animation.DROP
-        });
-
-        //alert(window.marker.position.toString());
+    window.marker = setMarker({
+        position: location,
+        map: window.map,
+        title: "Ma position",
+        animation: google.maps.Animation.DROP
     });
+
+    if (typeof bounds != 'undefined') {
+        window.map.fitBounds(toBounds(bounds));
+    } else {
+        window.map.panTo(location);
+        window.map.setZoom(16);
+    }
 }
 
 
+function setMarker(data) {
+    return new google.maps.Marker(data);
+}
+
+
+function toLocation(location) {
+    return new google.maps.LatLng(location["lat"],location["lng"]);
+}
+
+function toBounds(bounds) {
+    var ne = toLocation(bounds["northeast"]) ;
+    var sw = toLocation(bounds["southwest"]) ;
+    return new google.maps.LatLngBounds(sw, ne);
+}
+
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('API_KEY') }}&callback=initMap"></script>
+@endsection

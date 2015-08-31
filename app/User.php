@@ -30,7 +30,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'google_info', 'info', 'active', 'permissions'];
+    protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_info', 'info', 'active', 'permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -59,10 +59,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
         $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
 
-        if ( ! in_array('newQuery', $functions) and Auth::check() and Auth::user()->isAllowed('hidden_users'))
+        // dd($functions);
+
+        // Autorise l'authentification à avoir accès aux utilisateurs cachés.
+        if (in_array('retrieveByCredentials', $functions) or in_array('retrieveById', $functions) or in_array('getLoginWithGoogle', $functions)) {
             return parent::newQuery()->withHidden();
-        else
+        // La partie au dessus est nécessaire pour que la partie ci-dessous fonctionne ! sinon ajouter "! in_array('newQuery', $functions) and"
+        } elseif (Auth::check() and Auth::user()->isAllowed('hidden_users'))
+            return parent::newQuery()->withHidden();
+        else {
             return parent::newQuery();
+        }
     }
 
 

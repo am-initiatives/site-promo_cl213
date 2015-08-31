@@ -93,6 +93,10 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('tools/map/full', ['as'=>'tools.map.full', function () {
         return view('tools.full-map');
     }]);
+    Route::get('tools/map/location', ['as'=>'tools.map.location', function () {
+        return view('tools.map-location');
+    }]);
+    Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
 });
 
 
@@ -104,5 +108,6 @@ Route::get('pass', function () {
 
 
 Route::get('test', function () {
-    //
+    App\User::find(1);
+    return view('tools.map');
 });
