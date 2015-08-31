@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="panel">
 @unless(count($transactions))
     <p>Aucune opération pour le moment.</p>
 @else
@@ -27,6 +28,6 @@
         </tbody>
     </table>
 @endunless
-
+</div>
 
 @endsection

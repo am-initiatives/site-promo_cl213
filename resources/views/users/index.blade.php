@@ -2,12 +2,14 @@
 
 @section('content')
 
+<div class="panel">
 @unless(count($users))
     <p>Aucun utilisateur.</p>
 @else
     <table class="small-12">
         <caption>Liste des utilisateurs</caption>
         <thead>
+            <th>#</th>
             <th>Buque</th>
             <th>Nom, Prénom</th>
             <th>e-mail</th>
@@ -17,6 +19,7 @@
         <tbody>
             @foreach($users as $user)
             <tr>
+                <td>{{ $user->id }}{!! $user->hidden == 1 ? ' <i class="fa fa-user-secret" title="Caché"></i>' : '' !!}</td>
                 <td>{{ $user->nickname }}</td>
                 <td>{{ $user->last_name }} {{ $user->first_name }}</td>
                 <td>{{ $user->email }}</td>
@@ -27,5 +30,6 @@
         </tbody>
     </table>
 @endunless
+</div>
 
 @endsection

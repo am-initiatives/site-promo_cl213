@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="panel">
 {!! Form::open(array('route' => ['transactions.store'])) !!}
     <div class="row">
         <div class="medium-6 columns">
@@ -33,7 +34,7 @@
         </div>
     </div>
 {!! Form::close() !!}
-
+</div>
 
 
 @endsection

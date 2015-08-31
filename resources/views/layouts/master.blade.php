@@ -10,12 +10,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     </head>
     <body>
-        <div class="container">
-            <div id="header">
-                @include('includes.topbar')
-                @include('includes.header')
-            </div>
+        <div id="header">
+            @include('includes.topbar')
+            @include('includes.header')
+        </div>
 
+        <div class="container">
             <div id="content">
                 @if($errors->count())
                 <div data-alert class="alert-box info" style="margin: 10px;">
@@ -36,5 +36,6 @@
         <script>
             $(document).foundation();
         </script>
+        @yield('scripts')
     </body>
 </html>

@@ -24,7 +24,9 @@ Html::macro('solde', function($value, $unit = NULL)
 
 Html::macro('diff', function($date)
 {
-    if ($date->diffInDays() <= 7) {
+    if ($date->diffInSeconds() <= 60) {
+        $result = 'À l’instant';
+    } elseif ($date->diffInDays() <= 7) {
         if ($date->isYesterday()) {
             $result = 'hier, à ' . $date->format('G:i');
         } else {
@@ -69,6 +71,10 @@ Route::group(['middleware' => ['auth', 'active']], function()
     // Profil
     Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
     Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+
+    // Posts
+    Route::post('posts', ['as' => 'posts.store', 'uses' => 'PostController@store']);
+
 
     // Liste promss
 

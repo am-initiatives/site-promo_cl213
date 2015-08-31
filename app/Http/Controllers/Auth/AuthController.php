@@ -139,18 +139,3 @@ class AuthController extends Controller
         }
     }
 }
-
-
-// Your unique Google user id is: 118393875285241098193 and your name is Corentin Gitton
-
-// array:9 [▼
-//   "id" => "118393875285241098193"
-//   "email" => "corentin.gitton@gadz.org"
-//   "verified_email" => true
-//   "name" => "Corentin Gitton"
-//   "first_name" => "Corentin"
-//   "family_name" => "Gitton"
-//   "picture" => "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
-//   "locale" => "fr"
-//   "hd" => "gadz.org"
-// ]

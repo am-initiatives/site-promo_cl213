@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+<div class="panel">
 @unless(isset($user))
     <p>Impossible de trouver cet utilisateur.</p>
 @else
@@ -20,6 +20,6 @@
 		</div>
 	</div>
 @endunless
-
+</div>
 
 @endsection

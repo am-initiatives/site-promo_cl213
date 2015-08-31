@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+<div class="panel">
 <p>Le solde de ce compte est de <strong>{!! Html::solde($solde / 100, '€') !!}</strong></p>
 @unless(count($transactions))
     <p>Aucune opération sur ce compte pour le moment.</p>
@@ -27,6 +27,6 @@
         </tbody>
     </table>
 @endunless
-
+</div>
 
 @endsection

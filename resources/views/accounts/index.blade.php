@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="panel">
 @unless(count($accounts))
     <p>Aucun compte n'est enregistré</p>
 @else
@@ -25,6 +26,6 @@
         </tbody>
     </table>
 @endunless
-
+</div>
 
 @endsection

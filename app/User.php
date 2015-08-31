@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Scopes\HiddenTrait;
+use Auth;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -44,6 +45,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+
+
+
+    /**
+     * Get a new query builder for the model's table.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function newQuery()
+    {
+        // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
+        $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
+
+        if ( ! in_array('newQuery', $functions) and Auth::check() and Auth::user()->isAllowed('hidden_users'))
+            return parent::newQuery()->withHidden();
+        else
+            return parent::newQuery();
+    }
 
 
 
