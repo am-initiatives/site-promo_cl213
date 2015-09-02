@@ -1,6 +1,6 @@
 <?php $user = Auth::user(); ?>
 
-<div class="contained-to-grid">
+<div class="fixed">
     <nav class="top-bar" data-topbar role="navigation">
         <ul class="title-area">
             <li class="name">
@@ -15,11 +15,11 @@
             <ul class="left">
                 <li class="has-form">
                   <div class="row collapse">
-                    <div class="large-8 small-9 columns">
-                      <input type="text" placeholder="Find Stuff">
+                    <div class="small-10 columns">
+                      <input type="text" placeholder="Rechercher">
                     </div>
-                    <div class="large-4 small-3 columns">
-                      <a href="#" class="alert button expand">Search</a>
+                    <div class="small-2 columns">
+                      <a href="#" class="alert button expand"><i class="fa fa-search"></i></a>
                     </div>
                   </div>
                 </li>

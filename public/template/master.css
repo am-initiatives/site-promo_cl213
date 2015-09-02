@@ -52,6 +52,7 @@ body {
 }
 .panel.post .header {
 	font-size: smaller;
+	width: 100%;
 }
 .panel.post .header .picture {
 	display: inline-block;

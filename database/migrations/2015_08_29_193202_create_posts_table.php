@@ -18,7 +18,6 @@ class CreatePostsTable extends Migration
             $table->integer('user_id');
 
             $table->string('category', 10);
-            $table->string('title', 255)->nullable();
             $table->text('body');
 
             $table->timestamps();

@@ -66,7 +66,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['post'] = Post::find($id);
+        return view('posts.edit', $data);
     }
 
     /**
@@ -78,7 +79,19 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        
+        if (Auth::user()->isAllowed(null,$post->user_id)) {
+            $inputs = $request->only(['body']);
+
+            $post->update($inputs);
+
+            return $post->showBody();
+        } else {
+            return $post->showBody();
+        }
+
+
     }
 
     /**
@@ -89,6 +102,15 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+
+        if (Auth::user()->isAllowed('del_posts',$post->user_id)) {
+            $post->delete();
+
+            return '<div style="text-align: center; color: #777; font-size: smaller;">Supprimé</div>';
+        } else {
+            return false;
+        }
+
     }
 }

@@ -134,14 +134,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-    public function isAllowed($required)
+    public function isAllowed($required, $user_id = null)
     {
+        if ($user_id == $this->id) {
+            return true;
+        } elseif (is_null($required)) {
+            return false;
+        }
+
         $permissions = $this->permissions();
 
-        if (in_array('admin', $permissions))
-            return true;
-
-        return in_array($required, $permissions);
+        return in_array($required, $permissions) or in_array('admin', $permissions);
     }
 
 

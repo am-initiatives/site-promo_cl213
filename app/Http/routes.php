@@ -73,7 +73,10 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
 
     // Posts
+    Route::get('posts/edit/{id}', ['as' => 'posts.edit', 'uses' => 'PostController@edit']);
+    Route::post('posts/edit/{id}', ['as' => 'posts.update', 'uses' => 'PostController@update']);
     Route::post('posts', ['as' => 'posts.store', 'uses' => 'PostController@store']);
+    Route::delete('posts/{id}', ['as' => 'posts.destroy', 'uses' => 'PostController@destroy']);
 
 
     // Liste promss
@@ -108,6 +111,5 @@ Route::get('pass', function () {
 
 
 Route::get('test', function () {
-    App\User::find(1);
     return view('tools.map');
 });

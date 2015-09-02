@@ -38,6 +38,24 @@ class Post extends Model
      */
     protected $dates = ['deleted_at'];
 
+
+
+    public function showBody()
+    {
+        $body = htmlentities($this->body);
+
+        $rules = array(
+            '[*]{1}' => 'strong',
+            '[_]{1}' => 'i',
+            );
+
+        foreach ($rules as $rule => $tag) {
+            $body = preg_replace("#$rule(.+?)$rule#", "<$tag>$1</$tag>", $body);
+        }
+
+        return nl2br($body);
+    }
+
     /**
      * Get the user to whom belongs the account.
      */

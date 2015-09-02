@@ -23,33 +23,7 @@
 			</a>
 		</div>
 		<div class="columns medium-8">
-			<div class="panel post">
-				@include('posts.form')
-			</div>
-			@foreach($posts as $post)
-			<div class="panel post">
-				<div class="header">
-					<div class="picture">
-						<a href="{{ $post->user->getLink() }}">
-							<img class="small-picture" style='height: 50px;' src="{{ $post->user->getPictureLink() }}">
-						</a>
-					</div>
-					<div class="info">
-						{!! $post->user->getLinkTitle() !!}
-						<br/>
-						<span style="color: #777">{{ Html::diff($post->created_at) }}</span>
-					</div>
-				</div>
-				@if(isset($post->title))
-				<div>
-					<h3>{{ $post->title }}</h3>
-				</div>
-				@endif
-				<div>
-					{{ $post->body }}
-				</div>
-			</div>
-			@endforeach
+			@include('posts.show')
 		</div>
 	</div>
 @endsection
