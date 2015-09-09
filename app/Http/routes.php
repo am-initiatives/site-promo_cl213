@@ -89,6 +89,9 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
     Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
 
+    Route::get('transactions/lists/create', ['as' => 'transactions.lists.create', 'uses' => 'TransactionController@createList']);
+    Route::get('transactions/lists/tables', ['as' => 'transactions.lists.tables', 'uses' => 'TransactionController@listTables']);
+
     // Map plein écran
     Route::get('tools/map', ['as'=>'tools.map', function () {
         return view('tools.map');
@@ -100,6 +103,14 @@ Route::group(['middleware' => ['auth', 'active']], function()
         return view('tools.map-location');
     }]);
     Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
+
+    // Login en tant que
+    Route::get('auth/as/{id}', ['as' => 'auth.log_as', 'uses' => function ($id) {
+        if(auth()->user()->isAllowed()) {
+            auth()->loginUsingId($id);
+            return redirect()->route('home');
+        }
+    }]);
 });
 
 

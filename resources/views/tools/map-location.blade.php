@@ -40,10 +40,33 @@ $(document).ready(function () {
 });
 
 function searchAddress(address) {
+    geocoder.geocode({'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            window.results = results;
+
+            console.log(results);
+
+            if (typeof window.results != 'undefined' && window.results.length > 0) {
+                showResults(window.results);
+
+                selectAddress(0);
+
+                $("#savelocation").show();
+            } else {
+                $("#savelocation").hide();
+            }
+        } else {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+    });
+}
+
+
+function searchAddress2(address) {
     $.ajax({
         url: "https://maps.googleapis.com/maps/api/geocode/json",
         data: {
-            key:"{{ env('API_KEY') }}",
+            key:"{{ env('API_KEY2') }}",
             address:address
         }
     }).done(function(data) {
@@ -73,10 +96,9 @@ function showResults(results) {
 }
 
 function selectAddress(i) {
-    var location = window.results[i]["geometry"]["location"];
-    var bounds = window.results[i]["geometry"]["bounds"];
+    var geometry = window.results[i].geometry;
 
-    setNewMarker(location, bounds);
+    setNewMarker(geometry);
 }
 
 function postNewLocation(location) {

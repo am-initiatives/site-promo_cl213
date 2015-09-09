@@ -66,13 +66,85 @@ class TransactionController extends Controller
     public function create()
     {
         $debitables = Auth::user()->availableAccounts();
-
         $creditables = Account::all();
 
-        $data['creditables'] = array_combine($creditables->pluck('id')->toArray(), $creditables->pluck('description')->toArray()) ;
-        $data['debitables'] = array_combine($debitables->pluck('id')->toArray(), $debitables->pluck('description')->toArray()) ;
+        $data['creditables'] = [];
+        $data['debitables'] = [];
+
+        foreach ($creditables as $c) {
+            $data['creditables'][$c->id] = $c->getTitle();
+        }
+        foreach ($debitables as $c) {
+            $data['debitables'][$c->id] = $c->getTitle();
+        }
 
         return view('transactions.create', $data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function createList()
+    {
+        $debitables = Auth::user()->availableAccounts();
+        $creditables = Account::all();
+
+        $data['creditables'] = [];
+        $data['debitables'] = [];
+
+        foreach ($creditables as $c) {
+            $data['creditables'][$c->id] = $c->getTitle();
+        }
+        foreach ($debitables as $c) {
+            $data['debitables'][$c->id] = $c->getTitle();
+        }
+
+        return view('transactions.lists.create', $data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function listTables(Request $request)
+    {
+        $tables = $request->all();
+
+        $data['debited'] = [];
+        $data['credited'] = [];
+
+        if (isset($tables['debited'])) {
+            $ids = array_keys($tables['debited']);
+            $debited = Account::find($ids);
+
+            foreach ($tables['debited'] as $id => $amount) {
+                $d = $debited->only($id)->first();
+                $data['debited'][] = array(
+                    'id' => $id,
+                    'title' => $d->getTitle(),
+                    'amount' => $amount,
+                );
+            }
+        }
+
+        if (isset($tables['credited'])) {
+            $ids = array_keys($tables['credited']);
+            $credited = Account::find($ids);
+
+            foreach ($tables['credited'] as $id => $amount) {
+                $d = $credited->only($id)->first();
+                $data['credited'][] = array(
+                    'id' => $id,
+                    'title' => $d->getTitle(),
+                    'amount' => $amount,
+                );
+            }
+        }
+
+        return view('transactions.lists.tables', $data);
     }
 
     /**
