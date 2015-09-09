@@ -19,8 +19,8 @@ return [
 	'consumers' => [
 
 		'Google' => [
-			'client_id'     => '1049838565225-0h95a0hab5onaln6e1k80tqa9k0bb6bt.apps.googleusercontent.com',
-			'client_secret' => 'FYbo6dsLo5yKKYgdbjCuHeJO',
+			'client_id'     => env('OAUTH_ID'),
+			'client_secret' => env('OAUTH_SECRET'),
 			'scope'         => ['userinfo_email', 'userinfo_profile'],
 		],
 
