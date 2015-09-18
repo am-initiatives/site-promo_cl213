@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        DB::beginTransaction();
+
         DB::table('users')->insert(
             array(
                 array('username' => 'admin', 'password' => Hash::make('password'), 'email' => 'webmaster@cl213.fr', 'google_id' => null, 'first_name' => 'Admin', 'last_name' => 'Istrateur', 'nickname' => '', 'pos'=> '[46.0898885, 6.5359716]', 'info' => '[]', 'active' => 1, 'hidden' => 1, 'permissions' => '["admin"]'),
@@ -89,8 +91,10 @@ class DatabaseSeeder extends Seeder
 
         DB::table('posts')->insert(
             array(
-                array('user_id' => 2, 'category' => 'general', 'title' => null, 'body' => 'Site en cours de dévloppement, de nouvelles fonctionnalités arriveront au fûr et à mesure.', 'created_at' => Carbon::now()->subMinutes(154), 'updated_at' => Carbon::now()->subMinutes(154)),
+                array('user_id' => 2, 'category' => 'general', 'body' => 'Site en cours de dévloppement, de nouvelles fonctionnalités arriveront au fûr et à mesure.', 'created_at' => Carbon::now()->subMinutes(154), 'updated_at' => Carbon::now()->subMinutes(154)),
             ));
+
+        DB::commit();
 
         Model::reguard();
     }
