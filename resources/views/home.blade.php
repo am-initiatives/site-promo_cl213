@@ -3,11 +3,6 @@
 @section('content')
 	<div class="row">
 		<div class="columns medium-4">
-			<a href="{{ route('users.show', $user->id) }}">
-				<div class="panel">
-					<img style="width: 70px;" src="{{ $user->getPictureLink() }}">
-				</div>
-			</a>
 			@if($user->account)
 			<a href="{{ route('accounts.show', $user->account->id) }}">
 				<div class="panel" style="text-align: center;">

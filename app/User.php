@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Scopes\HiddenTrait;
 use Auth;
+use Hash;
+use Carbon\Carbon;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -30,7 +32,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_info', 'info', 'active', 'permissions'];
+    protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_info', 'info', 'active', 'permissions', 'connected_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -44,7 +46,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'connected_at'];
 
 
 
@@ -73,8 +75,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
-
-
     public static function getPositions()
     {
         $users = self::whereNotNull('pos')->get();
@@ -95,7 +95,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
+    public function setPassword($request) {
+        $password = $request->input('password');
+        $password_confirmation = $request->input('password_confirmation');
 
+        if ($password == $password_confirmation) {
+            $this->connected_at = Carbon::now();
+            $this->password = Hash::make($password);
+            $this->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+    public function isFirstConnection() {
+        return is_null($this->connected_at);
+    }
 
 
     private function permissions()

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use Auth;
 
 class ToolController extends Controller
@@ -16,19 +17,35 @@ class ToolController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function map()
     {
-        //
+        $locations = json_encode(User::getPositions());
+
+        return view('tools.map', ['locations' => $locations]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
      * @return Response
      */
-    public function create()
+    public function mapUpdate()
     {
-        //
+        $locations = json_encode(User::getPositions());
+
+        return view('tools.map-location', ['locations' => $locations]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function mapFull()
+    {
+        $locations = json_encode(User::getPositions());
+
+        return view('tools.map-full', ['locations' => $locations]);
     }
 
     /**
@@ -39,7 +56,8 @@ class ToolController extends Controller
      */
     public function storeLocation(Request $request)
     {
-        $location = $request->input('location');
+        $location = json_decode($request->input('location'), true);
+        
         $pos = array_map('floatval', $location);
 
         if (Auth::user()->update(['pos'=>json_encode($pos)]))

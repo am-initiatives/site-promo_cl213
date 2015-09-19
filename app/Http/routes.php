@@ -6,6 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
+setlocale(LC_TIME, 'French');
 Carbon\Carbon::setLocale('fr');
 
 
@@ -32,11 +33,13 @@ Html::macro('diff', function($date)
         } else {
             $result = $date->diffForHumans(null, true);
         }
+    } elseif ($date->diffInYears() <= 1) {
+        $result = $date->formatLocalized('%d %B');
     } else {
-        $result = $date->format('j M Y , g:ia');
+        $result = $date->formatLocalized('%d %B %Y');
     }
 
-    return ucfirst($result);
+    return ucfirst(utf8_encode($result));
 });
 
 
@@ -55,6 +58,7 @@ Html::macro('diff', function($date)
 
 
 
+
 // Routes d'authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
@@ -63,14 +67,25 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
 });
 
-// Routes authentifiées
+// Configuration
+Route::group(['prefix' => 'config', 'middleware' => 'auth'], function () {
+    Route::get('first', ['as'=>'configs.first', 'uses' => 'ConfigController@first']);
+    Route::post('first/password', ['as'=>'configs.first.password', 'uses' => 'ConfigController@postFirstPassword']);
+    Route::post('first/location', ['as'=>'configs.first.location', 'uses' => 'ConfigController@postFirstLocation']);
+});
+
+// Routes authentifiées et activés
 Route::group(['middleware' => ['auth', 'active']], function()
 {
     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-    // Profil
+
+    // User
     Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
     Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+    Route::get('users/{id}/parameters', ['as'=>'users.parameters', function () {
+        return view('users.parameters');
+    }]);
 
     // Posts
     Route::get('posts/edit/{id}', ['as' => 'posts.edit', 'uses' => 'PostController@edit']);
@@ -93,15 +108,9 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('transactions/lists/tables', ['as' => 'transactions.lists.tables', 'uses' => 'TransactionController@listTables']);
 
     // Map plein écran
-    Route::get('tools/map', ['as'=>'tools.map', function () {
-        return view('tools.map');
-    }]);
-    Route::get('tools/map/full', ['as'=>'tools.map.full', function () {
-        return view('tools.full-map');
-    }]);
-    Route::get('tools/map/location', ['as'=>'tools.map.location', function () {
-        return view('tools.map-location');
-    }]);
+    Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);
+    Route::get('tools/map/full', ['as'=>'tools.map.full', 'uses' => 'ToolController@mapFull']);
+    Route::get('tools/map/location', ['as'=>'tools.map.location', 'uses' => 'ToolController@mapUpdate']);
     Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
 
     // Login en tant que

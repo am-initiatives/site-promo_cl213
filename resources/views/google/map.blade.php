@@ -1,4 +1,4 @@
-<div id="map"></div>
+<div id="map" style="height: 100%"></div>
 @section('scripts')
 @parent
 <script type="text/javascript">
@@ -15,18 +15,18 @@ function initMap() {
 
     window.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    setMarkers(window.map);
+    var locations = {!! $locations or "[]" !!};
+    setMarkers(window.map, locations);
 }
 
-var users = {!! $positions or "[]" !!};
 
-function setMarkers(map) {
-    for (var i = 0; i < users.length; i++) {
-        var user = users[i];
+function setMarkers(map, locations) {
+    for (var i = 0; i < locations.length; i++) {
+        var location = locations[i];
         var marker = new google.maps.Marker({
-            position: {lat: user[1], lng: user[2]},
+            position: {lat: location[1], lng: location[2]},
             map: map,
-            title: user[0],
+            title: location[0],
             animation: google.maps.Animation.DROP
         });
     }
@@ -54,5 +54,7 @@ function setNewMarker(geometry) {
 }
 
 </script>
+@if(!isset($noInit))
 <script async defer src="http://maps.googleapis.com/maps/api/js?key={{ env('API_KEY') }}&callback=initMap"></script>
+@endif
 @endsection

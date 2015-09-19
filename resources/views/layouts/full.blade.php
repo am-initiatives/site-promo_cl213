@@ -1,5 +1,3 @@
-<?php $positions = json_encode(App\User::getPositions()); ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,8 +26,10 @@
                 </ul>
             </section>
         </nav>
-        @include('google.map')
+        
+        @yield('content')
 
         <script src="{{ URL::to('foundation-5.5.2/js/vendor/jquery.js') }}"></script>
+        @yield('scripts')
     </body>
 </html>

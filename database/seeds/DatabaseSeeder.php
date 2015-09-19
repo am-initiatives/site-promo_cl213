@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
                 array('username' => 'admin', 'password' => Hash::make('password'), 'email' => 'webmaster@cl213.fr', 'google_id' => null, 'first_name' => 'Admin', 'last_name' => 'Istrateur', 'nickname' => '', 'pos'=> '[46.0898885, 6.5359716]', 'info' => '[]', 'active' => 1, 'hidden' => 1, 'permissions' => '["admin"]'),
                 array('username' => 'tarmak', 'password' => '', 'email' => 'corentin.gitton@gadz.org', 'google_id' => '103503349814606129144', 'first_name' => 'Corentin', 'last_name' => 'Gitton', 'nickname' => 'Tarmak 154', 'pos'=> '[49.04108, 9.30777]', 'info' => '[]', 'active' => 1, 'hidden' => 0, 'permissions' => '["admin"]'),
                 array('username' => 'iwazaru', 'password' => '', 'email' => 'mathieu.tudisco@gadz.org', 'google_id' => null, 'first_name' => 'Mathieu', 'last_name' => 'Tudisco', 'nickname' => 'Iwazaru 134', 'pos'=> '[48.8178079, 2.3332474]', 'info' => '[]', 'active' => 1, 'hidden' => 1, 'permissions' => '["admin"]'),
-                array('username' => 'notsip', 'password' => '', 'email' => 'robin.chauvet@gadz.org', 'google_id' => null, 'first_name' => 'Robin', 'last_name' => 'Chauvet', 'nickname' => 'Notsip 32', 'pos'=> null, 'info' => '[]', 'active' => 1, 'hidden' => 0, 'permissions' => '["admin"]'),
+                array('username' => 'notsip', 'password' => '', 'email' => 'robin.chauvet@gadz.org', 'google_id' => null, 'first_name' => 'Robin', 'last_name' => 'Chauvet', 'nickname' => 'Notsip 32', 'pos'=> null, 'info' => '[]', 'active' => 1, 'hidden' => 0, 'permissions' => ''),
                 array('username' => 'gecko', 'password' => '', 'email' => 'adrien.debord@gadz.org', 'google_id' => null, 'first_name' => 'Adrien', 'last_name' => 'Debord', 'nickname' => 'Gecko 109', 'pos'=> null, 'info' => '[]', 'active' => 1, 'hidden' => 0, 'permissions' => '["admin"]'),
                 array('username' => 'user2', 'password' => '', 'email' => 'user2@gadz.org', 'google_id' => null, 'first_name' => 'User2', 'last_name' => 'User2', 'nickname' => 'User2', 'pos'=> null, 'info' => '[]', 'active' => 0, 'hidden' => 0, 'permissions' => '["admin"]'),
                 array('username' => 'user3', 'password' => '', 'email' => 'user3@gadz.org', 'google_id' => null, 'first_name' => 'User3', 'last_name' => 'User3', 'nickname' => 'User3', 'pos'=> null, 'info' => '[]', 'active' => 0, 'hidden' => 0, 'permissions' => '["admin"]'),
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('posts')->insert(
             array(
-                array('user_id' => 2, 'category' => 'general', 'body' => 'Site en cours de dévloppement, de nouvelles fonctionnalités arriveront au fûr et à mesure.', 'created_at' => Carbon::now()->subMinutes(154), 'updated_at' => Carbon::now()->subMinutes(154)),
+                array('user_id' => 2, 'category' => 'general', 'body' => 'Site en cours de développement, de nouvelles fonctionnalités arriveront au fûr et à mesure.', 'created_at' => Carbon::now()->subMinutes(154), 'updated_at' => Carbon::now()->subMinutes(154)),
             ));
 
         DB::commit();

@@ -1,5 +1,3 @@
-<?php $positions = json_encode(App\User::getPositions()); ?>
-
 @extends('layouts.master')
 
 @section('content')

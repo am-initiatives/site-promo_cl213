@@ -39,6 +39,15 @@ class Activate
             return response('Ton compte est désactivé. Un message à été envoyé aux DDP\'s et tu seras contacté par mail lorsque ton compte aura été ré-activé.');
         }
 
+        // Première connexion
+        if ($this->auth->user()->isFirstConnection()) {
+            return redirect()->route('configs.first');
+        } elseif ($this->auth->user()->connected_at->diffInHours() > 15.4) {
+            $this->auth->user()->connected_at = Carbon::now();
+
+            $this->auth->user()->save();
+        }
+
         return $next($request);
     }
 }
