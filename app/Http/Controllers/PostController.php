@@ -40,9 +40,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $inputs = $request->only(['category', 'body']);
+        if (Auth::user()->isAllowed('post')) {
+            $inputs = $request->only(['category', 'body']);
 
-        Post::create(array_merge($inputs, ['user_id' => Auth::user()->id]));
+            Post::create(array_merge($inputs, ['user_id' => Auth::user()->id]));
+        }
 
         return back();
     }
@@ -81,7 +83,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         
-        if (Auth::user()->isAllowed(null,$post->user_id)) {
+        if (Auth::user()->isAllowed(null, $post->user_id)) {
             $inputs = $request->only(['body']);
 
             $post->update($inputs);

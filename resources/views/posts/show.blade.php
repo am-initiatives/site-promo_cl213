@@ -1,6 +1,8 @@
+@if($user->isAllowed('post'))
 <div class="panel post">
 	@include('posts.form')
 </div>
+@endif
 @foreach($posts as $post)
 <div class="panel post">
 	<div class="header">
