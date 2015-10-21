@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
+use Carbon\Carbon;
+
 class Activate
 {
     /**

@@ -11,11 +11,18 @@
 |
 */
 
-$factory->define(App\User::class, function ($faker) {
+$factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-        'password' => str_random(10),
-        'remember_token' => str_random(10),
+        'username' => $faker->word,
+		'password' => str_random(10),
+		'email' => $faker->email,
+		'first_name' => $faker->firstName,
+		'last_name' => $faker->lastName,
+		'nickname' => '',
+		'pos'=> '[46.0898885, 6.5359716]',
+		'info' => '[]',
+		'active' => 1,
+		'hidden' => 0,
+		'permissions' => '[]',
     ];
 });

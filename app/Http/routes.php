@@ -34,12 +34,12 @@ Html::macro('diff', function($date)
             $result = $date->diffForHumans(null, true);
         }
     } elseif ($date->diffInYears() <= 1) {
-        $result = $date->formatLocalized('%d %B');
+        $result = utf8_encode($date->formatLocalized('%d %B'));
     } else {
-        $result = $date->formatLocalized('%d %B %Y');
+        $result = utf8_encode($date->formatLocalized('%d %B %Y'));
     }
 
-    return ucfirst(utf8_encode($result));
+    return ucfirst($result);
 });
 
 
@@ -131,5 +131,5 @@ Route::get('pass', function () {
 
 
 Route::get('test', function () {
-    return view('tools.map');
+    return 'Coucou de la CL213';
 });
