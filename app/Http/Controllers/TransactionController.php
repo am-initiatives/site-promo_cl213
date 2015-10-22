@@ -32,8 +32,8 @@ class TransactionController extends Controller
                 'date' => utf8_encode($t->created_at->diffForHumans()),
                 'wording' => $t->wording,
                 'amount' => $t->amount,
-                'credited' => $t->credited->description,
-                'debited' => $t->debited->description,
+                'credited' => $t->credited->nickname,
+                'debited' => $t->debited->nickname,
                 );
         }
 

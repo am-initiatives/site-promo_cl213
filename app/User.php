@@ -41,13 +41,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token', 'google_id'];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at', 'connected_at'];
-
 
 
 
@@ -280,7 +273,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y &agrave; %H:%m')),
                 'wording' => $t->wording,
                 'amount' => ($isCredit ? '' : '-').$t->amount,
-                'account' => $isCredit ? $t->debited->description : $t->credited->description,
+                'account' => $isCredit ? $t->debited->nickname : $t->credited->nickname,
                 );
         }
 
@@ -306,7 +299,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function credits()
     {
-        return $this->hasMany('App\Transaction', 'credited_user_id');
+        return $this->hasMany('App\Transaction', 'credited_user_id')->acquited();
     }
 
     /**
@@ -314,7 +307,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function debits()
     {
-        return $this->hasMany('App\Transaction', 'debited_user_id');
+        return $this->hasMany('App\Transaction', 'debited_user_id')->acquited();
     }
 
     /*=====  End of Gestion des transactions  ======*/

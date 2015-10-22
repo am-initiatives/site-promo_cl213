@@ -68,4 +68,17 @@ class Transaction extends Model
     {
         return $this->belongsTo('App\User', 'debited_user_id');
     }
+
+
+    
+
+    public function scopeAcquited($query)
+    {
+        return $query->whereState("acquited");
+    }
+
+    public function scopePending($query)
+    {
+        return $query->whereState('pending');
+    }
 }
