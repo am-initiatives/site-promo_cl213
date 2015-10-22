@@ -100,7 +100,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $password_confirmation = $request->input('password_confirmation');
 
         if ($password == $password_confirmation) {
-            $this->connected_at = Carbon::now();
+            $this->updated_at = Carbon::now();
             $this->password = Hash::make($password);
             $this->save();
 
@@ -113,7 +113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public function isFirstConnection() {
-        return is_null($this->connected_at);
+        return is_null($this->updated_at);
     }
 
 
