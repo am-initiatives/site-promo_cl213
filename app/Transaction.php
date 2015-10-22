@@ -28,7 +28,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['credited_account_id', 'debited_account_id', 'amount', 'wording', 'active'];
+    protected $fillable = ['credited_user_id', 'debited_user_id', 'amount', 'wording', 'active'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -58,14 +58,14 @@ class Transaction extends Model
      */
     public function credited()
     {
-        return $this->belongsTo('App\Account', 'credited_account_id');
+        return $this->belongsTo('App\User', 'credited_user_id');
     }
 
     /**
-     * Get debits for the account.
+     * Get debits for the User.
      */
     public function debited()
     {
-        return $this->belongsTo('App\Account', 'debited_account_id');
+        return $this->belongsTo('App\User', 'debited_user_id');
     }
 }

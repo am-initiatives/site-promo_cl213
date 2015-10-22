@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Account as Account;
+use App\User as User;
 
 class AccountController extends Controller
 {
@@ -18,7 +18,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $data['accounts'] = Account::all();
+        $data['accounts'] = User::all();
 
         return view('accounts.index', $data);
     }
@@ -52,7 +52,7 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-        if ($account = Account::find($id)) {
+        if ($account = User::find($id)) {
             $data['transactions'] = $account->recap();
             $data['solde'] = $account->getBalance();
         }

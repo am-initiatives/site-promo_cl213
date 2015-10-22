@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 
-use App\Account as Account;
+use App\User as User;
 use App\Transaction as Transaction;
 
 class TransactionController extends Controller
@@ -66,7 +66,7 @@ class TransactionController extends Controller
     public function create()
     {
         $debitables = Auth::user()->availableAccounts();
-        $creditables = Account::all();
+        $creditables = User::all();
 
         $data['creditables'] = [];
         $data['debitables'] = [];
@@ -89,7 +89,7 @@ class TransactionController extends Controller
     public function createList()
     {
         $debitables = Auth::user()->availableAccounts();
-        $creditables = Account::all();
+        $creditables = User::all();
 
         $data['creditables'] = [];
         $data['debitables'] = [];
@@ -118,7 +118,7 @@ class TransactionController extends Controller
 
         if (isset($tables['debited'])) {
             $ids = array_keys($tables['debited']);
-            $debited = Account::find($ids);
+            $debited = User::find($ids);
 
             foreach ($tables['debited'] as $id => $amount) {
                 $d = $debited->only($id)->first();
@@ -132,7 +132,7 @@ class TransactionController extends Controller
 
         if (isset($tables['credited'])) {
             $ids = array_keys($tables['credited']);
-            $credited = Account::find($ids);
+            $credited = User::find($ids);
 
             foreach ($tables['credited'] as $id => $amount) {
                 $d = $credited->only($id)->first();
@@ -167,7 +167,7 @@ class TransactionController extends Controller
         {
             $available = Auth::user()->availableAccounts();
 
-            $debited = Account::find($request->get('debited'));
+            $debited = User::find($request->get('debited'));
             if (!$available->has($debited->id))
                 return redirect()->back()->withErrors(['unauthorized' => 'Tu n\'as pas le droit de débiter ce compte'.$debited->description])->withInput();;
         }
@@ -176,8 +176,8 @@ class TransactionController extends Controller
         $data = array(
             'wording' => $request->get('wording'),
             'amount' => (integer) 100*$request->get('amount'),
-            'credited_account_id' => $request->get('credited'),
-            'debited_account_id' => $request->get('debited'),
+            'credited_user_id' => $request->get('credited'),
+            'debited_user_id' => $request->get('debited'),
             );
 
         Transaction::create($data);

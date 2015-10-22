@@ -18,7 +18,7 @@ use Carbon\Carbon;
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword, SoftDeletes;
-    use HiddenTrait;
+    // use HiddenTrait;
 
     /**
      * The database table used by the model.
@@ -53,26 +53,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /**
      * Get a new query builder for the model's table.
+     * Override de la méthode de base pour cacher les credentials
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function newQuery()
-    {
-        // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
-        $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
+    // public function newQuery()
+    // {
+    //     // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
+    //     $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
 
-        // dd($functions);
+    //     // dd($functions);
 
-        // Autorise l'authentification à avoir accès aux utilisateurs cachés.
-        if (in_array('retrieveByCredentials', $functions) or in_array('retrieveById', $functions) or in_array('getLoginWithGoogle', $functions)) {
-            return parent::newQuery()->withHidden();
-        // La partie au dessus est nécessaire pour que la partie ci-dessous fonctionne ! sinon ajouter "! in_array('newQuery', $functions) and"
-        } elseif (Auth::check() and Auth::user()->isAllowed('hidden_users'))
-            return parent::newQuery()->withHidden();
-        else {
-            return parent::newQuery();
-        }
-    }
+    //     // Autorise l'authentification à avoir accès aux utilisateurs cachés.
+    //     if (in_array('retrieveByCredentials', $functions) or in_array('retrieveById', $functions) or in_array('getLoginWithGoogle', $functions)) {
+    //         return parent::newQuery()->withHidden();
+    //     // La partie au dessus est nécessaire pour que la partie ci-dessous fonctionne ! sinon ajouter "! in_array('newQuery', $functions) and"
+    //     } elseif (Auth::check() and Auth::user()->isAllowed('hidden_users'))
+    //         return parent::newQuery()->withHidden();
+    //     else {
+    //         return parent::newQuery();
+    //     }
+    // }
 
 
     public static function getPositions()
@@ -141,10 +142,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function availableAccounts()
     {
         if ($this->isAllowed('all_accounts'))
-            return Account::all();
+            return User::all();
         else
         {
-            $available = Account::where('restricted', 0)->get();
+            $available = User::where('permissions','not like', "%restricted%")->get();
 
             if ($user_account = $this->account)
                 $available = $available->push($user_account);
@@ -228,18 +229,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $query->where('hidden', 0);
     }
 
-
-
-
-
-    /**
-     * Get account of the user.
-     */
-    public function account()
-    {
-        return $this->hasOne('App\Account', 'user_id');
-    }
-
     /**
      * Get the user to whom belongs the account.
      */
@@ -247,4 +236,88 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\Post', 'user_id');
     }
+
+
+
+
+    /*================================================
+    =            Gestion des transactions            =
+    ================================================*/
+
+
+
+
+
+    public function isRestricted()
+    //restricted : on peut pas lui prendre des sous
+    {
+        return in_array($required, $permissions) or in_array('restricted', $permissions);
+    }
+
+
+    public function getBalance()
+    {
+        return $this->credits->sum('amount') - $this->debits->sum('amount');
+    }
+
+
+    /**
+     * Return current account history.
+     *
+     * @return bool|int
+     */
+    public function recap()
+    {
+        $transactions = $this->getTransactions();
+        $transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
+
+        $table = [];
+
+        foreach ($transactions as $t) {
+            $isCredit = ($this->id == $t->credited_user_id);
+            $table[] = array(
+                'type' => $isCredit ? 'credit' : 'debit',
+                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y &agrave; %H:%m')),
+                'wording' => $t->wording,
+                'amount' => ($isCredit ? '' : '-').$t->amount,
+                'account' => $isCredit ? $t->debited->description : $t->credited->description,
+                );
+        }
+
+        return $table;
+    }
+
+    /**
+     * Return current account transactions.
+     *
+     * @return bool|int
+     */
+    public function getTransactions()
+    {
+        $credits = $this->credits;
+        $debits = $this->debits;
+        $transactions = $debits->merge($credits);
+
+        return $transactions;
+    }
+
+    /**
+     * Get credits for the account.
+     */
+    public function credits()
+    {
+        return $this->hasMany('App\Transaction', 'credited_user_id');
+    }
+
+    /**
+     * Get debits for the account.
+     */
+    public function debits()
+    {
+        return $this->hasMany('App\Transaction', 'debited_user_id');
+    }
+
+    /*=====  End of Gestion des transactions  ======*/
+    
+    
 }
