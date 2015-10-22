@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\User as User;
 
-class AccountController extends Controller
+class BuqueurController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -97,8 +97,8 @@ Route::group(['middleware' => ['auth', 'active']], function()
     // Liste promss
 
     // Buqueur
-    Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'AccountController@index']);
-    Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'AccountController@show']);
+    Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'BuqueurController@index']);
+    Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'BuqueurController@show']);
 
     Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
     Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
