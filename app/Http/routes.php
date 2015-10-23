@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
 
     Route::get('transactions/lists/create', ['as' => 'transactions.lists.create', 'uses' => 'TransactionController@createList']);
+    Route::post('transactions/lists/store', ['as' => 'transactions.lists.store', 'uses' => 'TransactionController@storeList']);
     Route::get('transactions/lists/tables', ['as' => 'transactions.lists.tables', 'uses' => 'TransactionController@listTables']);
 
     // Map plein écran

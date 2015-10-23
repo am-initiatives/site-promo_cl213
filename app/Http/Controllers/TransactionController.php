@@ -13,220 +13,242 @@ use Auth;
 use App\User as User;
 use App\Transaction as Transaction;
 
+use Ramsey\Uuid\Uuid;
+
+use DB;
+
 class TransactionController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $transactions = Transaction::orderBy('created_at', 'desc')->get();
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$transactions = Transaction::orderBy('created_at', 'desc')->get();
 
-        $table = [];
+		$table = [];
 
-        foreach ($transactions as $t) {
-            $table[] = array(
-                'date' => utf8_encode($t->created_at->diffForHumans()),
-                'wording' => $t->wording,
-                'amount' => $t->amount,
-                'credited' => $t->credited->nickname,
-                'debited' => $t->debited->nickname,
-                );
-        }
+		foreach ($transactions as $t) {
+			$table[] = array(
+				'date' => utf8_encode($t->created_at->diffForHumans()),
+				'wording' => $t->wording,
+				'amount' => $t->amount,
+				'credited' => $t->credited->nickname,
+				'debited' => $t->debited->nickname,
+				);
+		}
 
-        $data['transactions'] = $table;
+		$data['transactions'] = $table;
 
-        return view('transactions.index', $data);
-    }
+		return view('transactions.index', $data);
+	}
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'credited' => 'required|integer',
-            'debited' => 'required|integer|different:credited',
-            'wording' => 'required|between:10,255',
-            'amount' => 'required|numeric',
-        ]);
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		$debitables = Auth::user()->availableAccounts();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        $debitables = Auth::user()->availableAccounts();
-        $creditables = User::all();
+		$data['debitables'] = [];
 
-        $data['creditables'] = [];
-        $data['debitables'] = [];
+		//consturction de la liste "id"=>"Nom" pour le select
+		foreach ($debitables as $c) {
 
-        foreach ($creditables as $c) {
-            $data['creditables'][$c->id] = $c->getTitle();
-        }
-        foreach ($debitables as $c) {
-            $data['debitables'][$c->id] = $c->getTitle();
-        }
+			if($c->id == Auth::user()->id)
+				//on eclut l'utilisateur
+				continue;
 
-        return view('transactions.create', $data);
-    }
+			$data['debitables'][$c->id] = $c->getTitle();
+		}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function createList()
-    {
-        $debitables = Auth::user()->availableAccounts();
-        $creditables = User::all();
+		return view('transactions.create', $data);
+	}
 
-        $data['creditables'] = [];
-        $data['debitables'] = [];
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function createList()
+	{
+		$debitables = Auth::user()->availableAccounts();
+		$creditables = User::all();
 
-        foreach ($creditables as $c) {
-            $data['creditables'][$c->id] = $c->getTitle();
-        }
-        foreach ($debitables as $c) {
-            $data['debitables'][$c->id] = $c->getTitle();
-        }
+		$data['creditables'] = [];
+		$data['debitables'] = [];
 
-        return view('transactions.lists.create', $data);
-    }
+		foreach ($creditables as $c) {
+			$data['creditables'][$c->id] = $c->getTitle();
+		}
+		foreach ($debitables as $c) {
+			$data['debitables'][$c->id] = $c->getTitle();
+		}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function listTables(Request $request)
-    {
-        $tables = $request->all();
+		return view('transactions.lists.create', $data);
+	}
 
-        $data['debited'] = [];
-        $data['credited'] = [];
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function listTables(Request $request)
+	{
+		$tables = $request->all();
 
-        if (isset($tables['debited'])) {
-            $ids = array_keys($tables['debited']);
-            $debited = User::find($ids);
+		$data['debited'] = [];
+		$data['credited'] = [];
 
-            foreach ($tables['debited'] as $id => $amount) {
-                $d = $debited->only($id)->first();
-                $data['debited'][] = array(
-                    'id' => $id,
-                    'title' => $d->getTitle(),
-                    'amount' => $amount,
-                );
-            }
-        }
+		if (isset($tables['debited'])) {
+			$ids = array_keys($tables['debited']);
+			$debited = User::find($ids);
 
-        if (isset($tables['credited'])) {
-            $ids = array_keys($tables['credited']);
-            $credited = User::find($ids);
+			foreach ($tables['debited'] as $id => $amount) {
+				$d = $debited->only($id)->first();
+				$data['debited'][] = array(
+					'id' => $id,
+					'title' => $d->getTitle(),
+					'amount' => $amount,
+				);
+			}
+		}
 
-            foreach ($tables['credited'] as $id => $amount) {
-                $d = $credited->only($id)->first();
-                $data['credited'][] = array(
-                    'id' => $id,
-                    'title' => $d->getTitle(),
-                    'amount' => $amount,
-                );
-            }
-        }
+		if (isset($tables['credited'])) {
+			$ids = array_keys($tables['credited']);
+			$credited = User::find($ids);
 
-        return view('transactions.lists.tables', $data);
-    }
+			foreach ($tables['credited'] as $id => $amount) {
+				$d = $credited->only($id)->first();
+				$data['credited'][] = array(
+					'id' => $id,
+					'title' => $d->getTitle(),
+					'amount' => $amount,
+				);
+			}
+		}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $validator = $this->validator($request->all());
+		return view('transactions.lists.tables', $data);
+	}
 
-        if ($validator->fails()) {
-            return redirect()->route('transactions.create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'debited' => 'required|integer|not_in:'.Auth::user()->id,
+			'wording' => 'required|between:5,255',
+			'amount' => 'required|numeric',
+		]);
 
-        if (!Auth::user()->isAllowed('all_accounts'))
-        {
-            $available = Auth::user()->availableAccounts();
+		if ($validator->fails()) {
+			return redirect()->route('transactions.create')
+						->withErrors($validator)
+						->withInput();
+		}
 
-            $debited = User::find($request->get('debited'));
-            if (!$available->has($debited->id))
-                return redirect()->back()->withErrors(['unauthorized' => 'Tu n\'as pas le droit de débiter ce compte'.$debited->description])->withInput();;
-        }
+		$data = array(
+			'wording'           => $request->get('wording'),
+			'amount'            => (integer) 100*$request->get('amount'),
+			'credited_user_id'  => Auth::user()->id,
+			'debited_user_id'   => $request->get('debited'),
+			'group_id'          => Uuid::uuid4(),
+			);
 
+		Transaction::create($data);
 
-        $data = array(
-            'wording' => $request->get('wording'),
-            'amount' => (integer) 100*$request->get('amount'),
-            'credited_user_id' => $request->get('credited'),
-            'debited_user_id' => $request->get('debited'),
-            );
+		return redirect()->route('transactions.index');
+	}
 
-        Transaction::create($data);
+	public function storeList(Request $request)
+	{
+		
+		$validator = Validator::make($request->all(), [
+			'debited' => 'required|array',
+			'wording' => 'required|between:5,255',
+			'amount' => 'required|numeric',
+		]);
 
-        return redirect()->route('transactions.index');
-    }
+		if ($validator->fails()) {
+			return redirect()->route('transactions.create')
+						->withErrors($validator)
+						->withInput();
+		}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
+		$uuid = Uuid::uuid4()->toString() ; //identifiant de la facture
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+		DB::transaction(function() use ($request,$uuid)
+		{
+			foreach ($request->get("debited") as $debited) {
+				$data = array(
+					'wording'			=> $request->get('wording'),
+					'amount'			=> (integer) 100*$request->get('amount'),
+					'credited_user_id'	=> Auth::user()->id,
+					'debited_user_id'	=> $debited,
+					'group_id'			=> $uuid,
+					);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+				Transaction::create($data);
+			}
+		});
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+		return redirect()->route('transactions.show',[Auth::user()]);
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+        $data['transactions'] = $account->transactionsDetail();
+        $data['solde'] = $account->getBalance();
+
+        return view('transactions.show', $data);
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  Request  $request
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update(Request $request, $id)
+	{
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		//
+	}
 }
