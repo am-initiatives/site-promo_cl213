@@ -162,6 +162,7 @@ class TransactionController extends Controller
 			'credited_user_id'  => Auth::user()->id,
 			'debited_user_id'   => $request->get('debited'),
 			'group_id'          => Uuid::uuid4(),
+			'state'				=> "pending"
 			);
 
 		Transaction::create($data);
@@ -195,6 +196,7 @@ class TransactionController extends Controller
 					'credited_user_id'	=> Auth::user()->id,
 					'debited_user_id'	=> $debited,
 					'group_id'			=> $uuid,
+					'state'				=> "pending"
 					);
 
 				Transaction::create($data);
@@ -217,17 +219,6 @@ class TransactionController extends Controller
         $data['solde'] = $account->getBalance();
 
         return view('transactions.show', $data);
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
 	}
 
 	/**
@@ -258,8 +249,32 @@ class TransactionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy(Request $request,$id)
 	{
-		//
+		$uid=null;
+		if($t = Transaction::find($id)){
+			$uid = $t->credited_user_id;
+			if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id))
+			{
+				$t->delete();
+			}
+		}
+
+		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
+	}
+
+
+	public function destroyList(Request $request,$gpeid)
+	{
+		$uid = null;
+		$group = Transaction::where("group_id",$gpeid);
+		if($group->count()>0){
+			$t = Transaction::where("group_id",$gpeid)->first();
+			$uid = $t->credited_user_id;
+			if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id)){
+				$group->delete();
+			}
+		}
+		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
 	}
 }

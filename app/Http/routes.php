@@ -103,9 +103,11 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::resource('transactions', 'TransactionController',
                 ['except' => ['edit']]);
 
+
     Route::get('transactions/lists/create', ['as' => 'transactions.lists.create', 'uses' => 'TransactionController@createList']);
     Route::post('transactions/lists/store', ['as' => 'transactions.lists.store', 'uses' => 'TransactionController@storeList']);
     Route::get('transactions/lists/tables', ['as' => 'transactions.lists.tables', 'uses' => 'TransactionController@listTables']);
+    Route::delete('transactions/lists/{gpe}', ['as' => 'transactions.lists.destroy', 'uses' => 'TransactionController@destroyList']);
 
     // Map plein écran
     Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);

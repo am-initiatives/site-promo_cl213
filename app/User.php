@@ -290,6 +290,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $groups = DB::table("transactions")
             ->select('group_id')
             ->where('credited_user_id',$this->id)
+            ->whereNull('deleted_at')
             ->groupBy('group_id')
             ->orderBy('created_at','desc')->get();
 

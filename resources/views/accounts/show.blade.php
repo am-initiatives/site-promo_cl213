@@ -15,12 +15,12 @@
 
 
 <ul class="tabs" data-tab>
-    <li class="tab-title active"><a href="#debits">Débits</a></li>
-    <li class="tab-title"><a href="#credits">Crédits</a></li>
+    <li class="tab-title {{session('credit_tab') ? '': 'active' }}"><a href="#debits">Débits</a></li>
+    <li class="tab-title {{!session('credit_tab') ? '': 'active' }}"><a href="#credits">Crédits</a></li>
 </ul>
 
 <div class="tabs-content">
-    <div class="content active" id="debits">
+    <div class="content {{session('credit_tab') ? '': 'active' }}" id="debits">
         @unless(count($debits))
         <p>Aucun débit pour le moment.</p>
         @else
@@ -37,6 +37,7 @@
                     <tr>
                         <td style="text-align:center">
                         @if($transaction['state']=="pending")
+                            {{-- bouton payer --}}
                             @if($solde + $transaction["amount"]>0)
                                 {!! Form::open(array('route' => 
                                     ['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
@@ -60,7 +61,7 @@
         </table>
         @endunless
     </div>
-    <div class="content" id="credits">
+    <div class="content {{!session('credit_tab') ? '': 'active' }}" id="credits">
         @unless(count($credits))
         <p>Aucun crédit pour le moment.</p>
         @else
@@ -72,10 +73,10 @@
                     <div class="medium-1 columns">
                         {!! Html::solde($credit['amount'] / 100, '€') !!}
                     </div>
-                    <div class="medium-2 columns">
+                    <div class="medium-3 columns">
                         <b>{{$credit["wording"]}}</b>
                     </div>
-                    <div class="medium-2 columns radius progress success large-8">
+                    <div class="medium-7 columns radius progress success">
                         <span class="meter" style="width: {{$credit['acquited']/$credit['total']*100}}%">
                         </span>
                     </div>
@@ -95,16 +96,29 @@
                             <i class="fa fa-check-circle fa-2" style="color:green"></i>
                         @endif
                         </td>
-                        <td class="medium-6">
+                        <td class="medium-5">
                             {{$transaction["account"]}}
                         </td>
-                        <td class="medium-5">
+                        <td class="medium-4">
                             depuis le 
                             {{$transaction["date"]}}
+                        </td>
+                        <td class="medium-2" style="text-align:right">
+                            {{-- Bouton supprimer tout --}}
+                            {!! Form::open(array('route' => 
+                                ['transactions.destroy',$transaction['id']], 'method' => 'delete')) !!}
+                                    <input type="submit" class="button tiny alert" style="margin:0" value="Retirer">
+                            {!! Form::close() !!}
                         </td>
                     </tr>
                     @endforeach
                     </table>
+
+                    {{-- Bouton supprimer tout --}}
+                    {!! Form::open(array('route' => 
+                        ['transactions.lists.destroy',$gpe], 'method' => 'delete')) !!}
+                            <input type="submit" class="button tiny alert" style="margin:0" value="Supprimer Toute la liste">
+                    {!! Form::close() !!}
                 </div>
             </li>
         @endforeach
