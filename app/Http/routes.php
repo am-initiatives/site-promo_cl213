@@ -97,15 +97,14 @@ Route::group(['middleware' => ['auth', 'active']], function()
     // Liste promss
 
     // Buqueur
-    Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'AccountController@index']);
-    Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'AccountController@show']);
+    Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'BuqueurController@index']);
+    Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'BuqueurController@show']);
 
-    Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
-    Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
-    Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
+    Route::resource('transactions', 'TransactionController',
+                ['except' => ['edit']]);
 
-    Route::get('transactions/lists/create', ['as' => 'transactions.lists.create', 'uses' => 'TransactionController@createList']);
-    Route::get('transactions/lists/tables', ['as' => 'transactions.lists.tables', 'uses' => 'TransactionController@listTables']);
+    Route::resource('transactionlist', 'TransactionListController',
+                ['except' => ['index','show']]);
 
     // Map plein écran
     Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);

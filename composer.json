@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "laravelcollective/html": "5.1.*",
-        "oriceon/oauth-5-laravel": "dev-master"
+        "oriceon/oauth-5-laravel": "dev-master",
+		"doctrine/dbal": "~2.3",
+		"ramsey/uuid":"~3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

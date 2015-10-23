@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['user'] = Auth::user()->load('account');
+        $data['user'] = Auth::user();
         $data['positions'] = json_encode(User::getPositions());
 
         $data['posts'] = Post::where('category', 'general')->orderBy('created_at', 'desc')->get();

@@ -44,8 +44,8 @@ class Activate
         // Première connexion
         if ($this->auth->user()->isFirstConnection()) {
             return redirect()->route('configs.first');
-        } elseif ($this->auth->user()->connected_at->diffInHours() > 15.4) {
-            $this->auth->user()->connected_at = Carbon::now();
+        } elseif ($this->auth->user()->updated_at->diffInHours() > 15.4) {
+            $this->auth->user()->updated_at = Carbon::now();
 
             $this->auth->user()->save();
         }

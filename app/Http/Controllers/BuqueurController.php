@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Account as Account;
+use App\User as User;
 
-class AccountController extends Controller
+class BuqueurController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $data['accounts'] = Account::all();
+        $data['accounts'] = User::all();
 
         return view('accounts.index', $data);
     }
@@ -44,24 +44,15 @@ class AccountController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+   
     public function show($id)
+    //liste des buquages à venir
     {
-        if ($account = Account::find($id)) {
-            $data['transactions'] = $account->recap();
-            $data['solde'] = $account->getBalance();
-        }
-        else {
-            $data['transactions'] = [];
-        }
-
-
-        return view('accounts.show', $data);
+    	$account = User::find($id);
+    	$data =  $account->recap();
+        $data['solde'] = $account->getBalance();
+        $data['user'] = $id;
+        return view('accounts.show',$data);
     }
 
     /**

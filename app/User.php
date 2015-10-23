@@ -14,11 +14,12 @@ use App\Scopes\HiddenTrait;
 use Auth;
 use Hash;
 use Carbon\Carbon;
+use DB;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword, SoftDeletes;
-    use HiddenTrait;
+    // use HiddenTrait;
 
     /**
      * The database table used by the model.
@@ -41,38 +42,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token', 'google_id'];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at', 'connected_at'];
-
 
 
 
     /**
      * Get a new query builder for the model's table.
+     * Override de la méthode de base pour cacher les credentials
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function newQuery()
-    {
-        // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
-        $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
+    // public function newQuery()
+    // {
+    //     // Get previous calling functions to check that the function is not called recursively (ignoring the first which is the current one)
+    //     $functions = array_column(array_slice(debug_backtrace(), 1), 'function');
 
-        // dd($functions);
+    //     // dd($functions);
 
-        // Autorise l'authentification à avoir accès aux utilisateurs cachés.
-        if (in_array('retrieveByCredentials', $functions) or in_array('retrieveById', $functions) or in_array('getLoginWithGoogle', $functions)) {
-            return parent::newQuery()->withHidden();
-        // La partie au dessus est nécessaire pour que la partie ci-dessous fonctionne ! sinon ajouter "! in_array('newQuery', $functions) and"
-        } elseif (Auth::check() and Auth::user()->isAllowed('hidden_users'))
-            return parent::newQuery()->withHidden();
-        else {
-            return parent::newQuery();
-        }
-    }
+    //     // Autorise l'authentification à avoir accès aux utilisateurs cachés.
+    //     if (in_array('retrieveByCredentials', $functions) or in_array('retrieveById', $functions) or in_array('getLoginWithGoogle', $functions)) {
+    //         return parent::newQuery()->withHidden();
+    //     // La partie au dessus est nécessaire pour que la partie ci-dessous fonctionne ! sinon ajouter "! in_array('newQuery', $functions) and"
+    //     } elseif (Auth::check() and Auth::user()->isAllowed('hidden_users'))
+    //         return parent::newQuery()->withHidden();
+    //     else {
+    //         return parent::newQuery();
+    //     }
+    // }
 
 
     public static function getPositions()
@@ -100,7 +95,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $password_confirmation = $request->input('password_confirmation');
 
         if ($password == $password_confirmation) {
-            $this->connected_at = Carbon::now();
+            $this->updated_at = Carbon::now();
             $this->password = Hash::make($password);
             $this->save();
 
@@ -113,7 +108,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public function isFirstConnection() {
-        return is_null($this->connected_at);
+        return is_null($this->updated_at);
     }
 
 
@@ -141,10 +136,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function availableAccounts()
     {
         if ($this->isAllowed('all_accounts'))
-            return Account::all();
+            return User::all();
         else
         {
-            $available = Account::where('restricted', 0)->get();
+            $available = User::where('permissions','not like', "%restricted%")->get();
 
             if ($user_account = $this->account)
                 $available = $available->push($user_account);
@@ -154,13 +149,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function isAllowed($required, $user_id = null)
+    //est authorisé à faire "required" à "user_id" ?
     {
+        //on peut se faire ce qu'on veut
         if ($user_id == $this->id) {
             return true;
+        //tant que ce n'est pas rien (debug)
         } elseif (is_null($required)) {
             return false;
         }
 
+
+        //check des permissions
         $permissions = $this->permissions();
 
         return in_array($required, $permissions) or in_array('admin', $permissions);
@@ -228,18 +228,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $query->where('hidden', 0);
     }
 
-
-
-
-
-    /**
-     * Get account of the user.
-     */
-    public function account()
-    {
-        return $this->hasOne('App\Account', 'user_id');
-    }
-
     /**
      * Get the user to whom belongs the account.
      */
@@ -247,4 +235,145 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\Post', 'user_id');
     }
+
+
+
+
+    /*================================================
+    =            Gestion des transactions            =
+    ================================================*/
+
+
+
+
+
+    public function isRestricted()
+    //restricted : on peut pas lui prendre des sous
+    {
+        return in_array($required, $permissions) or in_array('restricted', $permissions);
+    }
+
+
+    public function getBalance()
+    {
+        return $this->credits->sum('amount') - $this->debits->sum('amount');
+    }
+
+
+    public function transactionsDetail()
+    //historique des transactions effectuées
+    {
+        $transactions = $this->getTransactions();
+        $transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
+
+        $table = [];
+
+        foreach ($transactions as $t) {
+            $table[] = $t->format($this);
+        }
+
+        return $table;
+    }
+
+    public function recap()
+    //recap des crédits à venir et effectués sous forme de groupes
+    {
+
+        /**
+         *
+         * credits
+         *
+         */
+        
+
+        //récupère les groupes de buquages
+        $groups = DB::table("transactions")
+            ->select('group_id')
+            ->where('credited_user_id',$this->id)
+            ->whereNull('deleted_at')
+            ->groupBy('group_id')
+            ->orderBy('created_at','desc')->get();
+
+        //remplit les groupes
+        foreach($groups as $record)
+        {
+            $group =[];
+            $nb = 0;
+            $acquited = 0;
+            $gpeTransactions = Transaction::where("group_id",$record->group_id)
+                ->orderBy("state")
+                ->get();
+            foreach ($gpeTransactions as $t) {
+                $group["rows"][] = $t->format($this);
+                if($t->state=="acquited")
+                    $acquited++;
+                $nb++;
+            }
+            $group["wording"] = $group["rows"][0]["wording"];
+            $group["amount"] = $group["rows"][0]["amount"];
+            $group["total"] = $nb;
+            $group["acquited"] = $acquited;
+
+            $data["credits"][$record->group_id] = $group;
+        }
+
+        /**
+         *
+         * debits
+         *
+         */
+        
+        foreach (Transaction::where("debited_user_id",$this->id)->get() as $t) {
+             $data["debits"][] = $t->format($this);
+        }
+       
+        return $data;
+    }
+
+
+    public function toCredits()
+    //crédits à venir
+    {
+        return $this->hasMany('App\Transaction', 'credited_user_id')->pending();
+    }
+
+    public function toDebits()
+    //débits à venir
+    {
+        return $this->hasMany('App\Transaction', 'debited_user_id')->pending();
+    }
+
+    /**
+     * Return current account transactions.
+     *
+     * @return bool|int
+     */
+    public function getTransactions()
+    {
+        $credits = $this->credits;
+        $debits = $this->debits;
+        $transactions = $debits->merge($credits);
+
+        return $transactions;
+    }
+
+    /**
+     * Get credits for the account.
+     */
+    public function credits()
+    {
+        return $this->hasMany('App\Transaction', 'credited_user_id')->acquited();
+    }
+
+    /**
+     * Get debits for the account.
+     */
+    public function debits()
+    {
+        return $this->hasMany('App\Transaction', 'debited_user_id')->acquited();
+    }
+
+    /*=====  End of Gestion des transactions  ======*/
+    
+    
 }
