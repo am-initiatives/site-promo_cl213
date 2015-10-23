@@ -42,7 +42,7 @@
     
         <!-- Forfait -->
         <div class="content" id="panel2">
-            {!! Form::open(array('route' => ['transactions.lists.store'])) !!}
+            {!! Form::open(array('route' => ['transactionlist.store'])) !!}
                 <div class="row">
                     <div class="medium-6 columns">
                         <ul class="no-bullet">

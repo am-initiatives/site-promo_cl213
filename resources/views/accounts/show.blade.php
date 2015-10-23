@@ -1,3 +1,4 @@
+{{-- Page de visualisation de l'état du compte --}}
 @extends('layouts.master')
 
 @section('content')
@@ -104,7 +105,7 @@
                             {{$transaction["date"]}}
                         </td>
                         <td class="medium-2" style="text-align:right">
-                            {{-- Bouton supprimer tout --}}
+                            {{-- Bouton Retirer une personne --}}
                             {!! Form::open(array('route' => 
                                 ['transactions.destroy',$transaction['id']], 'method' => 'delete')) !!}
                                     <input type="submit" class="button tiny alert" style="margin:0" value="Retirer">
@@ -113,12 +114,22 @@
                     </tr>
                     @endforeach
                     </table>
-
-                    {{-- Bouton supprimer tout --}}
-                    {!! Form::open(array('route' => 
-                        ['transactions.lists.destroy',$gpe], 'method' => 'delete')) !!}
-                            <input type="submit" class="button tiny alert" style="margin:0" value="Supprimer Toute la liste">
-                    {!! Form::close() !!}
+                    <ul class="button-group">
+                        {{-- Bouton ajouter quelqu'un --}}
+                        <li>
+                        {!! Form::open(array('route' => 
+                            ['transactionlist.edit',$gpe], 'method' => 'get')) !!}
+                            <input type="submit" class="button tiny" value="Ajouter quelqu'un">
+                        {!! Form::close() !!}
+                        </li>
+                        {{-- Bouton supprimer tout --}}
+                        <li>
+                        {!! Form::open(array('route' => 
+                            ['transactionlist.destroy',$gpe], 'method' => 'delete')) !!}
+                                <input type="submit" class="button tiny alert" value="Supprimer Toute la liste">
+                        {!! Form::close() !!}
+                        </li>
+                    </ul>
                 </div>
             </li>
         @endforeach

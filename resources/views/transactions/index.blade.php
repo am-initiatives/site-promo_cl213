@@ -1,3 +1,4 @@
+{{-- page des dernières opérations --}}
 @extends('layouts.master')
 
 @section('content')

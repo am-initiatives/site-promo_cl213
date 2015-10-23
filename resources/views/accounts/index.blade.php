@@ -1,3 +1,4 @@
+{{-- liste des comptes --}}
 @extends('layouts.master')
 
 @section('content')
@@ -19,8 +20,12 @@
                 <tr>
                     <td>{{ $account->id }}</td>
                     <td><strong>{{ $account->getTitle() }}</strong></td>
-                    <td style="text-align: right;">{!! Html::solde($account->getBalance() / 100, '€') !!}</td>
-                    <td style="text-align: right; width: 50px;"><a href="{{ route('accounts.show', $account->id) }}"><i class="fa fa-list"></i></a></td>
+                    <td style="text-align: right;">
+                        {!! Html::solde($account->getBalance() / 100, '€') !!}
+                    </td>
+                    <td style="text-align: right; width: 50px;">
+                        <a href="{{ route('accounts.show', $account->id) }}"><i class="fa fa-list"></i></a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

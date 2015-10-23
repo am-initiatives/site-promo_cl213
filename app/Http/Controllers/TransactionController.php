@@ -70,71 +70,6 @@ class TransactionController extends Controller
 		return view('transactions.create', $data);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function createList()
-	{
-		$debitables = Auth::user()->availableAccounts();
-		$creditables = User::all();
-
-		$data['creditables'] = [];
-		$data['debitables'] = [];
-
-		foreach ($creditables as $c) {
-			$data['creditables'][$c->id] = $c->getTitle();
-		}
-		foreach ($debitables as $c) {
-			$data['debitables'][$c->id] = $c->getTitle();
-		}
-
-		return view('transactions.lists.create', $data);
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function listTables(Request $request)
-	{
-		$tables = $request->all();
-
-		$data['debited'] = [];
-		$data['credited'] = [];
-
-		if (isset($tables['debited'])) {
-			$ids = array_keys($tables['debited']);
-			$debited = User::find($ids);
-
-			foreach ($tables['debited'] as $id => $amount) {
-				$d = $debited->only($id)->first();
-				$data['debited'][] = array(
-					'id' => $id,
-					'title' => $d->getTitle(),
-					'amount' => $amount,
-				);
-			}
-		}
-
-		if (isset($tables['credited'])) {
-			$ids = array_keys($tables['credited']);
-			$credited = User::find($ids);
-
-			foreach ($tables['credited'] as $id => $amount) {
-				$d = $credited->only($id)->first();
-				$data['credited'][] = array(
-					'id' => $id,
-					'title' => $d->getTitle(),
-					'amount' => $amount,
-				);
-			}
-		}
-
-		return view('transactions.lists.tables', $data);
-	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -168,42 +103,6 @@ class TransactionController extends Controller
 		Transaction::create($data);
 
 		return redirect()->route('transactions.index');
-	}
-
-	public function storeList(Request $request)
-	{
-		
-		$validator = Validator::make($request->all(), [
-			'debited' => 'required|array',
-			'wording' => 'required|between:5,255',
-			'amount' => 'required|numeric',
-		]);
-
-		if ($validator->fails()) {
-			return redirect()->route('transactions.create')
-						->withErrors($validator)
-						->withInput();
-		}
-
-		$uuid = Uuid::uuid4()->toString() ; //identifiant de la facture
-
-		DB::transaction(function() use ($request,$uuid)
-		{
-			foreach ($request->get("debited") as $debited) {
-				$data = array(
-					'wording'			=> $request->get('wording'),
-					'amount'			=> (integer) 100*$request->get('amount'),
-					'credited_user_id'	=> Auth::user()->id,
-					'debited_user_id'	=> $debited,
-					'group_id'			=> $uuid,
-					'state'				=> "pending"
-					);
-
-				Transaction::create($data);
-			}
-		});
-
-		return redirect()->route('transactions.show',[Auth::user()]);
 	}
 
 	/**
@@ -260,21 +159,6 @@ class TransactionController extends Controller
 			}
 		}
 
-		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
-	}
-
-
-	public function destroyList(Request $request,$gpeid)
-	{
-		$uid = null;
-		$group = Transaction::where("group_id",$gpeid);
-		if($group->count()>0){
-			$t = Transaction::where("group_id",$gpeid)->first();
-			$uid = $t->credited_user_id;
-			if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id)){
-				$group->delete();
-			}
-		}
 		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
 	}
 }
