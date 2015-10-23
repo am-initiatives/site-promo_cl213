@@ -50,7 +50,19 @@ class Transaction extends Model
         return $this->active;
     }
 
-
+    public function format($user)
+    {
+        $isCredit = ($user->id == $this->credited_user_id);
+        $date = $this->state=="acquited" ? $this->updated_at : $this->created_at;
+        return array(
+            'type'      => $isCredit ? 'credit' : 'debit',
+            'date'      => utf8_encode($date->formatLocalized('%d %B %Y &agrave; %H:%m')),
+            'wording'   => $this->wording,
+            'amount'    => ($isCredit ? '' : '-').$this->amount,
+            'account'   => $isCredit ? $this->debited->nickname : $this->credited->nickname,
+            'state'     => $this->state,
+            );
+    }
 
 
     /**

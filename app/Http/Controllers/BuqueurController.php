@@ -44,24 +44,14 @@ class BuqueurController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+   
     public function show($id)
+    //liste des buquages à venir
     {
-        if ($account = User::find($id)) {
-            $data['transactions'] = $account->recap();
-            $data['solde'] = $account->getBalance();
-        }
-        else {
-            $data['transactions'] = [];
-        }
-
-
-        return view('accounts.show', $data);
+    	$account = User::find($id);
+    	$data =  $account->recap();
+        $data['solde'] = $account->getBalance();
+        return view('accounts.show',$data);
     }
 
     /**

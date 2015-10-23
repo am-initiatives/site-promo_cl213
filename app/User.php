@@ -14,6 +14,7 @@ use App\Scopes\HiddenTrait;
 use Auth;
 use Hash;
 use Carbon\Carbon;
+use DB;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -254,12 +255,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
-    /**
-     * Return current account history.
-     *
-     * @return bool|int
-     */
-    public function recap()
+    public function transactionsDetail()
+    //historique des transactions effectuées
     {
         $transactions = $this->getTransactions();
         $transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
@@ -267,17 +264,77 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $table = [];
 
         foreach ($transactions as $t) {
-            $isCredit = ($this->id == $t->credited_user_id);
-            $table[] = array(
-                'type' => $isCredit ? 'credit' : 'debit',
-                'date' => utf8_encode($t->created_at->formatLocalized('%d %B %Y &agrave; %H:%m')),
-                'wording' => $t->wording,
-                'amount' => ($isCredit ? '' : '-').$t->amount,
-                'account' => $isCredit ? $t->debited->nickname : $t->credited->nickname,
-                );
+            $table[] = $t->format($this);
         }
 
         return $table;
+    }
+
+    public function recap()
+    //recap des crédits à venir et effectués sous forme de groupes
+    {
+
+        /**
+         *
+         * credits
+         *
+         */
+        
+
+        //récupère les groupes de buquages
+        $groups = DB::table("transactions")
+            ->select('group_id')
+            ->where('credited_user_id',$this->id)
+            ->groupBy('group_id')
+            ->orderBy('created_at','desc')->get();
+
+        //remplit les groupes
+        foreach($groups as $record)
+        {
+            $group =[];
+            $nb = 0;
+            $acquited = 0;
+            $gpeTransactions = Transaction::where("group_id",$record->group_id)
+                ->orderBy("state")
+                ->get();
+            foreach ($gpeTransactions as $t) {
+                $group["rows"][] = $t->format($this);
+                if($t->state=="acquited")
+                    $acquited++;
+                $nb++;
+            }
+            $group["wording"] = $group["rows"][0]["wording"];
+            $group["amount"] = $group["rows"][0]["amount"];
+            $group["total"] = $nb;
+            $group["acquited"] = $acquited;
+
+            $data["credits"][$record->group_id] = $group;
+        }
+
+        /**
+         *
+         * debits
+         *
+         */
+        
+        foreach (Transaction::where("debited_user_id",$this->id)->get() as $t) {
+             $data["debits"][] = $t->format($this);
+        }
+       
+        return $data;
+    }
+
+
+    public function toCredits()
+    //crédits à venir
+    {
+        return $this->hasMany('App\Transaction', 'credited_user_id')->pending();
+    }
+
+    public function toDebits()
+    //débits à venir
+    {
+        return $this->hasMany('App\Transaction', 'debited_user_id')->pending();
     }
 
     /**

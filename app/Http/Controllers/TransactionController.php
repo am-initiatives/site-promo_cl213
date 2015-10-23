@@ -212,6 +212,7 @@ class TransactionController extends Controller
 	 */
 	public function show($id)
 	{
+		$account = User::find($id);
         $data['transactions'] = $account->transactionsDetail();
         $data['solde'] = $account->getBalance();
 
