@@ -55,6 +55,7 @@ class Transaction extends Model
         $isCredit = ($user->id == $this->credited_user_id);
         $date = $this->state=="acquited" ? $this->updated_at : $this->created_at;
         return array(
+            'id'        => $this->id,
             'type'      => $isCredit ? 'credit' : 'debit',
             'date'      => utf8_encode($date->formatLocalized('%d %B %Y &agrave; %H:%m')),
             'wording'   => $this->wording,

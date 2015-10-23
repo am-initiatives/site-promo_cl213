@@ -238,8 +238,18 @@ class TransactionController extends Controller
 	 * @return Response
 	 */
 	public function update(Request $request, $id)
+	//utilisé pour la validation d'un buquage
 	{
-		//
+
+		if($t = Transaction::find($id)){
+			if(Auth::user()->isAllowed("acquit_buquage",$t->debited_user_id))
+			{
+				$t->state = "acquited";
+				$t->update();
+			}
+		}
+
+		return redirect()->route('accounts.show',[$request->get("user")]);
 	}
 
 	/**

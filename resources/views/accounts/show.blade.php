@@ -37,7 +37,15 @@
                     <tr>
                         <td style="text-align:center">
                         @if($transaction['state']=="pending")
+                            @if($solde + $transaction["amount"]>0)
+                                {!! Form::open(array('route' => 
+                                    ['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
+                                    {!! Form::hidden("user",$user) !!}
+                                    <input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
+                                {!! Form::close() !!}
+                            @else
                             <i class="fa fa-times-circle fa-2" style="color:red"></i>
+                            @endif
                         @else
                             <i class="fa fa-check-circle fa-2" style="color:green"></i>
                         @endif

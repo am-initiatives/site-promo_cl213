@@ -100,10 +100,8 @@ Route::group(['middleware' => ['auth', 'active']], function()
     Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'BuqueurController@index']);
     Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'BuqueurController@show']);
 
-    Route::get('transactions', ['as' => 'transactions.index', 'uses' => 'TransactionController@index']);
-    Route::get('transactions/create', ['as' => 'transactions.create', 'uses' => 'TransactionController@create']);
-    Route::get('transactions/{id}', ['as' => 'transactions.show', 'uses' => 'TransactionController@show']);
-    Route::post('transactions', ['as' => 'transactions.store', 'uses' => 'TransactionController@store']);
+    Route::resource('transactions', 'TransactionController',
+                ['except' => ['edit']]);
 
     Route::get('transactions/lists/create', ['as' => 'transactions.lists.create', 'uses' => 'TransactionController@createList']);
     Route::post('transactions/lists/store', ['as' => 'transactions.lists.store', 'uses' => 'TransactionController@storeList']);

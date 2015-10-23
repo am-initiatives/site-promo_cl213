@@ -51,6 +51,7 @@ class BuqueurController extends Controller
     	$account = User::find($id);
     	$data =  $account->recap();
         $data['solde'] = $account->getBalance();
+        $data['user'] = $id;
         return view('accounts.show',$data);
     }
 
