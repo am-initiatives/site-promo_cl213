@@ -42,6 +42,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token', 'google_id'];
 
+    // Permet d'utiliser carbon sur les dates suivantes
+    protected $dates = ['connected_at'];
+
 
 
 
@@ -95,7 +98,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $password_confirmation = $request->input('password_confirmation');
 
         if ($password == $password_confirmation) {
-            $this->updated_at = Carbon::now();
+            $this->connected_at = Carbon::now();
             $this->password = Hash::make($password);
             $this->save();
 
@@ -108,7 +111,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public function isFirstConnection() {
-        return is_null($this->updated_at);
+        return is_null($this->connected_at);
     }
 
 
@@ -129,7 +132,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function isActive()
     {
-        return $this->active;
+        return $this->active == 1 ? true : false;
     }
 
 

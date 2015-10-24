@@ -28,6 +28,15 @@
                     <a id="login-hide" class="show-for-medium-up" style="display: block; text-align: right; margin-top: -18px; margin-right: -10px;">&times;</a>
                     @yield('content')
                 </div>
+                @if (count($errors) > 0)
+                    <div class="panel">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
         

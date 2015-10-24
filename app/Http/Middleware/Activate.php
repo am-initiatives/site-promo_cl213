@@ -30,13 +30,13 @@ class Activate
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+         * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        //return dd($this->auth->user()->isActive());
+        // return dd($this->auth->user()->isActive());
         if (!$this->auth->user()->isActive()) {
             return response('Ton compte est désactivé. Un message à été envoyé aux DDP\'s et tu seras contacté par mail lorsque ton compte aura été ré-activé.');
         }
@@ -44,8 +44,8 @@ class Activate
         // Première connexion
         if ($this->auth->user()->isFirstConnection()) {
             return redirect()->route('configs.first');
-        } elseif ($this->auth->user()->updated_at->diffInHours() > 15.4) {
-            $this->auth->user()->updated_at = Carbon::now();
+        } elseif ($this->auth->user()->connected_at->diffInHours() > 15.4) {
+            $this->auth->user()->connected_at = Carbon::now();
 
             $this->auth->user()->save();
         }

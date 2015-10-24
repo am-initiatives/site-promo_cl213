@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
 
         $users[] = App\User::create([
             'username' => 'admin',
-            'password' => 'password',
+            'password' => Hash::make('password'),
             'email' => 'webmaster@cl213.fr',
             'google_id' => null,
             'first_name' => 'Admin',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
 
         $users[] = App\User::create([
             'username' => 'tarmak',
-            'password' => 'password',
+            'password' => Hash::make('password'),
             'email' => 'corentin.gitton@gadz.org',
             'google_id' => '103503349814606129144',
             'first_name' => 'Corentin',
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
 
         $users[] = App\User::create([
             'username' => 'notsip',
-            'password' => 'HMlar\'sssT154',
+            'password' => Hash::make('HMlar\'sssT154'),
             'email' => 'robin.chauvet@gadz.org',
             'google_id' => null,
             'first_name' => 'Robin',
@@ -90,7 +90,7 @@ class UserSeeder extends Seeder
             ]);
 
         // Ajoute des user créés aléatoirement
-        $users = array_merge($users, factory(App\User::class, 20)->make() );
+        // $users = array_merge($users, factory(App\User::class, 20)->make() );
 
         Model::reguard();
 
