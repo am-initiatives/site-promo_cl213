@@ -18,6 +18,10 @@ abstract class BaseBinder implements Binder
 	{
 		$action = substr($route->getCompiled()->getTokens()[0][1],1);
 
+		//chemin pour show : machin/{item} => $action est vide
+		if(!$action)
+			$action = 'show';
+
 		$element = $this->resolve($value,$action);
 
 		$params = $this->getParamsForAction($action,$element);

@@ -23,6 +23,10 @@ class TransactionListBinder extends BaseBinder
 
 	public function getParamsForAction($action,$group)
 	{
+		//tout le monde peut tout voir
+		if($action=='show')
+			return null;
+
 		$t = clone $group;
 		return [
 			"name"		=> "buquage_list",

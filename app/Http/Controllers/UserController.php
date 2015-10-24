@@ -11,11 +11,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+
 	public function index()
 	{
 		$data['users'] = User::all();
@@ -23,71 +19,39 @@ class UserController extends Controller
 		return view('users.index', $data);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
+	public function show($user)
 	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  Request  $request
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$data['user'] = User::find($id);
+		$data['user'] = $user;
 
 		return view('users.show', $data);
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
+	/*============================================
+	=            Vues des comptes PGs            =
+	============================================*/
+
+	public function accounts()
 	{
-		//
+		$data['accounts'] = User::all();
+
+		return view('accounts.index', $data);
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Request  $request
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update(Request $request, $id)
+	public function account($account)
+	//liste des buquages présents et à venir
 	{
-		//
+		$data =  $account->recap();
+		$data['solde'] = $account->getBalance();
+		$data['user'] = $account->id;
+		return view('accounts.show',$data);
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
+	public function accountDetails($account)
+	//liste des transactions effectuées
 	{
-		//
+		$data['transactions'] = $account->transactionsDetail();
+		$data['solde'] = $account->getBalance();
+
+		return view('accounts.details', $data);
 	}
 }

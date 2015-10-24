@@ -17,6 +17,9 @@ class TransactionBinder extends BaseBinder
 
 	public function getParamsForAction($action,$t)
 	{
+		//tout le monde peut tout voir
+		if($action=='show')
+			return null;
 		return [
 			"name"		=> "buquage",
 			"owner_id"	=> $t->credited_user_id

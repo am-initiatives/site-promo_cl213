@@ -24,7 +24,12 @@ class RouteServiceProvider extends ServiceProvider
 	 */
 	public function boot(Router $router)
 	{
-		//
+		//on force le format des paramères pour éviter qu'une route du type xd/{user} 
+		//supplante une autre route de la forme xd/ptdr
+
+		$router->pattern('user', '[0-9]+');
+		$router->pattern('transactions', '[0-9]+');
+		$router->pattern('transactionlist', '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}');
 
 		parent::boot($router);
 	}

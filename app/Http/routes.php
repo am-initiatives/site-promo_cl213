@@ -77,11 +77,10 @@ Route::group(['middleware' => ['auth', 'active']], function()
 {
 	Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-
 	// User
 	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
-	Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
-	Route::get('users/{id}/parameters', ['as'=>'users.parameters', function () {
+	Route::get('users/{user}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+	Route::get('users/{user}/parameters', ['as'=>'users.parameters', function () {
 		return view('users.parameters');
 	}]);
 
@@ -91,22 +90,19 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::post('posts', ['as' => 'posts.store', 'uses' => 'PostController@store']);
 	Route::delete('posts/{id}', ['as' => 'posts.destroy', 'uses' => 'PostController@destroy']);
 
-
 	// Liste promss
 
 	// Buqueur
-	Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'BuqueurController@index']);
-	Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'BuqueurController@show']);
-	Route::get('accounts/details/{id}', ['as' => 'accounts.details', 'uses' => 'BuqueurController@details']);
+	Route::get('users/accounts', ['as' => 'accounts.index', 'uses' => 'UserController@accounts']);
+	Route::get('users/{user}/accounts', ['as' => 'accounts.show', 'uses' => 'UserController@account']);
+	Route::get('users/{user}/accounts/details', ['as' => 'accounts.details', 'uses' => 'UserController@accountDetails']);
 
 	Route::resource('transactions', 'TransactionController',
 				['except' => ['edit','show']]);
-	Route::bind('transactions',Binders::get("transaction"));
 
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);
-	Route::bind('transactionlist',Binders::get("transactionList"));
 
 	// Map plein écran
 	Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);
@@ -122,6 +118,16 @@ Route::group(['middleware' => ['auth', 'active']], function()
 		}
 	}]);
 });
+
+/*================================
+=            Bindings            =
+================================*/
+
+Route::bind('user',Binders::get("user"));
+Route::bind('transactions',Binders::get("transaction"));
+Route::bind('transactionlist',Binders::get("transactionList"));
+
+/*=====  End of Bindings  ======*/
 
 
 

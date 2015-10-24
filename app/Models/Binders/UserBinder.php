@@ -6,11 +6,28 @@ use App\Services\Binder;
 
 use App\Models\User;
 
-class UserBinder implements Binder
+
+class UserBinder extends BaseBinder
 {
 	
-	public function resolve($value,$route)
+	public function resolve($uid,$action)
 	{
-		return new User();
+		return User::findOrFail($uid);
+	}
+
+	public function getParamsForAction($action,$user)
+	{
+		//tout le monde peut tout voir
+		switch ($action) {
+			case 'edit':
+				return [
+					"name"		=> "buquage",
+					"owner_id"	=> $user->id
+					];
+				break;
+			default:
+				return null;
+				break;
+		}
 	}
 }
