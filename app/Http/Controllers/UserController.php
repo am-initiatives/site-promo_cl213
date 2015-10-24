@@ -42,7 +42,7 @@ class UserController extends Controller
 	{
 		$data =  $account->recap();
 		$data['solde'] = $account->getBalance();
-		$data['user'] = $account->id;
+		$data['user'] = $account;
 		return view('users.accounts.show',$data);
 	}
 

@@ -136,4 +136,36 @@ class TransactionController extends Controller
 
 		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
+
+	public function createAppro($user)
+	//paramètre $user présent pour pouvoir buquer quelqu'un d'autre que soi
+	{
+		return view("transactions.appro")->with("user",$user);
+	}
+
+	public function storeAppro(Request $request,$user)
+	{
+		$validator = Validator::make($request->all(), [
+			'amount' => 'required|min:1',
+		]);
+
+		if ($validator->fails()) {
+			return redirect()->route('transactions.appro.create')
+						->withErrors($validator)
+						->withInput();
+		}
+
+		$data = array(
+			'wording'		   => "Appro",
+			'amount'			=> (integer) 100*$request->get('amount'),
+			'credited_user_id'  => $user->id,
+			'debited_user_id'   => User::getBankAccount()->id,
+			'group_id'		  => Uuid::uuid4(),
+			'state'				=> "acquited"
+			);
+
+		Transaction::create($data);
+
+		return redirect()->route('users.account.show',[$user->id])->with("credit_tab",true);
+	}
 }

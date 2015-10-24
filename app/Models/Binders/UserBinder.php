@@ -25,6 +25,13 @@ class UserBinder extends BaseBinder
 					"owner_id"	=> $user->id
 					];
 				break;
+			case 'createAppro':
+			case 'storeAppro':
+				return [
+					"name"		=> "appro",
+					"owner_id"	=> User::getBankAccount()->id
+					];
+				break;
 			default:
 				return null;
 				break;

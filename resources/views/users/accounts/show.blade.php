@@ -6,11 +6,18 @@
 <div class="panel">
 
 <div class="row">
-	<div class="large-10 columns">
+	<div class="large-5 columns">
 		Solde du compte <strong>{!! Html::solde($solde / 100, '€') !!}</strong>
 	</div>
-	<div class="large-2 columns" style="text-align:right">
-		<a href="{{ route('users.account.details', Auth::user()->id) }}" class="button tiny">Détails</a>
+	<div class="large-5 columns" style="text-align:right">
+		<ul class="button-group">
+			<li>
+				<a href="{{ route('transactions.appro.create', $user->id) }}" class="button small success">Approvisionner</a>
+			</li>
+			<li>
+				<a href="{{ route('users.account.details', $user->id) }}" class="button small">Détails</a>
+			</li>
+		</ul>
 	</div>
 </div>
 
@@ -42,7 +49,7 @@
 							@if($solde + $transaction["amount"]>0)
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
-									{!! Form::hidden("user",$user) !!}
+									{!! Form::hidden("user",$user->id) !!}
 									<input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
 								{!! Form::close() !!}
 							@else

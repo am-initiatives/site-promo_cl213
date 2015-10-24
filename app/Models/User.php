@@ -21,6 +21,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use Authenticatable, CanResetPassword, SoftDeletes;
 	// use HiddenTrait;
 
+	const Bank = "Banque";
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -72,6 +74,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	//	 }
 	// }
 
+
+	public static function getBankAccount()
+	{
+		$bank = self::where("nickname",self::Bank)->first();
+
+		if(!$bank){
+			throw new \Exception("Error no bank account found with name : ".self::Bank, 1);
+		}
+
+		return $bank;
+	}
 
 	public static function getPositions()
 	{

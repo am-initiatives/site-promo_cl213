@@ -67,6 +67,7 @@ class UserSeeder extends Seeder
 			'first_name' => 'Adrien',
 			'last_name' => 'Debord',
 			'nickname' => 'Gecko 109',
+			'connected_at' => '2014-01-01 21:52:35',
 			'pos'=> null,
 			'info' => '[]',
 			'active' => 1,
@@ -86,6 +87,22 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 0,
+			'permissions' => '[]',
+			]);
+
+		$users[] = App\Models\User::create([
+			'username' => 'Banque',
+			'password' => Hash::make('lol bank'),
+			'email' => 'jb.poquelin@banque.bk',
+			'google_id' => null,
+			'first_name' => 'Jean-Baptiste',
+			'last_name' => 'Poquelin',
+			'nickname' => 'Banque',
+			'connected_at' => '2014-01-01 21:52:35',
+			'pos'=> null,
+			'info' => '[]',
+			'active' => 1,
+			'hidden' => 1,
 			'permissions' => '[]',
 			]);
 
