@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'google_id' => null,
             'first_name' => 'Admin',
             'last_name' => 'Istrateur',
-            'nickname' => '',
+            'nickname' => 'Admin',
             'pos'=> '[46.0898885, 6.5359716]',
             'info' => '[]',
             'active' => 1,
