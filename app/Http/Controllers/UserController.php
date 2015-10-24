@@ -34,7 +34,7 @@ class UserController extends Controller
 	{
 		$data['accounts'] = User::all();
 
-		return view('accounts.index', $data);
+		return view('users.accounts.index', $data);
 	}
 
 	public function account($account)
@@ -43,7 +43,7 @@ class UserController extends Controller
 		$data =  $account->recap();
 		$data['solde'] = $account->getBalance();
 		$data['user'] = $account->id;
-		return view('accounts.show',$data);
+		return view('users.accounts.show',$data);
 	}
 
 	public function accountDetails($account)
@@ -52,6 +52,6 @@ class UserController extends Controller
 		$data['transactions'] = $account->transactionsDetail();
 		$data['solde'] = $account->getBalance();
 
-		return view('accounts.details', $data);
+		return view('users.accounts.details', $data);
 	}
 }

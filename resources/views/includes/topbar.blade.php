@@ -32,7 +32,7 @@
 				<li class="has-dropdown">
 					<a href="#"><i class="fa fa-btc"></i> Buqueur</a>
 					<ul class="dropdown">
-						<li><a href="{{ route('accounts.index') }}">Liste des comptes</a></li>
+						<li><a href="{{ route('users.accounts') }}">Liste des comptes</a></li>
 						<li><a href="{{ route('transactions.index') }}">Derniers buquage</a></li>
 						<li><a href="{{ route('transactions.create') }}">Faire un buquage</a></li>
 					</ul>
@@ -42,7 +42,7 @@
 					<a href="#">{{ $user->getTitle() }} <img style="height: 30px" src="{{ $user->getPictureLink() }}"></a>
 					<ul class="dropdown">
 						<li><a href="{{ route('users.show', $user->id) }}"><i class="fa fa-user"></i> Profil</a></li>
-						<li><a href="{{ route('accounts.show', $user->id) }}"><i class="fa fa-btc"></i> Mon compte</a></li>
+						<li><a href="{{ route('users.account.show', $user->id) }}"><i class="fa fa-btc"></i> Mon compte</a></li>
 						<li><a href="{{ route('auth.logout') }}"><i class="fa fa-sign-out"></i> Déconnexion</a></li>
 					</ul>
 				</li>

@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="columns medium-4">
 			<div>
-				<a href="{{ route('accounts.show', $user->id) }}">
+				<a href="{{ route('users.account.show', $user->id) }}">
 					<div class="panel" style="text-align: center;">
 						Solde : {!! Html::solde($user->getBalance() / 100, '€') !!}
 					</div>

@@ -104,7 +104,7 @@ class TransactionController extends Controller
 
 		Transaction::create($data);
 
-		return redirect()->route('accounts.show',Auth::user()->id)->with("credit_tab",true);
+		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
 	/**
@@ -120,7 +120,7 @@ class TransactionController extends Controller
 		$t->state = "acquited";
 		$t->update();
 
-		return redirect()->route('accounts.show',[$request->get("user")]);
+		return redirect()->route('users.account.show',[$request->get("user")]);
 	}
 
 	/**
@@ -134,6 +134,6 @@ class TransactionController extends Controller
 		$uid = $t->credited_user_id;
 		$t->delete();
 
-		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
+		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
 }

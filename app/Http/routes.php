@@ -93,13 +93,15 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	// Liste promss
 
 	// Buqueur
-	Route::get('users/accounts', ['as' => 'accounts.index', 'uses' => 'UserController@accounts']);
-	Route::get('users/{user}/accounts', ['as' => 'accounts.show', 'uses' => 'UserController@account']);
-	Route::get('users/{user}/accounts/details', ['as' => 'accounts.details', 'uses' => 'UserController@accountDetails']);
+	Route::get('users/accounts', ['as' => 'users.accounts', 'uses' => 'UserController@accounts']);
+	Route::get('users/{user}/account', ['as' => 'users.account.show', 'uses' => 'UserController@account']);
+	Route::get('users/{user}/account/details', ['as' => 'users.account.details', 'uses' => 'UserController@accountDetails']);
 
 	Route::resource('transactions', 'TransactionController',
 				['except' => ['edit','show']]);
 
+	// Route::get('users/{user}/appro/create')
+	// Route::get('users/{user}/appro/store')
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);

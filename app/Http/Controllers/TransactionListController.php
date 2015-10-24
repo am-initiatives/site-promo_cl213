@@ -81,7 +81,7 @@ class TransactionListController extends Controller
 			}
 		});
 
-		return redirect()->route('accounts.show',Auth::user()->id)->with("credit_tab",true);
+		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class TransactionListController extends Controller
 			Transaction::create($data);
 		}
 
-		return redirect()->route('accounts.show',[$t->credited_user_id])->with("credit_tab",true);
+		return redirect()->route('users.account.show',[$t->credited_user_id])->with("credit_tab",true);
 	}
 
 	/**
@@ -165,6 +165,6 @@ class TransactionListController extends Controller
 	{
 		$group->delete();
 
-		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
+		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
 }

@@ -10,7 +10,7 @@
 		Solde du compte <strong>{!! Html::solde($solde / 100, '€') !!}</strong>
 	</div>
 	<div class="large-2 columns" style="text-align:right">
-		<a href="{{ route('accounts.details', Auth::user()->id) }}" class="button tiny">Détails</a>
+		<a href="{{ route('users.account.details', Auth::user()->id) }}" class="button tiny">Détails</a>
 	</div>
 </div>
 
