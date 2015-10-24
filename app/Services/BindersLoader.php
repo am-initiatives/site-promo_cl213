@@ -32,11 +32,11 @@ class BindersLoader
 		$class = new $classname();
 
 		return function($value,$route) use($class){
-			return $class->resolve($value,$route);
+			return $class->bind($value,$route);
 		};
 	}
 }
 
 interface Binder {
-	public function resolve($value,$route);
+	public function bind($value,$route);
 }

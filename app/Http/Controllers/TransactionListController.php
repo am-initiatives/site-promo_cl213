@@ -84,8 +84,6 @@ class TransactionListController extends Controller
 		return redirect()->route('accounts.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
-	public function show($id) {}
-
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -95,38 +93,34 @@ class TransactionListController extends Controller
 	public function edit(Request $r,$group)
 	//vue pour ajouter une personne après coup
 	{
-		$uid = null;
-		if($group->count()>0){
-			$t = $group->first();
+			$t = clone $group;
+			$t = $t->first();
 			$uid = $t->credited_user_id;
-			if(Auth::user()->isAllowed("edit_buquage",$t->credited_user_id)){
-				$debitables = Auth::user()->availableAccounts();
 
-				$data['debitables'] = [];
+			$debitables = Auth::user()->availableAccounts();
 
-				//consturction de la liste "id"=>"Nom" pour le select
-				foreach ($debitables as $c) {
+			$data['debitables'] = [];
 
-					if($c->id == $uid)
-						//on eclut l'utilisateur
-						continue;
+			//consturction de la liste "id"=>"Nom" pour le select
+			foreach ($debitables as $c) {
 
-					$data['debitables'][$c->id] = $c->getTitle();
-				}
+				if($c->id == $uid)
+					//on eclut l'utilisateur
+					continue;
 
-				//on vire les gens qui y sont déjà
-				foreach ($group->get() as $nonDebitable) {
-					unset($data["debitables"][$nonDebitable->debited_user_id]);
-				}
-
-				$data["wording"] = $t->wording;
-				$data["amount"] = $t->amount;
-				$data["group_id"] = $t->group_id;
-
-				return view("transactions.lists.edit",$data);
+				$data['debitables'][$c->id] = $c->getTitle();
 			}
-		}
-		return redirect()->route("transactions.index");
+
+			//on vire les gens qui y sont déjà
+			foreach ($group->get() as $nonDebitable) {
+				unset($data["debitables"][$nonDebitable->debited_user_id]);
+			}
+
+			$data["wording"] = $t->wording;
+			$data["amount"] = $t->amount;
+			$data["group_id"] = $t->group_id;
+
+			return view("transactions.lists.edit",$data);
 	}
 
 	public function update(Request $request, $group)
@@ -169,13 +163,7 @@ class TransactionListController extends Controller
 	 */
 	public function destroy($group)
 	{
-		$t = clone $group;
-		$t = $t->first();
-		$uid = $t->credited_user_id;
-
-		if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id)){
-			$group->delete();
-		}
+		$group->delete();
 
 		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
 	}
