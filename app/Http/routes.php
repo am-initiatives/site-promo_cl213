@@ -97,9 +97,12 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	// Buqueur
 	Route::get('accounts', ['as' => 'accounts.index', 'uses' => 'BuqueurController@index']);
 	Route::get('accounts/{id}', ['as' => 'accounts.show', 'uses' => 'BuqueurController@show']);
+	Route::get('accounts/details/{id}', ['as' => 'accounts.details', 'uses' => 'BuqueurController@details']);
 
 	Route::resource('transactions', 'TransactionController',
-				['except' => ['edit']]);
+				['except' => ['edit','show']]);
+	Route::bind('transactions',Binders::get("transaction"));
+
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);

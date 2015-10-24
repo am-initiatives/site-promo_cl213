@@ -27,7 +27,9 @@ class TransactionController extends Controller
 	 */
 	public function index()
 	{
-		$transactions = Transaction::orderBy('created_at', 'desc')->get();
+		$transactions = Transaction::where('state','acquited')
+			->orderBy('created_at', 'desc')
+			->get();
 
 		$table = [];
 
@@ -106,38 +108,17 @@ class TransactionController extends Controller
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$account = User::find($id);
-		$data['transactions'] = $account->transactionsDetail();
-		$data['solde'] = $account->getBalance();
-
-		return view('transactions.show', $data);
-	}
-
-	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  Request  $request
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Request $request, $t)
 	//utilisé pour la validation d'un buquage
 	{
-
-		if($t = Transaction::find($id)){
-			if(Auth::user()->isAllowed("acquit_buquage",$t->debited_user_id))
-			{
-				$t->state = "acquited";
-				$t->update();
-			}
-		}
+		$t->state = "acquited";
+		$t->update();
 
 		return redirect()->route('accounts.show',[$request->get("user")]);
 	}
@@ -148,16 +129,10 @@ class TransactionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy(Request $request,$id)
+	public function destroy(Request $request,$t)
 	{
-		$uid=null;
-		if($t = Transaction::find($id)){
-			$uid = $t->credited_user_id;
-			if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id))
-			{
-				$t->delete();
-			}
-		}
+		$uid = $t->credited_user_id;
+		$t->delete();
 
 		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
 	}
