@@ -16,9 +16,9 @@ abstract class BaseBinder implements Binder
 {
 	public function bind($value,$route)
 	{
-		$element = $this->resolve($value,$route);
-
 		$action = substr($route->getCompiled()->getTokens()[0][1],1);
+
+		$element = $this->resolve($value,$action);
 
 		$params = $this->getParamsForAction($action,$element);
 

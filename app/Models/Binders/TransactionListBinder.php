@@ -10,7 +10,7 @@ use App\Models\Transaction;
 class TransactionListBinder extends BaseBinder
 {
 	
-	public function resolve($gpeid,$route)
+	public function resolve($gpeid,$action)
 	{
 		$group = Transaction::where("group_id",$gpeid);
 
@@ -23,22 +23,10 @@ class TransactionListBinder extends BaseBinder
 
 	public function getParamsForAction($action,$group)
 	{
-		switch ($action) { //chemin extrait
-			case 'edit':
-				$t = clone $group;
-				$owner_id = $t->first()->credited_user_id;
-				break;
-			case 'destroy':
-				$t = clone $group;
-				$owner_id = $t->first()->credited_user_id;
-				break;
-			default:
-				return null;
-		}
-
+		$t = clone $group;
 		return [
 			"name"		=> "buquage_list",
-			"owner_id"	=> $owner_id
+			"owner_id"	=> $t->first()->credited_user_id
 			];
 	}
 }
