@@ -90,7 +90,7 @@ class UserSeeder extends Seeder
             ]);
 
         // Ajoute des user créés aléatoirement
-        // $users = array_merge($users, factory(App\User::class, 20)->make() );
+        $users = array_merge($users, factory(App\User::class, 20)->make()->all() );
 
         Model::reguard();
 

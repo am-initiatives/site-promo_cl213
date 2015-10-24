@@ -28,7 +28,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['credited_user_id', 'debited_user_id', 'amount', 'wording', 'active','group_id'];
+    protected $fillable = ['credited_user_id', 'debited_user_id', 'amount', 'wording', 'active','group_id','state'];
 
     /**
      * The attributes that should be mutated to dates.

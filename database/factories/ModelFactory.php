@@ -14,7 +14,7 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'username' => $faker->word,
-		'password' => str_random(10),
+		'password' => Hash::make(str_random(10)),
 		'email' => $faker->email,
 		'first_name' => $faker->firstName,
 		'last_name' => $faker->lastName,
