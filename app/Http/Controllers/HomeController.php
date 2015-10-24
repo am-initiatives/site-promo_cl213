@@ -14,18 +14,18 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $data['user'] = Auth::user();
-        $data['positions'] = json_encode(User::getPositions());
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$data['user'] = Auth::user();
+		$data['positions'] = json_encode(User::getPositions());
 
-        $data['posts'] = Post::where('category', 'general')->orderBy('created_at', 'desc')->get();
+		$data['posts'] = Post::where('category', 'general')->orderBy('created_at', 'desc')->get();
 
-        return view('home', $data);
-    }
+		return view('home', $data);
+	}
 }

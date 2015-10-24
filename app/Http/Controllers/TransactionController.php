@@ -92,11 +92,11 @@ class TransactionController extends Controller
 		}
 
 		$data = array(
-			'wording'           => $request->get('wording'),
-			'amount'            => (integer) 100*$request->get('amount'),
+			'wording'		   => $request->get('wording'),
+			'amount'			=> (integer) 100*$request->get('amount'),
 			'credited_user_id'  => Auth::user()->id,
 			'debited_user_id'   => $request->get('debited'),
-			'group_id'          => Uuid::uuid4(),
+			'group_id'		  => Uuid::uuid4(),
 			'state'				=> "pending"
 			);
 
@@ -114,10 +114,10 @@ class TransactionController extends Controller
 	public function show($id)
 	{
 		$account = User::find($id);
-        $data['transactions'] = $account->transactionsDetail();
-        $data['solde'] = $account->getBalance();
+		$data['transactions'] = $account->transactionsDetail();
+		$data['solde'] = $account->getBalance();
 
-        return view('transactions.show', $data);
+		return view('transactions.show', $data);
 	}
 
 	/**

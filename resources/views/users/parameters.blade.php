@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="panel">
-    @include('users.forms.parameters')
+	@include('users.forms.parameters')
 </div>
 
 @endsection

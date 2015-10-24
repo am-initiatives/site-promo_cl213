@@ -19,16 +19,16 @@ return [
 	'consumers' => [
 
 		'Google' => [
-			'client_id'     => env('OAUTH_ID'),
+			'client_id'	 => env('OAUTH_ID'),
 			'client_secret' => env('OAUTH_SECRET'),
-			'scope'         => ['userinfo_email', 'userinfo_profile'],
+			'scope'		 => ['userinfo_email', 'userinfo_profile'],
 		],
 
 
 		'Facebook' => [
-			'client_id'     => '',
+			'client_id'	 => '',
 			'client_secret' => '',
-			'scope'         => [],
+			'scope'		 => [],
 		],
 
 	]

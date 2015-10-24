@@ -12,8 +12,8 @@
 */
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
-    return [
-        'username' => $faker->word,
+	return [
+		'username' => $faker->word,
 		'password' => Hash::make(str_random(10)),
 		'email' => $faker->email,
 		'first_name' => $faker->firstName,
@@ -24,5 +24,5 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 		'active' => 1,
 		'hidden' => 0,
 		'permissions' => '[]',
-    ];
+	];
 });
