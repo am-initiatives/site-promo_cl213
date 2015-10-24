@@ -9,6 +9,8 @@ namespace App\Services;
  * Les binders permettent d'injecter directement un objet à la place 
  * de son identifiant lorsqu'on utilise une route du type user/{userid}
  *
+ * L'idée c'est de faire toutes les validations dans les binders
+ *
  */
 
 class BindersLoader 
@@ -29,7 +31,9 @@ class BindersLoader
 
 		$class = new $classname();
 
-		return function($value,$route){$class->resolve($value,$route);};
+		return function($value,$route) use($class){
+			return $class->resolve($value,$route);
+		};
 	}
 }
 
