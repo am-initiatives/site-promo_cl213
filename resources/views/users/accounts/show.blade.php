@@ -11,9 +11,11 @@
 	</div>
 	<div class="large-5 columns" style="text-align:right">
 		<ul class="button-group">
+			@if(Auth::user()->isAllowed("createAppro_appro",App\Models\User::getBankAccount()->id))
 			<li>
 				<a href="{{ route('transactions.appro.create', $user->id) }}" class="button small success">Approvisionner</a>
 			</li>
+			@endif
 			<li>
 				<a href="{{ route('users.account.details', $user->id) }}" class="button small">Détails</a>
 			</li>
@@ -46,7 +48,7 @@
 						<td style="text-align:center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
-							@if($solde + $transaction["amount"]>0)
+							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buqua,$user->idge"))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
 									{!! Form::hidden("user",$user->id) !!}
@@ -113,29 +115,35 @@
 						</td>
 						<td class="medium-2" style="text-align:right">
 							{{-- Bouton Retirer une personne --}}
+							@if(Auth::user()->isAllowed("destroy_buquage",$user->id))
 							{!! Form::open(array('route' => 
 								['transactions.destroy',$transaction['id']], 'method' => 'delete')) !!}
 									<input type="submit" class="button tiny alert" style="margin:0" value="Retirer">
 							{!! Form::close() !!}
+							@endif
 						</td>
 					</tr>
 					@endforeach
 					</table>
 					<ul class="button-group">
 						{{-- Bouton ajouter quelqu'un --}}
+						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
 							['transactionlist.edit',$gpe], 'method' => 'get')) !!}
 							<input type="submit" class="button tiny" value="Ajouter quelqu'un">
 						{!! Form::close() !!}
+						@endif
 						</li>
 						{{-- Bouton supprimer tout --}}
+						@if(Auth::user()->isAllowed("destroy_buquage_list",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
 							['transactionlist.destroy',$gpe], 'method' => 'delete')) !!}
 								<input type="submit" class="button tiny alert" value="Supprimer Toute la liste">
 						{!! Form::close() !!}
 						</li>
+						@endif
 					</ul>
 				</div>
 			</li>
