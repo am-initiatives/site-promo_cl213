@@ -281,6 +281,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function recap()
     //recap des crédits à venir et effectués sous forme de groupes
     {
+        $data=["debits"=>[],"credits"=>[]];
 
         /**
          *
