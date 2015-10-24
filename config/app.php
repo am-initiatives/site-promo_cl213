@@ -199,6 +199,8 @@ return [
 		'Html' => Collective\Html\HtmlFacade::class,
 
 		'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
+
+		'Binders' => App\Services\Facades\BindersFacade::class,
 	],
 
 ];
