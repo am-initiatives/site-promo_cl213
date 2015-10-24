@@ -9,8 +9,8 @@ use App\Http\Controllers\Controller;
 
 
 use Auth;
-use App\User;
-use App\Post;
+use App\Models\User;
+use App\Models\Post;
 
 class HomeController extends Controller
 {

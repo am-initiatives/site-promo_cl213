@@ -1,4 +1,4 @@
-<?php $positions = json_encode(App\User::getPositions()); ?>
+<?php $positions = json_encode(App\Models\User::getPositions()); ?>
 
 <!DOCTYPE html>
 <html>

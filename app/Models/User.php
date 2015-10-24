@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -236,7 +236,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function user()
     {
-        return $this->hasMany('App\Post', 'user_id');
+        return $this->hasMany('App\Models\Post', 'user_id');
     }
 
 
@@ -338,13 +338,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function toCredits()
     //crédits à venir
     {
-        return $this->hasMany('App\Transaction', 'credited_user_id')->pending();
+        return $this->hasMany('App\Models\Transaction', 'credited_user_id')->pending();
     }
 
     public function toDebits()
     //débits à venir
     {
-        return $this->hasMany('App\Transaction', 'debited_user_id')->pending();
+        return $this->hasMany('App\Models\Transaction', 'debited_user_id')->pending();
     }
 
     /**
@@ -366,7 +366,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function credits()
     {
-        return $this->hasMany('App\Transaction', 'credited_user_id')->acquited();
+        return $this->hasMany('App\Models\Transaction', 'credited_user_id')->acquited();
     }
 
     /**
@@ -374,7 +374,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function debits()
     {
-        return $this->hasMany('App\Transaction', 'debited_user_id')->acquited();
+        return $this->hasMany('App\Models\Transaction', 'debited_user_id')->acquited();
     }
 
     /*=====  End of Gestion des transactions  ======*/

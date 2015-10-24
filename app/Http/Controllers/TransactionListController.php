@@ -9,8 +9,8 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
 
-use App\User as User;
-use App\Transaction as Transaction;
+use App\Models\User as User;
+use App\Models\Transaction as Transaction;
 
 use Ramsey\Uuid\Uuid;
 

@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     {
         Model::unguard();
 
-        $users[] = App\User::create([
+        $users[] = App\Models\User::create([
             'username' => 'admin',
             'password' => Hash::make('password'),
             'email' => 'webmaster@cl213.fr',
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'permissions' => '["admin"]',
             ]);
 
-        $users[] = App\User::create([
+        $users[] = App\Models\User::create([
             'username' => 'tarmak',
             'password' => Hash::make('password'),
             'email' => 'corentin.gitton@gadz.org',
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
             'permissions' => '["admin"]',
             ]);
 
-        $users[] = App\User::create([
+        $users[] = App\Models\User::create([
             'username' => 'iwazaru',
             'password' => '',
             'email' => 'mathieu.tudisco@gadz.org',
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
             'permissions' => '["admin"]',
             ]);
 
-        $users[] = App\User::create([
+        $users[] = App\Models\User::create([
             'username' => 'gecko',
             'password' => '$2y$10$D8tYXsL9rqWu5EPLIEpJi.WiTE6nwRh0USIz.2DCZYhAaZT8SV9nm',
             'email' => 'adrien.debord@gadz.org',
@@ -74,7 +74,7 @@ class UserSeeder extends Seeder
             'permissions' => '["admin"]',
             ]);
 
-        $users[] = App\User::create([
+        $users[] = App\Models\User::create([
             'username' => 'notsip',
             'password' => Hash::make('HMlar\'sssT154'),
             'email' => 'robin.chauvet@gadz.org',
@@ -90,7 +90,7 @@ class UserSeeder extends Seeder
             ]);
 
         // Ajoute des user créés aléatoirement
-        $users = array_merge($users, factory(App\User::class, 20)->make()->all() );
+        $users = array_merge($users, factory(App\Models\User::class, 20)->make()->all() );
 
         Model::reguard();
 

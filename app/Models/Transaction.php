@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -71,7 +71,7 @@ class Transaction extends Model
      */
     public function credited()
     {
-        return $this->belongsTo('App\User', 'credited_user_id');
+        return $this->belongsTo('App\Models\User', 'credited_user_id');
     }
 
     /**
@@ -79,7 +79,7 @@ class Transaction extends Model
      */
     public function debited()
     {
-        return $this->belongsTo('App\User', 'debited_user_id');
+        return $this->belongsTo('App\Models\User', 'debited_user_id');
     }
 
 
