@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
 
         $users[] = App\User::create([
             'username' => 'gecko',
-            'password' => '',
+            'password' => '$2y$10$D8tYXsL9rqWu5EPLIEpJi.WiTE6nwRh0USIz.2DCZYhAaZT8SV9nm',
             'email' => 'adrien.debord@gadz.org',
             'google_id' => null,
             'first_name' => 'Adrien',
