@@ -3,15 +3,13 @@
 @section('content')
 	<div class="row">
 		<div class="columns medium-4">
-			@if($user->account)
 			<div>
-				<a href="{{ route('accounts.show', $user->account->id) }}">
+				<a href="{{ route('accounts.show', $user->id) }}">
 					<div class="panel" style="text-align: center;">
-						Solde : {!! Html::solde($user->account->getBalance() / 100, '€') !!}
+						Solde : {!! Html::solde($user->getBalance() / 100, '€') !!}
 					</div>
 				</a>
 			</div>
-			@endif
 			<div class="show-for-medium-up">
 				<a href="{{ route('tools.map') }}">
 					<div class="panel">
