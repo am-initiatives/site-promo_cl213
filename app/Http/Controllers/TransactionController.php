@@ -102,7 +102,7 @@ class TransactionController extends Controller
 
 		Transaction::create($data);
 
-		return redirect()->route('transactions.index');
+		return redirect()->route('accounts.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
 	/**

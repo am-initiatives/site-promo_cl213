@@ -103,6 +103,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);
+	Route::bind('transactionlist',Binders::get("transactionList"));
 
 	// Map plein écran
 	Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);
@@ -121,12 +122,6 @@ Route::group(['middleware' => ['auth', 'active']], function()
 
 
 
-Route::get('pass', function () {
-	dd(Hash::make('HMlar\'sssT154'));
-});
-
-
-
-Route::get('test', function () {
-	return 'Coucou de la CL213';
-});
+// Route::get('pass', function () {
+// 	dd(Hash::make('HMlar\'sssT154'));
+// });

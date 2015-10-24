@@ -81,7 +81,7 @@ class TransactionListController extends Controller
 			}
 		});
 
-		return redirect()->route('transactions.show',[Auth::user()]);
+		return redirect()->route('accounts.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
 	public function show($id) {}
@@ -92,13 +92,12 @@ class TransactionListController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $r,$group)
 	//vue pour ajouter une personne après coup
 	{
 		$uid = null;
-		$group = Transaction::where("group_id",$id)->get();
 		if($group->count()>0){
-			$t = $group[0];
+			$t = $group->first();
 			$uid = $t->credited_user_id;
 			if(Auth::user()->isAllowed("edit_buquage",$t->credited_user_id)){
 				$debitables = Auth::user()->availableAccounts();
@@ -116,7 +115,7 @@ class TransactionListController extends Controller
 				}
 
 				//on vire les gens qui y sont déjà
-				foreach ($group as $nonDebitable) {
+				foreach ($group->get() as $nonDebitable) {
 					unset($data["debitables"][$nonDebitable->debited_user_id]);
 				}
 
@@ -130,21 +129,21 @@ class TransactionListController extends Controller
 		return redirect()->route("transactions.index");
 	}
 
-	public function update(Request $request, $id)
+	public function update(Request $request, $group)
 	//ajouter une personne après coup
 	{
-		$validator = Validator::make($request->all()+["id"=>$id], [
-			'debited' => 'required|array',
-			'id' => 'required|exists:transactions,group_id'
+		$validator = Validator::make($request->all(), [
+			'debited' => 'required|array'
 		]);
+
+		$t = $group->first();
+		$id = $t->group_id;
 
 		if ($validator->fails()) {
 			return redirect()->route('transactionlist.edit',$id)
 						->withErrors($validator)
 						->withInput();
 		}
-
-		$t = Transaction::where("group_id",$id)->first();
 
 		foreach ($request->get("debited") as $debited) {
 			$data = array(
@@ -168,17 +167,16 @@ class TransactionListController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy($group)
 	{
-		$uid = null;
-		$group = Transaction::where("group_id",$gpeid);
-		if($group->count()>0){
-			$t = Transaction::where("group_id",$gpeid)->first();
-			$uid = $t->credited_user_id;
-			if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id)){
-				$group->delete();
-			}
+		$t = clone $group;
+		$t = $t->first();
+		$uid = $t->credited_user_id;
+
+		if(Auth::user()->isAllowed("delete_buquage",$t->credited_user_id)){
+			$group->delete();
 		}
+
 		return redirect()->route('accounts.show',[$uid])->with("credit_tab",true);
 	}
 }
