@@ -25,6 +25,9 @@ Html::macro('solde', function($value, $unit = NULL)
 
 Html::macro('diff', function($date)
 {
+	if(!$date)
+		return "Jamais";
+	
 	if ($date->diffInSeconds() <= 60) {
 		$result = 'À l’instant';
 	} elseif ($date->diffInDays() <= 7) {

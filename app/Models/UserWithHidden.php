@@ -147,9 +147,13 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 
 		//check des permissions
-		$permissions = $this->permissions();
 
-		return in_array($required, $permissions) or in_array('admin', $permissions);
+		return $this->hasPermission($required) or $this->hasPermission('admin');
+	}
+
+	public function hasPermission($perm)
+	{
+		return in_array($perm, $this->permissions());
 	}
 
 

@@ -39,7 +39,7 @@
 				<th>Etat</th>
 				<th>Date</th>
 				<th>Libellé</th>
-				<th>Émetteur/Récepteur</th>
+				<th>Émetteur</th>
 				<th>Montant</th>
 			</thead>
 			<tbody>

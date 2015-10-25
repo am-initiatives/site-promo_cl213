@@ -33,7 +33,9 @@
 					<a href="#"><i class="fa fa-btc"></i> Buqueur</a>
 					<ul class="dropdown">
 						<li><a href="{{ route('users.accounts') }}">Liste des comptes</a></li>
+						@if($user->isAllowed("harpags"))
 						<li><a href="{{ route('transactions.index') }}">Derniers buquage</a></li>
+						@endif
 						<li><a href="{{ route('transactions.create') }}">Faire un buquage</a></li>
 					</ul>
 				</li>

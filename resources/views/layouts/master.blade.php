@@ -13,7 +13,6 @@
 	<body>
 		<div id="header">
 			@include('includes.topbar')
-			@include('includes.header')
 		</div>
 
 		<div class="container">
