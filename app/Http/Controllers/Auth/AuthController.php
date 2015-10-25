@@ -35,7 +35,7 @@ class AuthController extends Controller
 
 	protected $redirectPath = '/';
 	protected $loginPath = 'auth/login';
-	protected $username = 'username';
+	protected $username = 'email';
 
 
 
@@ -128,7 +128,7 @@ class AuthController extends Controller
 			}
 
 			//mise à jour de l'image
-			$user->google_info = $result["picture"];
+			$user->google_pic = $result["picture"];
 			$user->update();
 
 			Auth::login($user);

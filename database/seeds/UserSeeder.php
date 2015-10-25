@@ -13,9 +13,10 @@ class UserSeeder extends Seeder
 	public function run()
 	{
 		Model::unguard();
+			
+		DB::statement('ALTER TABLE users AUTO_INCREMENT = 1;');
 
 		$users[] = App\Models\User::create([
-			'username' => 'admin',
 			'password' => Hash::make('password'),
 			'email' => 'webmaster@cl213.fr',
 			'google_id' => null,
@@ -30,7 +31,6 @@ class UserSeeder extends Seeder
 			]);
 
 		$users[] = App\Models\User::create([
-			'username' => 'tarmak',
 			'password' => Hash::make('password'),
 			'email' => 'corentin.gitton@gadz.org',
 			'google_id' => '103503349814606129144',
@@ -45,7 +45,6 @@ class UserSeeder extends Seeder
 			]);
 
 		$users[] = App\Models\User::create([
-			'username' => 'iwazaru',
 			'password' => '',
 			'email' => 'mathieu.tudisco@gadz.org',
 			'google_id' => null,
@@ -60,7 +59,6 @@ class UserSeeder extends Seeder
 			]);
 
 		$users[] = App\Models\User::create([
-			'username' => 'gecko',
 			'password' => '$2y$10$D8tYXsL9rqWu5EPLIEpJi.WiTE6nwRh0USIz.2DCZYhAaZT8SV9nm',
 			'email' => 'adrien.debord@gadz.org',
 			'google_id' => null,
@@ -76,7 +74,6 @@ class UserSeeder extends Seeder
 			]);
 
 		$users[] = App\Models\User::create([
-			'username' => 'notsip',
 			'password' => Hash::make('HMlar\'sssT154'),
 			'email' => 'robin.chauvet@gadz.org',
 			'google_id' => null,
@@ -91,7 +88,6 @@ class UserSeeder extends Seeder
 			]);
 
 		$users[] = App\Models\User::create([
-			'username' => 'Banque',
 			'password' => Hash::make('lol bank'),
 			'email' => 'jb.poquelin@banque.bk',
 			'google_id' => null,
@@ -107,10 +103,11 @@ class UserSeeder extends Seeder
 			]);
 
 		// Ajoute des user créés aléatoirement
-		$users = array_merge($users, factory(App\Models\User::class, 20)->make()->all() );
+		foreach(factory(App\Models\User::class, 20)->make()->all() as $user)
+		{
+			$user->save();
+		}
 
 		Model::reguard();
-
-		return $users;
 	}
 }

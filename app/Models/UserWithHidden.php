@@ -8,8 +8,6 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Auth;
 use Hash;
 use Carbon\Carbon;
@@ -17,7 +15,7 @@ use DB;
 
 class UserWithHidden extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-	use Authenticatable, CanResetPassword, SoftDeletes;
+	use Authenticatable, CanResetPassword;
 
 	const Bank = "Banque";
 
@@ -25,7 +23,7 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	protected $table = 'users';
 
 	//The attributes that are mass assignable.
-	protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_info', 'info', 'active', 'permissions', 'connected_at'];
+	protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_pic', 'info', 'active', 'permissions', 'connected_at'];
 
 	//The attributes excluded from the model's JSON form.
 	protected $hidden = ['password', 'remember_token', 'google_id'];
@@ -49,8 +47,8 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	{
 		if ($this->picture) {
 			return url('uploads/pictures',$this->picture);
-		} else if ($this->google_info) {
-			return $this->google_info;
+		} else if ($this->google_pic) {
+			return $this->google_pic;
 		} else {
 			return url('images/default_picture.png');
 		}

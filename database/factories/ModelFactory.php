@@ -13,13 +13,12 @@
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 	return [
-		'username' => $faker->word,
 		'password' => Hash::make(str_random(10)),
 		'email' => $faker->email,
 		'first_name' => $faker->firstName,
 		'last_name' => $faker->lastName,
-		'nickname' => '',
-		'pos'=> '[46.0898885, 6.5359716]',
+		'nickname' => $faker->name,
+		'pos'=> '['.rand(40,50).",".rand(4,7).']',
 		'info' => '[]',
 		'active' => 1,
 		'hidden' => 0,

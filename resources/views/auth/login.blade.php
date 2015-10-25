@@ -8,7 +8,7 @@
 	{!! csrf_field() !!}
 
 	<div>
-		<input type="text" name="username" value="{{ old('username') }}" placeholder="Nom d'utilisateur">
+		<input type="text" name="email" value="{{ old('email') }}" placeholder="Nom d'utilisateur">
 	</div>
 
 	<div>
