@@ -61,6 +61,6 @@ class Post extends Model
 	 */
 	public function user()
 	{
-		return $this->belongsTo('App\Models\User', 'user_id')->withTrashed();//->withHidden();
+		return $this->belongsTo('App\Models\UserWithHidden', 'user_id')->withTrashed();
 	}
 }
