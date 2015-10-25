@@ -71,7 +71,7 @@ class Transaction extends Model
 	 */
 	public function credited()
 	{
-		return $this->belongsTo('App\Models\User', 'credited_user_id');
+		return $this->belongsTo('App\Models\UserWithHidden', 'credited_user_id');
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Transaction extends Model
 	 */
 	public function debited()
 	{
-		return $this->belongsTo('App\Models\User', 'debited_user_id');
+		return $this->belongsTo('App\Models\UserWithHidden', 'debited_user_id');
 	}
 
 

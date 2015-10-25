@@ -47,7 +47,7 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public static function getBankAccount()
 	{
-		$bank = self::where("nickname",self::Bank)->first();
+		$bank = UserWithHidden::where("nickname",self::Bank)->first();
 
 		if(!$bank){
 			throw new \Exception("Error no bank account found with name : ".self::Bank, 1);

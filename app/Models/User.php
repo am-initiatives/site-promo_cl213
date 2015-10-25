@@ -17,7 +17,7 @@ class User extends UserWithHidden
 			return parent::newQuery();
 		}
 		elseif(Auth::check()){ //authorise à se voir soi-même
-			return parent::newQuery()->where('hidden', 0)->orWhere('id',Auth::user()->id);
+			return parent::newQuery()->whereRaw('(hidden=0 or id=?)',[Auth::user()->id]);
 		}
 		else{ //voit pas les cachés
 			return parent::newQuery()->where('hidden', 0);
