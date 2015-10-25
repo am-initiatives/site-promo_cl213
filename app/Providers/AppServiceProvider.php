@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\BindersLoader;
 
 use Html;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,6 +55,17 @@ class AppServiceProvider extends ServiceProvider
 			}
 
 			return ucfirst($result);
+		});
+
+		Html::macro('userIcons',function($user){
+			$data = "";
+			if($user->hasPermission("admin")){
+				$data.='<i class="fa fa-star" title="Administrateur"></i>';
+			}
+			if($user->hidden){
+				$data.='<i class="fa fa-user-secret" title="Caché"></i>';
+			}
+			return $data;
 		});
 	}
 

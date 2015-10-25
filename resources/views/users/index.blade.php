@@ -9,7 +9,7 @@
 	<table class="small-12">
 		<caption>Liste des utilisateurs</caption>
 		<thead>
-			<th>#</th>
+			<th></th>
 			<th>Buque</th>
 			<th>Nom, Prénom</th>
 			<th>e-mail</th>
@@ -19,7 +19,7 @@
 		<tbody>
 			@foreach($users as $user)
 			<tr>
-				<td>{{ $user->id }}{!! $user->hidden == 1 ? ' <i class="fa fa-user-secret" title="Caché"></i>' : '' !!}</td>
+				<td>{!! Html::userIcons($user) !!}</td>
 				<td>{{ $user->nickname }}</td>
 				<td>{{ $user->last_name }} {{ $user->first_name }}</td>
 				<td>{{ $user->email }}</td>

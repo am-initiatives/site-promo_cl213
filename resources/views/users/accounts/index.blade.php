@@ -19,14 +19,7 @@
 		<tbody>
 			@foreach($accounts as $account)
 				<tr>
-					<td>
-						@if($account->hasPermission("admin"))
-						<i class="fa fa-star"></i>
-						@endif
-						@if($account->hidden)
-						<i class="fa fa-user-secret"></i>
-						@endif
-					</td>
+					<td>{!! Html::userIcons($account) !!}</td>
 					<td><strong>{{ $account->getTitle() }}</strong></td>
 					<td>{!! Html::diff($account->connected_at) !!}</td>
 					<td style="text-align: right;">
