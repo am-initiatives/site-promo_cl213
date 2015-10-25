@@ -21,7 +21,7 @@
 		@if($user->isAllowed('edit_posts', $post->user_id))
 		<div class="right text-right">
 			@if($user->isAllowed(null, $post->user_id))
-			<a href="#" class="edit_button" post_id="{{ $post->id }}">Editer</a>
+			<a href="javascript:void(0)" class="edit_button" post_id="{{ $post->id }}">Editer</a>
 			<span> - </span>
 			@endif
 			<a href="javascript:void(0)" class="del_button" post_id="{{ $post->id }}">Supprimer</a>
@@ -48,7 +48,7 @@
 			var id = $(this).attr("post_id");
 			$.ajax({
 				method: "DELETE",
-				url: "{{ route('posts.destroy', '') }}/"+id,
+				url: "{{ route('posts.destroy', '#') }}/".replace("#",id),
 				context: $(this).closest(".post")
 			}).done(function (data) {
 				this.html(data);
@@ -58,7 +58,7 @@
 
 	function getEdit(id) {
 		$.ajax({
-			url: "{{ route('posts.edit', '') }}/"+id,
+			url: "{{ route('posts.edit', '#') }}/".replace("#",id),
 			context: $("#post_"+id)
 		}).done(function (data) {
 			this.hide(0);
@@ -70,8 +70,8 @@
 
 	function sendEdit(id) {
 		$.ajax({
-			method: "POST",
-			url: "{{ route('posts.update', '') }}/"+id,
+			method: "PUT",
+			url: "{{ route('posts.update', '#') }}/".replace("#",id),
 			context: $("#post_"+id),
 			data: {
 				body: $("#edittext").val()

@@ -43,10 +43,8 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	}]);
 
 	// Posts
-	Route::get('posts/edit/{id}', ['as' => 'posts.edit', 'uses' => 'PostController@edit']);
-	Route::post('posts/edit/{id}', ['as' => 'posts.update', 'uses' => 'PostController@update']);
-	Route::post('posts', ['as' => 'posts.store', 'uses' => 'PostController@store']);
-	Route::delete('posts/{id}', ['as' => 'posts.destroy', 'uses' => 'PostController@destroy']);
+	Route::resource('posts', 'PostController',
+				['except' => ['index','create','show']]);
 
 	// Liste promss
 
@@ -86,6 +84,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
 Route::bind('user',Binders::get("user"));
 Route::bind('transactions',Binders::get("transaction"));
 Route::bind('transactionlist',Binders::get("transactionList"));
+Route::bind('posts',Binders::get("post"));
 
 /*=====  End of Bindings  ======*/
 
