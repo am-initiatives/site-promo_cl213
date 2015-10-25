@@ -8,16 +8,16 @@
 @foreach($posts as $post)
 <div class="panel post">
 	<div class="header">
+		<a href="{{ route('users.show',$post->user->id) }}">
 		<div class="picture">
-			<a href="{{ $post->user->getLink() }}">
 				<img class="small-picture" style='height: 50px;' src="{{ $post->user->getPictureLink() }}">
-			</a>
 		</div>
 		<div class="info">
-			{!! $post->user->getLinkTitle() !!}
+			{!! $post->user->getTitle() !!}
 			<br/>
 			<span style="color: #777">{{ Html::diff($post->created_at) }}</span>
 		</div>
+		</a>
 		@if($user->isAllowed('edit_posts', $post->user_id))
 		<div class="right text-right">
 			@if($user->isAllowed(null, $post->user_id))

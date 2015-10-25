@@ -21,29 +21,18 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	const Bank = "Banque";
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
+	//The database table used by the model.
 	protected $table = 'users';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
+	//The attributes that are mass assignable.
 	protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_info', 'info', 'active', 'permissions', 'connected_at'];
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
+	//The attributes excluded from the model's JSON form.
 	protected $hidden = ['password', 'remember_token', 'google_id'];
 
-	// Permet d'utiliser carbon sur les dates suivantes
+	//Permet d'utiliser carbon sur les dates suivantes
 	protected $dates = ['connected_at'];
+
 
 	public static function getBankAccount()
 	{
@@ -55,84 +44,28 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 		return $bank;
 	}
-
-	public static function getPositions()
+	
+	public function getPictureLink()
 	{
-		$users = self::whereNotNull('pos')->get();
-
-		$positions = [];
-
-		foreach ($users as $user) {
-			$position = $user->getPosition();
-
-			$positions[] = [
-				$user->getTitle(),
-				$position[0],
-				$position[1],
-			];
-		}
-
-		return $positions;
-	}
-
-
-	public function setPassword($request) {
-		$password = $request->input('password');
-		$password_confirmation = $request->input('password_confirmation');
-
-		if ($password == $password_confirmation) {
-			$this->connected_at = Carbon::now();
-			$this->password = Hash::make($password);
-			$this->save();
-
-			return true;
-		}
-
-		return false;
-	}
-
-
-
-	public function isFirstConnection() {
-		return is_null($this->connected_at);
-	}
-
-
-	private function permissions()
-	{
-		if ( $permissions = @json_decode($this->permissions, true) )
-			return $permissions;
-		else
-			return [];
-	}
-
-
-
-	/**
-	 * Check if the user is active.
-	 *
-	 * @return bool|int
-	 */
-	public function isActive()
-	{
-		return $this->active == 1 ? true : false;
-	}
-
-
-	public function availableAccounts()
-	{
-		if ($this->isAllowed('all_accounts'))
-			return User::all();
-		else
-		{
-			$available = User::where('permissions','not like', "%restricted%")->get();
-
-			if ($user_account = $this->account)
-				$available = $available->push($user_account);
-
-			return $available;
+		if ($this->picture) {
+			return url('uploads/pictures',$this->picture);
+		} else if ($this->google_info) {
+			return $this->google_info;
+		} else {
+			return url('images/default_picture.png');
 		}
 	}
+
+	public function getTitle()
+	{
+		if ($this->nickname == '')
+			return $this->first_name . ' ' . $this->last_name;
+			return $this->nickname;
+	}
+
+	/*===================================
+	=            Permissions            =
+	===================================*/
 
 	public function isAllowed($required, $user_id = null)
 	//est authorisé à faire "required" à "user_id" ?
@@ -153,50 +86,36 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public function hasPermission($perm)
 	{
-		return in_array($perm, $this->permissions());
+		if ( $permissions = @json_decode($this->permissions, true) )
+			return in_array($perm, $permissions);
+		else
+			return false;
 	}
+	
+	/*=====  End of Permissions  ======*/
+	
 
+	/*===========================================
+	=            Gestion de la carte            =
+	===========================================*/
 
-
-
-	public function getGoogleInfo()
+	public static function getPositions()
 	{
-		if ($this->google_info) {
-			$info = json_decode($this->google_info, true);
-			return $info;
-		} else {
-			return null;
+		$users = self::whereNotNull('pos')->get();
+
+		$positions = [];
+
+		foreach ($users as $user) {
+			$position = $user->getPosition();
+
+			$positions[] = [
+				$user->getTitle(),
+				$position[0],
+				$position[1],
+			];
 		}
-	}
 
-
-	public function getPictureLink()
-	{
-		if ($this->picture) {
-			return url('uploads/pictures',$this->picture);
-		} else if ($google_info = $this->getGoogleInfo() and isset($google_info['picture'])) {
-			return $google_info['picture'];
-		} else {
-			return url('images/default_picture.png');
-		}
-	}
-
-
-	public function getTitle()
-	{
-		if ($this->nickname == '')
-			return $this->first_name . ' ' . $this->last_name;
-			return $this->nickname;
-	}
-
-	public function getLink()
-	{
-		return route('users.show', $this->id);
-	}
-
-	public function getLinkTitle()
-	{
-		return '<a href="'.$this->getLink().'">'.$this->getTitle().'</a>';
+		return $positions;
 	}
 
 	public function getPosition()
@@ -204,45 +123,12 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		return json_decode($this->pos, true);
 	}
 
-
-
-
-
-	/**
-	 * Scope a query to only include visible users.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Builder
-	 */
-	public function scopeVisible($query)
-	{
-		return $query->where('hidden', 0);
-	}
-
-	/**
-	 * Get the user to whom belongs the account.
-	 */
-	public function user()
-	{
-		return $this->hasMany('App\Models\Post', 'user_id');
-	}
-
-
-
+	/*=====  End of Gestion de la carte  ======*/
+	
 
 	/*================================================
 	=			Gestion des transactions			=
 	================================================*/
-
-
-
-
-
-	public function isRestricted()
-	//restricted : on peut pas lui prendre des sous
-	{
-		return in_array($required, $permissions) or in_array('restricted', $permissions);
-	}
-
 
 	public function getBalance()
 	{
@@ -253,7 +139,11 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	public function transactionsDetail()
 	//historique des transactions effectuées
 	{
-		$transactions = $this->getTransactions();
+
+		$credits = $this->credits;
+		$debits = $this->debits;
+		$transactions = $debits->merge($credits);
+
 		$transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
 
 		$table = [];
@@ -321,6 +211,12 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		return $data;
 	}
 
+	/*=====  End of Gestion des transactions  ======*/
+
+	/*=================================
+	=            Relations            =
+	=================================*/
+	
 
 	public function toCredits()
 	//crédits à venir
@@ -334,37 +230,25 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		return $this->hasMany('App\Models\Transaction', 'debited_user_id')->pending();
 	}
 
-	/**
-	 * Return current account transactions.
-	 *
-	 * @return bool|int
-	 */
-	public function getTransactions()
-	{
-		$credits = $this->credits;
-		$debits = $this->debits;
-		$transactions = $debits->merge($credits);
-
-		return $transactions;
-	}
-
-	/**
-	 * Get credits for the account.
-	 */
 	public function credits()
+	//crédits actifs
 	{
 		return $this->hasMany('App\Models\Transaction', 'credited_user_id')->acquited();
 	}
 
-	/**
-	 * Get debits for the account.
-	 */
 	public function debits()
+	//débits actifs
 	{
 		return $this->hasMany('App\Models\Transaction', 'debited_user_id')->acquited();
 	}
 
-	/*=====  End of Gestion des transactions  ======*/
+
+	public function posts()
+	{
+		return $this->hasMany('App\Models\Post', 'user_id');
+	}
+
+	/*=====  End of Relations  ======*/
 	
 	
 }

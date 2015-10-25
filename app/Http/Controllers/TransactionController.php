@@ -55,7 +55,7 @@ class TransactionController extends Controller
 	 */
 	public function create()
 	{
-		$debitables = Auth::user()->availableAccounts();
+		$debitables = User::all();
 
 		$data['debitables'] = [];
 

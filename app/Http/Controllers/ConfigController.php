@@ -36,15 +36,13 @@ class ConfigController extends Controller
 	 */
 	public function postFirstPassword(Request $request)
 	{
-		if ($user = Auth::user()) {
-			if ($user->setPassword($request)) {
-				return "OK";
-			} else {
-				return "Validation error";
-			}
-		} else {
-			return 'No user';
-		}
+		$this->validate($request,["password"=>"confirmed"]);
+
+		$password = $request->input('password');
+
+		$user->connected_at = Carbon::now();
+		$user->password = Hash::make($password);
+		$user->save();
 	}
 
 	/**

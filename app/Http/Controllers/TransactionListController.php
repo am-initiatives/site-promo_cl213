@@ -27,15 +27,10 @@ class TransactionListController extends Controller
 	 */
 	public function create()
 	{
-		$debitables = Auth::user()->availableAccounts();
-		$creditables = User::all();
+		$debitables = User::all();
 
 		$data['creditables'] = [];
-		$data['debitables'] = [];
 
-		foreach ($creditables as $c) {
-			$data['creditables'][$c->id] = $c->getTitle();
-		}
 		foreach ($debitables as $c) {
 			$data['debitables'][$c->id] = $c->getTitle();
 		}
@@ -97,7 +92,7 @@ class TransactionListController extends Controller
 			$t = $t->first();
 			$uid = $t->credited_user_id;
 
-			$debitables = Auth::user()->availableAccounts();
+			$debitables = User::all();
 
 			$data['debitables'] = [];
 

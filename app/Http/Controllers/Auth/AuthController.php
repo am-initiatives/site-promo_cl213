@@ -127,8 +127,12 @@ class AuthController extends Controller
 				}
 			}
 
-			$user->update(['google_info' => json_encode($result)]);
+			//mise à jour de l'image
+			$user->google_info = $result["picture"];
+			$user->update();
+
 			Auth::login($user);
+
 			return redirect()->intended('/');
 		} else { // if not ask for permission first
 			// get googleService authorization

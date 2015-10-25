@@ -37,19 +37,6 @@ class Transaction extends Model
 	 */
 	protected $dates = ['deleted_at'];
 
-
-
-
-	/**
-	 * Check if the account is active.
-	 *
-	 * @return bool|int
-	 */
-	public function isActive()
-	{
-		return $this->active;
-	}
-
 	public function format($user)
 	{
 		$isCredit = ($user->id == $this->credited_user_id);
