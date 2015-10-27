@@ -202,7 +202,9 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		 *
 		 */
 		
-		foreach (Transaction::where("debited_user_id",$this->id)->get() as $t) {
+		foreach (Transaction::where("debited_user_id",$this->id)
+			->orderBy('created_at','desc')
+			->get() as $t) {
 			 $data["debits"][] = $t->format($this);
 		}
 	   
