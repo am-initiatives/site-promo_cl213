@@ -78,7 +78,7 @@ class Permissions implements GlobalRoutedMiddleware
 					$routeAcl = $this->ressourcesRoutes[$res];
 					if($routeAcl["isRestricted"]($action)){ //si on restreint bien cette route
 						$params = $route->parameters();
-						$params = $routeAcl["getTarget"](isset($params[$res]) ? $params[$res] : $route);
+						$params = $routeAcl["getTarget"](isset($params[$res]) ? $params[$res] : null);
 
 						$name = $action."_".$params["action"];
 						$target = $params["target"];

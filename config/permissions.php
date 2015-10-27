@@ -9,7 +9,7 @@ return 	[
 			"getTarget" => function($item) {
 				return [
 					"action" => "buquage",
-					"target" => $item->$t->credited_user_id
+					"target" => !$item ? null : $item->credited_user_id
 					];
 			},
 		],
@@ -21,7 +21,7 @@ return 	[
 			"getTarget" => function($item) {
 				return [
 					"action" => "buquage_list",
-					"target" => $item->first()->credited_user_id
+					"target" => !$item ? null : $item->first()->credited_user_id
 					];
 			},
 		],
@@ -36,14 +36,14 @@ return 	[
 					case 'update':
 						return [
 							"action" => null,//même les admins ont pas le droit
-							"target" => $post->user->id
+							"target" => !$item ? null : $post->user->id
 							];
 						break;
 					case 'store':
 					case 'destroy':
 						return [
 							"action" => "post",
-							"target" => $post->user->id
+							"target" => !$item ? null : $post->user->id
 							];
 						break;
 				}

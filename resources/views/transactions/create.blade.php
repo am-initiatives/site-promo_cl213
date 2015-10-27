@@ -16,7 +16,7 @@
 				<div class="row">
 					<div class="medium-6 columns">
 						<label>Compte à débiter
-							{!! Form::select('debited', $debitables) !!}
+							{!! Form::select('debited_user_id', $debitables) !!}
 						</label>
 					</div>
 				</div>

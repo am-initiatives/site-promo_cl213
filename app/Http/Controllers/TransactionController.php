@@ -12,6 +12,7 @@ use Auth;
 
 use App\Models\User as User;
 use App\Models\Transaction as Transaction;
+use App\Services\Factories\TransactionFactory;
 
 use Ramsey\Uuid\Uuid;
 
@@ -27,20 +28,14 @@ class TransactionController extends Controller
 	 */
 	public function index()
 	{
-		$transactions = Transaction::where('state','acquited')
+		$transactions = Transaction::acquited()
 			->orderBy('created_at', 'desc')
 			->get();
 
 		$table = [];
 
 		foreach ($transactions as $t) {
-			$table[] = array(
-				'date' => utf8_encode($t->created_at->diffForHumans()),
-				'wording' => $t->wording,
-				'amount' => $t->amount,
-				'credited' => $t->credited->nickname,
-				'debited' => $t->debited->nickname,
-				);
+			$table[] = $t->format();
 		}
 
 		$data['transactions'] = $table;
@@ -55,12 +50,10 @@ class TransactionController extends Controller
 	 */
 	public function create()
 	{
-		$debitables = User::all();
-
 		$data['debitables'] = [];
 
 		//consturction de la liste "id"=>"Nom" pour le select
-		foreach ($debitables as $c) {
+		foreach ( User::all() as $c) {
 
 			if($c->id == Auth::user()->id)
 				//on eclut l'utilisateur
@@ -79,30 +72,14 @@ class TransactionController extends Controller
 	 * @param  Request  $request
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(Request $request,TransactionFactory $factory)
 	{
-		$validator = Validator::make($request->all(), [
-			'debited' => 'required|integer|not_in:'.Auth::user()->id,
-			'wording' => 'required|between:5,255',
-			'amount' => 'required|numeric',
-		]);
-
-		if ($validator->fails()) {
+		if($validator = $factory->build($request->all()))
+		{
 			return redirect()->route('transactions.create')
 						->withErrors($validator)
 						->withInput();
 		}
-
-		$data = array(
-			'wording'		   => $request->get('wording'),
-			'amount'			=> (integer) 100*$request->get('amount'),
-			'credited_user_id'  => Auth::user()->id,
-			'debited_user_id'   => $request->get('debited'),
-			'group_id'		  => Uuid::uuid4(),
-			'state'				=> "pending"
-			);
-
-		Transaction::create($data);
 
 		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
@@ -143,28 +120,21 @@ class TransactionController extends Controller
 		return view("transactions.appro")->with("user",$user);
 	}
 
-	public function storeAppro(Request $request,$user)
+	public function storeAppro(Request $request,TransactionFactory $factory,$user)
 	{
-		$validator = Validator::make($request->all(), [
-			'amount' => 'required|min:1',
-		]);
+		$validator = $factory->build([
+			"wording"	=> "Appro",
+			"amount"	=> $request->get("amount"),
+			"credited_user_id"	=> $user->id,
+			"debited_user_id"	=> User::getBankAccount()->id,
+			"state"		=> "acquited",
+			]);
 
-		if ($validator->fails()) {
-			return redirect()->route('transactions.appro.create')
+		if ($validator) {
+			return redirect()->route('transactions.appro.create',$user)
 						->withErrors($validator)
 						->withInput();
 		}
-
-		$data = array(
-			'wording'		   => "Appro",
-			'amount'			=> (integer) 100*$request->get('amount'),
-			'credited_user_id'  => $user->id,
-			'debited_user_id'   => User::getBankAccount()->id,
-			'group_id'		  => Uuid::uuid4(),
-			'state'				=> "acquited"
-			);
-
-		Transaction::create($data);
 
 		return redirect()->route('users.account.show',[$user->id])->with("credit_tab",true);
 	}

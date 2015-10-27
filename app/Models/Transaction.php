@@ -37,19 +37,30 @@ class Transaction extends Model
 	 */
 	protected $dates = ['deleted_at'];
 
-	public function format($user)
+	public function format($user=null)
 	{
-		$isCredit = ($user->id == $this->credited_user_id);
 		$date = $this->state=="acquited" ? $this->updated_at : $this->created_at;
-		return array(
+		$data =  array(
 			'id'		=> $this->id,
-			'type'	  => $isCredit ? 'credit' : 'debit',
 			'date'	  => utf8_encode($date->formatLocalized('%d %B %Y &agrave; %H:%m')),
 			'wording'   => $this->wording,
-			'amount'	=> ($isCredit ? '' : '-').$this->amount,
-			'account'   => $isCredit ? $this->debited->nickname : $this->credited->nickname,
 			'state'	 => $this->state,
 			);
+
+		if($user){
+			$isCredit = ($user->id == $this->credited_user_id);
+			$data["type"] = $isCredit ? 'credit' : 'debit';
+			$data["account"] = $isCredit ? $this->debited->nickname : $this->credited->nickname;
+			$data["amount"] = ($isCredit ? '' : '-').$this->amount;
+		}
+		else
+		{
+			$data['credited'] = $this->credited->nickname;
+			$data['debited'] = $this->debited->nickname;
+			$data["amount"] = $this->amount;
+		}
+
+		return $data;
 	}
 
 
@@ -68,9 +79,6 @@ class Transaction extends Model
 	{
 		return $this->belongsTo('App\Models\UserWithHidden', 'debited_user_id');
 	}
-
-
-	
 
 	public function scopeAcquited($query)
 	{

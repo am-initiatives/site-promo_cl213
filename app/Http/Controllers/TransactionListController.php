@@ -11,6 +11,7 @@ use Validator;
 
 use App\Models\User as User;
 use App\Models\Transaction as Transaction;
+use App\Services\Factories\TransactionFactory;
 
 use Ramsey\Uuid\Uuid;
 
@@ -44,37 +45,42 @@ class TransactionListController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(Request $request,TransactionFactory $factory)
 	{
+		$redirect = function($validator) {
+			return redirect()->route('transactions.create')
+				->withErrors($validator)
+				->withInput();
+			};
+
 		$validator = Validator::make($request->all(), [
 			'debited' => 'required|array',
-			'wording' => 'required|between:5,255',
-			'amount' => 'required|numeric',
 		]);
 
 		if ($validator->fails()) {
-			return redirect()->route('transactions.create')
-						->withErrors($validator)
-						->withInput();
+			return redirect($validator);
 		}
 
 		$uuid = Uuid::uuid4()->toString() ; //identifiant de la facture
 
-		DB::transaction(function() use ($request,$uuid)
-		{
-			foreach ($request->get("debited") as $debited) {
-				$data = array(
-					'wording'		   => $request->get('wording'),
-					'amount'			=> (integer) 100*$request->get('amount'),
-					'credited_user_id'  => Auth::user()->id,
-					'debited_user_id'   => $debited,
-					'group_id'		  => $uuid,
-					'state'			 => "pending"
-					);
+		DB::beginTransaction();
 
-				Transaction::create($data);
+		foreach ($request->get("debited") as $debited) {
+			$validator = null;
+			$validator = $factory->build([
+				'wording'		   => $request->get('wording'),
+				'amount'			=> $request->get('amount'),
+				'debited_user_id'   => $debited,
+				'group_id'		  => $uuid,
+				]);
+
+			if($validator){
+				DB::rollback();
+				return redirect($validator);
 			}
-		});
+		}
+
+		DB::commit();
 
 		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
@@ -118,9 +124,15 @@ class TransactionListController extends Controller
 			return view("transactions.lists.edit",$data);
 	}
 
-	public function update(Request $request, $group)
+	public function update(Request $request, $group,TransactionFactory $factory)
 	//ajouter une personne après coup
 	{
+		$redirect = function($validator,$id){
+			return redirect()->route('transactionlist.edit',$id)
+						->withErrors($validator)
+						->withInput();
+		};
+
 		$validator = Validator::make($request->all(), [
 			'debited' => 'required|array'
 		]);
@@ -129,23 +141,28 @@ class TransactionListController extends Controller
 		$id = $t->group_id;
 
 		if ($validator->fails()) {
-			return redirect()->route('transactionlist.edit',$id)
-						->withErrors($validator)
-						->withInput();
+			return $redirect($validator,$id);
 		}
 
+		DB::beginTransaction();
+
 		foreach ($request->get("debited") as $debited) {
-			$data = array(
+			$validator = null;
+			$validator = $factory->build(array(
 				'wording'		   => $t->wording,
 				'amount'			=> $t->amount,
 				'credited_user_id'  => $t->credited_user_id,
 				'debited_user_id'   => $debited,
-				'group_id'		  => $id,
-				'state'			 => "pending"
-				);
+				'group_id'		  => $id
+				));
 
-			Transaction::create($data);
+			if ($validator) {
+				DB::rollback();
+				return $redirect($validator,$id);
+			}
 		}
+
+		DB::commit();
 
 		return redirect()->route('users.account.show',[$t->credited_user_id])->with("credit_tab",true);
 	}
