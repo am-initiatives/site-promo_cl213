@@ -198,9 +198,11 @@ return [
 		'Form' => Collective\Html\FormFacade::class,
 		'Html' => Collective\Html\HtmlFacade::class,
 
-		'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
-
-		'Binders' => App\Services\Facades\BindersFacade::class,
+		'OAuth' => Artdarek\OAuth\Facade\OAuth::class,
 	],
 
+
+	"globalmiddlewares" => [
+		"permissions" => "App\Http\GlobalRoutedMiddlewares\Permissions",
+	],
 ];

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\BindersLoader;
+use App\Services\RouterWithPermissions;
 
 use Html;
 use App\Models\User;
@@ -76,9 +77,6 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app->bind('binders', function()
-		{
-		    return new BindersLoader();
-		});
+
 	}
 }

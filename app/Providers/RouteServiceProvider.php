@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
+use Config;
+
 class RouteServiceProvider extends ServiceProvider
 {
 	/**
@@ -45,5 +47,14 @@ class RouteServiceProvider extends ServiceProvider
 		$router->group(['namespace' => $this->namespace], function ($router) {
 			require app_path('Http/routes.php');
 		});
+	}
+
+	public function register()
+	{
+		foreach (Config::get("app.globalmiddlewares") as $name => $classname) {
+			$this->app->singleton($name,$classname);
+		}
+
+		$this->app->singleton('router', 'App\Services\RouterHook');
 	}
 }

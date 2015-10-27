@@ -32,4 +32,21 @@ class Kernel extends HttpKernel
 
 		'active' => \App\Http\Middleware\Activate::class,
 	];
+
+	/**
+	 * Get the route dispatcher callback.
+	 * hack pour override le router
+	 * @return \Closure
+	 */
+	protected function dispatchToRouter()
+	{
+		$this->router = $this->app['router'];
+		
+		foreach ($this->routeMiddleware as $key => $middleware)
+		{
+			$this->router->middleware($key, $middleware);
+		}
+
+		return parent::dispatchToRouter();
+	}
 }

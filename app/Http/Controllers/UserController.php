@@ -26,6 +26,11 @@ class UserController extends Controller
 		return view('users.show', $data);
 	}
 
+	public function parameters($user)
+	{
+		return view('users.parameters')->with("user",$user);
+	}
+
 	/*============================================
 	=            Vues des comptes PGs            =
 	============================================*/

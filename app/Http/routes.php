@@ -38,9 +38,6 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	// User
 	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
 	Route::get('users/{user}', ['as' => 'users.show', 'uses' => 'UserController@show']);
-	Route::get('users/{user}/parameters', ['as'=>'users.parameters', function () {
-		return view('users.parameters');
-	}]);
 
 	// Posts
 	Route::resource('posts', 'PostController',
@@ -69,24 +66,39 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
 
 	// Login en tant que
-	Route::get('auth/as/{id}', ['as' => 'auth.log_as', 'uses' => function ($id) {
-		if(auth()->user()->isAllowed()) {
-			auth()->loginUsingId($id);
-			return redirect()->route('home');
-		}
+	Route::get('auth/as/{user}', ['as' => 'auth.log_as', 'uses' => function ($user) {
+		auth()->login($user);
+		return redirect()->route('home');
 	}]);
 });
 
-/*================================
-=            Bindings            =
-================================*/
+/*======================================
+=            Model Bindings            =
+======================================*/
 
-Route::bind('user',Binders::get("user"));
-Route::bind('transactions',Binders::get("transaction"));
-Route::bind('transactionlist',Binders::get("transactionList"));
-Route::bind('posts',Binders::get("post"));
+Route::bind('user',function($id){
+	return App\Models\User::findOrFail($id);
+});
 
-/*=====  End of Bindings  ======*/
+Route::bind('transactions',function($id){
+	return App\Models\Transaction::findOrFail($id);
+});
+
+Route::bind('transactionlist',function($id){
+	$group = App\Models\Transaction::where("group_id",$id);
+
+	if($group->count()==0){
+		abort(404);
+	}
+
+	return $group;
+});
+
+Route::bind('posts',function($id){
+	return App\Models\Post::findOrFail($id);
+});
+
+/*=====  End of Model Bindings  ======*/
 
 
 

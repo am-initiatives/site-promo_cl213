@@ -15,11 +15,9 @@ class PostController extends Controller
 
 	public function store(Request $request)
 	{
-		if (Auth::user()->isAllowed('post')) {
-			$inputs = $request->only(['category', 'body']);
+		$inputs = $request->only(['category', 'body']);
 
-			Post::create(array_merge($inputs, ['user_id' => Auth::user()->id]));
-		}
+		Post::create(array_merge($inputs, ['user_id' => Auth::user()->id]));
 
 		return back();
 	}

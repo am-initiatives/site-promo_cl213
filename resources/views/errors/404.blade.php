@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.config')
 
 @section('content')
 <div class="alert-box">

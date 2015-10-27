@@ -34,6 +34,7 @@
 					<ul class="dropdown">
 						<li><a href="{{ route('users.accounts') }}">Liste des comptes</a></li>
 						@if($user->isAllowed("harpags"))
+						{{-- en vrai tout le mond y a accès juste une question d'affichage --}}
 						<li><a href="{{ route('transactions.index') }}">Derniers buquage</a></li>
 						@endif
 						<li><a href="{{ route('transactions.create') }}">Faire un buquage</a></li>

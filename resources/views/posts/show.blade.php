@@ -1,5 +1,5 @@
 
-@if($user->isAllowed('post'))
+@if($user->isAllowed('store_post'))
 <div class="panel post">
 	@include('posts.form')
 </div>
@@ -18,15 +18,15 @@
 			<span style="color: #777">{{ Html::diff($post->created_at) }}</span>
 		</div>
 		</a>
-		@if($user->isAllowed('edit_posts', $post->user_id))
 		<div class="right text-right">
 			@if($user->isAllowed(null, $post->user_id))
 			<a href="javascript:void(0)" class="edit_button" post_id="{{ $post->id }}">Editer</a>
 			<span> - </span>
 			@endif
+			@if($user->isAllowed('destroy_post', $post->user_id))
 			<a href="javascript:void(0)" class="del_button" post_id="{{ $post->id }}">Supprimer</a>
+			@endif
 		</div>
-		@endif
 	</div>
 	<div id="post_{{ $post->id }}">
 		{!! $post->showBody() !!}

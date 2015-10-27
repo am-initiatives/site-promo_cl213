@@ -11,7 +11,7 @@
 	</div>
 	<div class="large-5 columns" style="text-align:right">
 		<ul class="button-group">
-			@if(Auth::user()->isAllowed("createAppro_appro",App\Models\User::getBankAccount()->id))
+			@if(Auth::user()->isAllowed("create_appro",App\Models\User::getBankAccount()->id))
 			<li>
 				<a href="{{ route('transactions.appro.create', $user->id) }}" class="button small success">Approvisionner</a>
 			</li>
@@ -48,7 +48,7 @@
 						<td style="text-align:center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
-							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buqua,$user->idge"))
+							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buquage",$user->idge))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
 									{!! Form::hidden("user",$user->id) !!}
