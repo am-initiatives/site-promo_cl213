@@ -33,6 +33,6 @@
 
 <hr style="margin-top:0px" />
 
-<a href="google" class="small-12 medium radius alert button">Se connecter avec Gadz.org</a>
+<a href="{{route('auth.google')}}" class="small-12 medium radius alert button">Se connecter avec Gadz.org</a>
 
 @endsection
