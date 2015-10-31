@@ -11,6 +11,8 @@ use Auth;
 use App\Models\User;
 use Carbon\Carbon;
 
+use Hash;
+
 class ConfigController extends Controller
 {
 	/**
@@ -40,9 +42,14 @@ class ConfigController extends Controller
 
 		$password = $request->input('password');
 
-		$user->connected_at = Carbon::now();
+		$user = Auth::user();
+
 		$user->password = Hash::make($password);
-		$user->save();
+		if($user->update()){
+			return 'OK';
+		}
+		else
+			return "Validation error";
 	}
 
 	/**
@@ -56,7 +63,12 @@ class ConfigController extends Controller
 		
 		$pos = array_map('floatval', $location);
 
-		if (Auth::user()->update(['pos'=>json_encode($pos)]))
+		$user = Auth::user();
+
+		$user->connected_at = Carbon::now();
+		$user->pos = json_encode($pos);
+
+		if ($user->update())
 			return 'OK';
 		else
 			return 'Validation error';
