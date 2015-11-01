@@ -6,7 +6,7 @@ return 	[
 			'isRestricted'	=> function($action){
 				return $action != "show" && $action != "index";
 			},
-			"getTarget" => function($item) {
+			"getTarget" => function($item,$action) {
 				return [
 					"action" => "buquage",
 					"target" => !$item ? null : $item->credited_user_id
@@ -18,7 +18,7 @@ return 	[
 			"isRestricted"	=> function($action){
 				return $action != "show" && $action != "index";
 			},
-			"getTarget" => function($item) {
+			"getTarget" => function($item,$action) {
 				return [
 					"action" => "buquage_list",
 					"target" => !$item ? null : $item->first()->credited_user_id
@@ -30,20 +30,20 @@ return 	[
 			"isRestricted"	=> function($action){
 				return true;
 			},
-			"getTarget" => function($post) {
+			"getTarget" => function($post,$action) {
 				switch ($action) {
 					case 'edit':
 					case 'update':
 						return [
 							"action" => null,//même les admins ont pas le droit
-							"target" => !$item ? null : $post->user->id
+							"target" => !$post ? null : $post->user->id
 							];
 						break;
 					case 'store':
 					case 'destroy':
 						return [
 							"action" => "post",
-							"target" => !$item ? null : $post->user->id
+							"target" => !$post ? null : $post->user->id
 							];
 						break;
 				}
@@ -53,7 +53,7 @@ return 	[
 			"isRestricted"	=> function($action){
 				return false;
 			},
-			"getTarget" => function($post) {},
+			"getTarget" => function($post,$action) {},
 		],
 	],
 
