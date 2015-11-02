@@ -5,7 +5,7 @@
 	<head>
 		<title>CL213 | Carte</title>
 
-		<link rel="stylesheet" href="{{ url('foundation-5.5.2/css/foundation.css') }}" />
+		<link rel="stylesheet" href="{{ url('foundation-5.5.3/css/foundation.css') }}" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 		<style type="text/css">
@@ -30,6 +30,6 @@
 		</nav>
 		@include('google.map')
 
-		<script src="{{ URL::to('foundation-5.5.2/js/vendor/jquery.js') }}"></script>
+		<script src="{{ URL::to('foundation-5.5.3/js/vendor/jquery.js') }}"></script>
 	</body>
 </html>
