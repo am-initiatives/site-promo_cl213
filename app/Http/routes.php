@@ -59,6 +59,8 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);
 
+	Route::resource('event', 'EventController');
+
 	// Map plein écran
 	Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);
 	Route::get('tools/map/full', ['as'=>'tools.map.full', 'uses' => 'ToolController@mapFull']);
@@ -96,6 +98,10 @@ Route::bind('transactionlist',function($id){
 
 Route::bind('posts',function($id){
 	return App\Models\Post::findOrFail($id);
+});
+
+Route::bind('event',function($id){
+	return App\Models\Event::findOrFail($id);
 });
 
 /*=====  End of Model Bindings  ======*/

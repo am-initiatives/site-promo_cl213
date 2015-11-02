@@ -49,11 +49,24 @@ return 	[
 				}
 			},
 		],
+
 		"user" => [
 			"isRestricted"	=> function($action){
 				return false;
 			},
 			"getTarget" => function($post,$action) {},
+		],
+
+		"event" => [
+			"isRestricted"	=> function($action){
+				return $action != "show" && $action != "index";
+			},
+			"getTarget" => function($event,$action) {
+				return [
+					"action" => "event".(!$event ? "" : "_".$event->id),
+					"target" => null,
+				];
+			},
 		],
 	],
 
