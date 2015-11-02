@@ -89,6 +89,19 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		else
 			return false;
 	}
+
+	public function addPermission($perm)
+	{
+		$permissions = @json_decode($this->permissions, true);
+
+		if(!in_array($perm, $permissions)){ //si on n'a pas déjà cette permission
+			$permissions[] = $perm;
+			$this->permissions = @json_encode($permissions,true);
+			return $this->update();
+		}
+
+		return true;
+	}
 	
 	/*=====  End of Permissions  ======*/
 	
