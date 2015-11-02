@@ -46,7 +46,6 @@
 			<div class="columns small-12">
 			{!! Form::open(array('route' => 'configs.first.location','id' => 'location_form')) !!}
 				<input type="hidden" name="location">
-				<input type="button" class="left button small info mover" value="Passer">
 				<input type="submit" name="save_location" class="right button small" value="Enregistrer">
 			{!! Form::close() !!}
 			</div>
