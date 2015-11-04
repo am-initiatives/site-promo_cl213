@@ -79,24 +79,31 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 		//check des permissions
 
-		return $this->hasPermission($required) or $this->hasPermission('admin');
+		return $this->hasPermission($required) or $this->hasPermission('all');
 	}
 
 	public function hasPermission($perm)
 	{
-		if ( $permissions = @json_decode($this->permissions, true) )
-			return in_array($perm, $permissions);
-		else
+		if ( $roles = @json_decode($this->roles, true) ){
+			foreach ($roles as $role) {
+				if(Permission::where("role",$role)->where("permission",$perm)->count()!=0){
+					return true;
+				}
+			}
 			return false;
+		}
+		else{
+			return false;
+		}
 	}
 
-	public function addPermission($perm)
+	public function addRole($role)
 	{
-		$permissions = @json_decode($this->permissions, true);
+		$roles = @json_decode($this->roles, true);
 
-		if(!in_array($perm, $permissions)){ //si on n'a pas déjà cette permission
-			$permissions[] = $perm;
-			$this->permissions = @json_encode($permissions,true);
+		if(!in_array($perm, $roles)){ //si on n'a pas déjà ce role
+			$roles[] = $perm;
+			$this->roles = @json_encode($roles,true);
 			return $this->update();
 		}
 
