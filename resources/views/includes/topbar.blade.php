@@ -29,6 +29,7 @@
 			<ul class="right">
 				<li><a href="{{ route('tools.map') }}"><i class="fa fa-map-o"></i> Carte</a></li>
 				<li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Annuaire</a></li>
+				<li><a href="{{ route('event.index') }}"><i class="fa fa-users"></i> Evènements</a></li>
 				<li class="has-dropdown">
 					<a href="#"><i class="fa fa-btc"></i> Buqueur</a>
 					<ul class="dropdown">

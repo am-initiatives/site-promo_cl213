@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Event;
+use App\Models\User;
 
 use Auth;
 use Validator;
@@ -82,6 +83,31 @@ class EventController extends Controller
 		}
 
 		//manque création du compte associé
+		$user = new User();
+		$user->email = preg_replace('/\s+/', '_', strtolower($data["name"]))."@cl213.fr";
+		$user->phone = "";
+		$user->first_name = $data["name"];
+		$user->last_name = $data["name"];
+		$user->nickname = $data["name"];
+		$user->info = "";
+		$user->permissions = "";
+		$user->hidden = 1;
+		$user->active = 0;
+
+		if(!$user->save()){
+			DB::rollback();
+			return redirect()->route('event.create')
+						->withErrors(["save"=>"User save error"])
+						->withInput();
+		}
+
+		$event->user_id = $user->id;
+		if(!$event->update()){
+			DB::rollback();
+			return redirect()->route('event.create')
+						->withErrors(["save"=>"User save error"])
+						->withInput();
+		}
 
 		DB::commit();
 

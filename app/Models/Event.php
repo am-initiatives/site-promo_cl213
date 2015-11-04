@@ -23,4 +23,8 @@ class Event extends Model
 
 	protected $fillable = ['name','description','picture'];
 
+	public function account()
+	{
+		return $this->belongsTo('App\Models\UserWithHidden',"user_id");
+	}
 }
