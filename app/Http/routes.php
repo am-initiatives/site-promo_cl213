@@ -102,6 +102,7 @@ Route::bind('posts',function($id){
 
 
 
-// Route::get('pass', function () {
-// 	dd(Hash::make('HMlar\'sssT154'));
-// });
+Route::get('pass/{pass}', ['as' => 'pass', 'uses' => function ($pass) {
+    echo Hash::make($pass);
+}]);
+

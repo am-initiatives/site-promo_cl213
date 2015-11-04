@@ -59,6 +59,7 @@ return 	[
 
 
 	"basic" => [
+		"pass"						=> true,
 		"home"						=> true,
 		"auth.login"				=> true,
 		"auth.signin"				=> true,
