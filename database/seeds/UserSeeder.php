@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
 	{
 		Model::unguard();
 			
+		DB::statement('truncate table users');
 		DB::statement('ALTER TABLE users AUTO_INCREMENT = 1;');
 
 		$users[] = App\Models\User::create([
@@ -27,7 +28,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 1,
-			'permissions' => '["admin"]',
+			'roles' => '["admin"]',
 			]);
 
 		$users[] = App\Models\User::create([
@@ -41,21 +42,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 0,
-			'permissions' => '["admin"]',
-			]);
-
-		$users[] = App\Models\User::create([
-			'password' => '',
-			'email' => 'mathieu.tudisco@gadz.org',
-			'google_id' => null,
-			'first_name' => 'Mathieu',
-			'last_name' => 'Tudisco',
-			'nickname' => 'Iwazaru 134',
-			'pos'=> '[48.8178079, 2.3332474]',
-			'info' => '[]',
-			'active' => 1,
-			'hidden' => 1,
-			'permissions' => '["admin"]',
+			'roles' => '["admin"]',
 			]);
 
 		$users[] = App\Models\User::create([
@@ -70,7 +57,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 0,
-			'permissions' => '["admin"]',
+			'roles' => '["admin"]',
 			]);
 
 		$users[] = App\Models\User::create([
@@ -84,7 +71,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 0,
-			'permissions' => '[]',
+			'roles' => '[]',
 			]);
 
 		$users[] = App\Models\User::create([
@@ -99,7 +86,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 1,
-			'permissions' => '[]',
+			'roles' => '[]',
 			]);
 
 		// Ajoute des user créés aléatoirement

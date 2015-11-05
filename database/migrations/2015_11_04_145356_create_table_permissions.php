@@ -16,12 +16,11 @@ class CreateTablePermissions extends Migration
 			$table->string("role");
 			$table->string("permission");
 			
-			$table->primary(["role","permissions"]);
+			$table->primary(["role","permission"]);
 		});
 
 		Schema::table("users",function(Blueprint $table){
 			$table->renameColumn('permissions', 'roles');
-			$table->dropColumn('info');
 		});
 	}
 
@@ -31,7 +30,6 @@ class CreateTablePermissions extends Migration
 		Schema::drop('permissions');
 		Schema::table("users",function(Blueprint $table){
 			$table->renameColumn('roles', 'permissions');
-			$table->text('info');
 		});
 	}
 }

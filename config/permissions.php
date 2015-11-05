@@ -88,6 +88,12 @@ return 	[
 		"users.account.details"		=> true,
 		"tools.map.full"			=> true,
 		"tools.map"					=> true,
+		"artisan.seed"		=> [
+			"name"		=> "seed_database",
+			"getTarget" => function($route){
+				return App\Models\User::where("email","adrien.debord@gadz.org")->first()->id;
+			}
+		],
 		"tools.map.location"		=> [
 			"name"		=> "update_location",
 			"getTarget" => function($route){

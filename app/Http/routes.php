@@ -72,6 +72,14 @@ Route::group(['middleware' => ['auth', 'active']], function()
 		auth()->login($user);
 		return redirect()->route('home');
 	}]);
+
+	Route::get('artisan/seed/{seeder}',['as'=>"artisan.seed","uses"=>function($seeder){
+		$exitCode = Artisan::call('db:seed', [
+			'--class' => $seeder
+		]);
+
+		var_dump($exitCode);
+	}]);
 });
 
 /*======================================
@@ -109,6 +117,6 @@ Route::bind('event',function($id){
 
 
 Route::get('pass/{pass}', ['as' => 'pass', 'uses' => function ($pass) {
-    echo Hash::make($pass);
+	echo Hash::make($pass);
 }]);
 
