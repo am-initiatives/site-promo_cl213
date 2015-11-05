@@ -69,10 +69,11 @@ Route::group(['middleware' => ['auth', 'active']], function()
 
 	// Login en tant que
 	Route::get('auth/as/{user}', ['as' => 'auth.log_as', 'uses' => function ($user) {
-		auth()->login($user);
+		App::make('impersonator')->impersonate($user);
 		return redirect()->route('home');
 	}]);
 
+	//seed de la db
 	Route::get('artisan/seed/{seeder}',['as'=>"artisan.seed","uses"=>function($seeder){
 		$exitCode = Artisan::call('db:seed', [
 			'--class' => $seeder

@@ -101,8 +101,8 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	{
 		$roles = @json_decode($this->roles, true);
 
-		if(!in_array($perm, $roles)){ //si on n'a pas déjà ce role
-			$roles[] = $perm;
+		if(!in_array($role, $roles)){ //si on n'a pas déjà ce role
+			$roles[] = $role;
 			$this->roles = @json_encode($roles,true);
 			return $this->update();
 		}
@@ -150,16 +150,25 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public function getBalance()
 	{
-		return $this->credits->sum('amount') - $this->debits->sum('amount');
+		return $this->credits()->acquited()->sum('amount') - $this->debits()->acquited()->sum('amount');
 	}
 
+	public function spendings()
+	{
+		return $this->debits()->acquited()->sum('amount');
+	}
+
+	public function gains()
+	{
+		return $this->credits()->acquited()->sum('amount');
+	}
 
 	public function transactionsDetail()
 	//historique des transactions effectuées
 	{
 
-		$credits = $this->credits;
-		$debits = $this->debits;
+		$credits = $this->credits->acquited();
+		$debits = $this->debits->acquited();
 		$transactions = $debits->merge($credits);
 
 		$transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
@@ -222,9 +231,7 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		 *
 		 */
 		
-		foreach (Transaction::where("debited_user_id",$this->id)
-			->orderBy('created_at','desc')
-			->get() as $t) {
+		foreach ($this->debits()->orderBy('created_at','desc')->get() as $t) {
 			 $data["debits"][] = $t->format($this);
 		}
 	   
@@ -236,30 +243,17 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	/*=================================
 	=            Relations            =
 	=================================*/
-	
-
-	public function toCredits()
-	//crédits à venir
-	{
-		return $this->hasMany('App\Models\Transaction', 'credited_user_id')->pending();
-	}
-
-	public function toDebits()
-	//débits à venir
-	{
-		return $this->hasMany('App\Models\Transaction', 'debited_user_id')->pending();
-	}
 
 	public function credits()
 	//crédits actifs
 	{
-		return $this->hasMany('App\Models\Transaction', 'credited_user_id')->acquited();
+		return $this->hasMany('App\Models\Transaction', 'credited_user_id');
 	}
 
 	public function debits()
 	//débits actifs
 	{
-		return $this->hasMany('App\Models\Transaction', 'debited_user_id')->acquited();
+		return $this->hasMany('App\Models\Transaction', 'debited_user_id');
 	}
 
 

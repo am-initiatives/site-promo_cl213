@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 use App\Models\Event;
-use App\Models\User;
+use App\Models\Permission;
+
+use App\Services\Impersonator;
 
 use Auth;
 use Validator;
@@ -62,56 +65,50 @@ class EventController extends Controller
 
 		DB::beginTransaction();
 
-		if(!($event = Event::create($data))){
-			DB::rollback();
-			return redirect()->route('event.create')
-						->withErrors(["save"=>"Event save error"])
-						->withInput();
+		//on crée l'évent qui n'est en fait qu'un utilisateur caché
+		$event = new Event();
+		$event->email = preg_replace('/\s+/', '_', strtolower($data["name"]))."@cl213.fr";
+		$event->phone = "";
+		$event->first_name = $data["name"];
+		$event->last_name = $data["name"];
+		$event->nickname = $data["name"];
+		$event->info = $data["description"];
+		$event->roles = '["event"]';
+		$event->hidden = 1;
+		$event->active = 1;
+		$event->connected_at = Carbon::now();
+
+		if(!$event->save()){
+			return $this->redirectCreate("Event save error");
 		}
 
 		//on authorise l'utilisateur
+		$role = "admin_event_".$event->id;
 		$user = Auth::user();
-		if(!$user->hasPermission("admin")){
-			foreach (["edit","update","destroy"] as $action) {
-				if(!$user->addPermission($action."_event_".$event->id)){
-					DB::rollback();
-					return redirect()->route('event.create')
-								->withErrors(["save"=>"User permission update error"])
-								->withInput();
+		if(!$user->hasPermission("all")){
+				if(!$user->addRole($role)){
+					return $this->redirectCreate("User permission update error");
 				}
+		}
+
+		//on donne les droits au role
+		foreach (["destroy","log_as"] as $action) {
+			if(!Permission::add($role,$action."_event_".$event->id)){
+				return $this->redirectCreate("User permission update error");
 			}
-		}
-
-		//manque création du compte associé
-		$user = new User();
-		$user->email = preg_replace('/\s+/', '_', strtolower($data["name"]))."@cl213.fr";
-		$user->phone = "";
-		$user->first_name = $data["name"];
-		$user->last_name = $data["name"];
-		$user->nickname = $data["name"];
-		$user->info = "";
-		$user->permissions = "";
-		$user->hidden = 1;
-		$user->active = 0;
-
-		if(!$user->save()){
-			DB::rollback();
-			return redirect()->route('event.create')
-						->withErrors(["save"=>"User save error"])
-						->withInput();
-		}
-
-		$event->user_id = $user->id;
-		if(!$event->update()){
-			DB::rollback();
-			return redirect()->route('event.create')
-						->withErrors(["save"=>"User save error"])
-						->withInput();
 		}
 
 		DB::commit();
 
 		return redirect()->route('event.show',$event);
+	}
+
+	private function redirectCreate($msg)
+	{
+		DB::rollback();
+		return redirect()->route('event.create')
+					->withErrors(["save"=>$msg])
+					->withInput();
 	}
 
 	/**
@@ -133,9 +130,11 @@ class EventController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit($event,Impersonator $imp)
 	{
-		//
+		$imp->impersonate($event);
+
+		return view("events.edit");
 	}
 
 	/**

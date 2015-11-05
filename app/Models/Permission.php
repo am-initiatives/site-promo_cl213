@@ -14,6 +14,8 @@ class Permission extends Model
 {
 	protected $table = 'permissions';
 
+	public $timestamps = false;
+
 	protected $fillable = ['role',"permission"];
 
 	public function users()

@@ -22,7 +22,8 @@ class Activate
 	{
 		//si désactivé => on envoie chier
 		if (!$this->auth->user()->active) {
-			return response('Ton compte est désactivé. Un message à été envoyé aux DDP\'s et tu seras contacté par mail lorsque ton compte aura été ré-activé.');
+			return response('Ton compte est désactivé. Contacte un DDP\'s');
+			// Un message à été envoyé aux DDP\'s et tu seras contacté par mail lorsque ton compte aura été ré-activé.');
 		}
 
 		// Première connexion

@@ -4,7 +4,7 @@ return 	[
 	"ressources" => [
 		"transactions" => [
 			'isRestricted'	=> function($action){
-				return $action != "show" && $action != "index";
+				return !in_array($action,["show","create","index","store"]) ;
 			},
 			"getTarget" => function($item,$action) {
 				return [
@@ -16,7 +16,7 @@ return 	[
 
 		"transactionlist" => [
 			"isRestricted"	=> function($action){
-				return $action != "show" && $action != "index";
+				return !in_array($action,["show","create","index","store"]) ;
 			},
 			"getTarget" => function($item,$action) {
 				return [

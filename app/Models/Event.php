@@ -2,29 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//un évènement n'est qu'un utilisateur avec comme role "event"
 
-class Event extends Model
+class Event extends UserWithHidden
 {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'events';
-
-	/**
-	 * The attributes that are not mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $protected = [];
-
-	protected $fillable = ['name','description','picture'];
-
-	public function account()
+	public function newQuery()
 	{
-		return $this->belongsTo('App\Models\UserWithHidden',"user_id");
+		return parent::newQuery()->where("roles","like",'%"event"%');
 	}
 }

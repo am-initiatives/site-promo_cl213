@@ -16,6 +16,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
+use App\Services\Impersonator;
+
 use Collective\Html\HtmlFacade as Html;
 
 class AuthController extends Controller
@@ -31,7 +33,10 @@ class AuthController extends Controller
 	|
 	*/
 
-	use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+	use AuthenticatesAndRegistersUsers {
+		getLogout as parentGetLogout;
+	}
+	use ThrottlesLogins;
 
 	protected $redirectPath = '/';
 	protected $loginPath = 'auth/login';
@@ -111,7 +116,7 @@ class AuthController extends Controller
 			$user = User::where('google_id', $result['id'])->first();
 			// Si l'utilisateur a une adresse Gadz.org, on vérifie si son adresse est connue
 			if (!$user) {
-				if (isset($result['hd']) and $result['hd'] == 'gadz.org') {
+				if (isset($result['hd']) and in_array($result['hd'],['gadz.org','m4am.net'])){
 					$user = User::where('email', $result['email'])->first();
 
 					if($user) {
@@ -140,6 +145,19 @@ class AuthController extends Controller
 
 			// return to google login url
 			return redirect((string)$url);
+		}
+	}
+
+	public function getLogout(Impersonator $imp)
+	{
+		$user = Auth::user();
+		if($user && $imp->isImpersonating()){
+			$imp->removeImpersonation();
+			return redirect()->route('home');
+		}
+		else
+		{
+			return $this->parentGetLogout();
 		}
 	}
 }
