@@ -10,7 +10,12 @@
 
 		<link rel="stylesheet" href="{{ URL::to('template/master.css') }}" />
 	</head>
-	<body>
+	<body
+	
+	@if(App::make("impersonator")->isImpersonating())
+		style = "background-color:yellow"
+	@endif
+	>
 		<div id="header">
 			@include('includes.topbar')
 		</div>
