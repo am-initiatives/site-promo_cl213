@@ -6,7 +6,9 @@
 			<div>
 				<a href="{{ route('users.account.show', $user->id) }}">
 					<div class="panel" style="text-align: center;">
-						Solde : {!! Html::solde($user->getBalance() / 100, '€') !!}
+						Solde : {!! Html::solde($user->getBalance() / 100, '€') !!}<br>
+						A payer : {!! Html::solde(-$user->debits()->pending()->sum("amount") / 100, '€') !!}<br>
+						A Recevoir : {!! Html::solde($user->credits()->pending()->sum("amount") / 100, '€') !!}
 					</div>
 				</a>
 			</div>
