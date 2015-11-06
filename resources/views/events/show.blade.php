@@ -5,7 +5,10 @@
 <div class="panel">
 	<div class="row">
 		<div class="column medium-5">
-			<h3>{{$event->getTitle()}}</h3>
+			<div class="clearfix" style="position:relative">
+			<img src="{{$event->getPictureLink()}}" style="top:0;bottom:0;height:200px">
+			<h3 style="position:absolute;top:0;background-color:white;">{{$event->getTitle()}}</h3>
+			</div>
 			<div>
 				Solde de l'évènement <strong>{!! Html::solde($event->getBalance() / 100, '€') !!}</strong>
 			</div>
@@ -16,8 +19,10 @@
 		</div>
 		@endif
 	</div>
-	<img src="{{$event->getPictureLink()}}">
-	<p>{{$event->info}}</p>
+	<fieldset>
+		<legend>Description</legend>
+		<div class="row">{{$event->info}}</div>
+	</fieldset>
 
 </div>
 
