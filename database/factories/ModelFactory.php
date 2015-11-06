@@ -23,6 +23,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 		'active' => 1,
 		'hidden' => 0,
 		'roles' => '[]',
+		'phone' => $faker->phoneNumber
 	];
 });
 
