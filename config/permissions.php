@@ -117,14 +117,14 @@ return 	[
 			"name"		=> "create_appro",
 			"param"		=> "user",
 			'getTarget'	=> function($user){
-				return $user->id;
+				return null;
 			}
 		],
 		"transactions.appro.store" => [
 			"name"		=> "store_appro",
 			"param"		=> "user",
 			"getTarget"	=> function($user){
-				return $user->id;
+				return null;
 			}
 		],
 		"transactions.outgo.create" => [
