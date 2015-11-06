@@ -53,6 +53,11 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::resource('transactions', 'TransactionController',
 				['except' => ['edit','show']]);
 
+	//dépenses
+	Route::get('users/outgo/create',['as' => 'transactions.outgo.create', 'uses' => "TransactionController@createOutgo"]);
+	Route::post('users/outgo/store',['as' => 'transactions.outgo.store', 'uses' => "TransactionController@storeOutgo"]);
+
+	//appros
 	Route::get('users/{user}/appro/create',['as' => 'transactions.appro.create', 'uses' => "TransactionController@createAppro"]);
 	Route::post('users/{user}/appro/store',['as' => 'transactions.appro.store', 'uses' => "TransactionController@storeAppro"]);
 

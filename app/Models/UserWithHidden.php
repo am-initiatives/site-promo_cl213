@@ -150,17 +150,17 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public function getBalance()
 	{
-		return $this->credits()->acquited()->sum('amount') - $this->debits()->acquited()->sum('amount');
+		return intval($this->credits()->acquited()->sum('amount') - $this->debits()->acquited()->sum('amount'));
 	}
 
 	public function spendings()
 	{
-		return $this->debits()->acquited()->sum('amount');
+		return intval($this->debits()->acquited()->sum('amount'));
 	}
 
 	public function gains()
 	{
-		return $this->credits()->acquited()->sum('amount');
+		return intval($this->credits()->acquited()->sum('amount'));
 	}
 
 	public function transactionsDetail()

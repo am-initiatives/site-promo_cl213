@@ -31,6 +31,8 @@ class RouteServiceProvider extends ServiceProvider
 
 		$router->pattern('user', '[0-9]+');
 		$router->pattern('transactions', '[0-9]+');
+		$router->pattern('posts', '[0-9]+');
+		$router->pattern('events', '[0-9]+');
 		$router->pattern('transactionlist', '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}');
 
 		parent::boot($router);

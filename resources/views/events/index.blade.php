@@ -19,7 +19,7 @@
 	<table class="small-12">
 		<caption>Dernières opérations</caption>
 		<thead>
-			<th>Date</th>
+			<th>Date de création</th>
 			<th>Libellé</th>
 			<th>Dépenses</th>
 			<th></th>
@@ -31,7 +31,7 @@
 				<?php 
 					$spendings = $event->spendings();
 					$gains = $event->gains();
-					if($spendings!= 0 && $spendings<$gains)
+					if($spendings!= 0 && $spendings>$gains)
 						$deficit = ($spendings-$gains)/($spendings)*100;
 					else
 						$deficit = 0;

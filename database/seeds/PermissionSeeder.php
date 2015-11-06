@@ -15,6 +15,8 @@ class PermissionSeeder extends Seeder
 		DB::table('permissions')->insert(
 			array(
 				array('role' => "admin", "permission"=>"all"),
+				array('role' => "event", "create_outgo"=>"all"),
+				array('role' => "event", "store_outgo"=>"all"),
 			)
 		);
 	}

@@ -39,6 +39,9 @@
 						<li><a href="{{ route('transactions.index') }}">Derniers buquage</a></li>
 						@endif
 						<li><a href="{{ route('transactions.create') }}">Faire un buquage</a></li>
+						@if($user->isAllowed("create_outgo"))
+						<li><a href="{{ route('transactions.outgo.create') }}">Déclarer une dépense</a></li>
+						@endif
 					</ul>
 				</li>
 

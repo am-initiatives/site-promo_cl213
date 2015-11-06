@@ -138,4 +138,29 @@ class TransactionController extends Controller
 
 		return redirect()->route('users.account.show',[$user->id])->with("credit_tab",true);
 	}
+
+	public function createOutgo()
+	{
+		return view("transactions.outgo");
+	}
+
+	public function storeOutgo(Request $request,TransactionFactory $factory)
+	{
+		$user = Auth::user();
+		$validator = $factory->build([
+			"wording"	=> $request->get("wording"),
+			"amount"	=> $request->get("amount"),
+			"credited_user_id"	=> User::getBankAccount()->id,
+			"debited_user_id"	=> $user->id,
+			"state"		=> "acquited",
+			]);
+
+		if ($validator) {
+			return redirect()->route('transactions.outgo.create',$user)
+						->withErrors($validator)
+						->withInput();
+		}
+
+		return redirect()->route('users.account.show',[$user->id]);
+	}
 }

@@ -19,7 +19,8 @@ class TransactionFactory
 		if(!isset($params["state"])) $params["state"] = "pending";
 
 		$validator = Validator::make($params, [
-			'debited_user_id' => 'required|integer|not_in:'.Auth::user()->id,
+			'credited_user_id' => 'required|integer',
+			'debited_user_id' => 'required|integer|not_in:'.$params["credited_user_id"],
 			'wording' => 'required|between:5,255',
 			'amount' => 'required|min:1',
 		]);

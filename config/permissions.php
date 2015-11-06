@@ -120,6 +120,18 @@ return 	[
 				return $user->id;
 			}
 		],
+		"transactions.outgo.create" => [
+			"name"		=> "create_outgo",
+			'getTarget'	=> function($user){
+				return null;
+			}
+		],
+		"transactions.outgo.store" => [
+			"name"		=> "store_outgo",
+			"getTarget"	=> function($user){
+				return null;
+			}
+		],
 		"auth.log_as" => [
 			"name"		=> "log_as",
 			"param"		=> "user",
