@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	//appros
 	Route::get('users/{user}/appro/create',['as' => 'transactions.appro.create', 'uses' => "TransactionController@createAppro"]);
 	Route::post('users/{user}/appro/store',['as' => 'transactions.appro.store', 'uses' => "TransactionController@storeAppro"]);
+	Route::get('transactionlist/appro/create',['as' => 'transactionlist.appro.create', 'uses' => "TransactionListController@createAppro"]);
+	Route::post('transactionlist/appro/store',['as' => 'transactionlist.appro.store', 'uses' => "TransactionListController@storeAppro"]);
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);

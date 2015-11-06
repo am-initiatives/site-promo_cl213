@@ -33,4 +33,15 @@ class TransactionFactory
 
 		Transaction::create($params);
 	}
+
+	public function buildAppro($wording,$amount,$uid)
+	{
+		return $this->build([
+			"wording"	=> "Appro ".$wording,
+			"amount"	=> $amount,
+			"credited_user_id"	=> $uid,
+			"debited_user_id"	=> \App\Models\User::getBankAccount()->id,
+			"state"		=> "acquited",
+			]);
+	}
 }

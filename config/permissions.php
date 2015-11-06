@@ -27,7 +27,7 @@ return 	[
 			},
 			"getTarget" => function($item,$action) {
 				return [
-					"action" => "buquage_list",
+					"action" => "buquage",
 					"target" => !$item ? null : $item->first()->credited_user_id
 					];
 			},
@@ -123,6 +123,18 @@ return 	[
 		"transactions.appro.store" => [
 			"name"		=> "store_appro",
 			"param"		=> "user",
+			"getTarget"	=> function($user){
+				return null;
+			}
+		],
+		"transactionlist.appro.create" => [
+			"name"		=> "create_appro",
+			'getTarget'	=> function($user){
+				return null;
+			}
+		],
+		"transactionlist.appro.store" => [
+			"name"		=> "store_appro",
 			"getTarget"	=> function($user){
 				return null;
 			}

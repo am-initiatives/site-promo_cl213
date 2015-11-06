@@ -7,7 +7,7 @@
 
 	<div class="row">
 		<label>
-			Intitulé<br>
+			Libellé<br>
 			<i>(le buquage s'appelera "Appro &lt;intitulé&gt;")</i>
 			{!! Form::text("wording") !!}
 		</label>

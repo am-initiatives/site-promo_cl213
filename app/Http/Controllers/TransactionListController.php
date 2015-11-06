@@ -30,8 +30,6 @@ class TransactionListController extends Controller
 	{
 		$debitables = User::all();
 
-		$data['creditables'] = [];
-
 		foreach ($debitables as $c) {
 			$data['debitables'][$c->id] = $c->getTitle();
 		}
@@ -58,7 +56,7 @@ class TransactionListController extends Controller
 		]);
 
 		if ($validator->fails()) {
-			return redirect($validator);
+			return $redirect($validator);
 		}
 
 		$uuid = Uuid::uuid4()->toString() ; //identifiant de la facture
@@ -76,7 +74,7 @@ class TransactionListController extends Controller
 
 			if($validator){
 				DB::rollback();
-				return redirect($validator);
+				return $redirect($validator);
 			}
 		}
 
@@ -178,5 +176,43 @@ class TransactionListController extends Controller
 		$group->delete();
 
 		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
+	}
+
+	public function createAppro()
+	{
+		return view("transactions.lists.appro")->with("creditables",User::all());
+	}
+
+	public function storeAppro(Request $request,TransactionFactory $factory)
+	{
+		$redirect = function($validator) {
+			return redirect()->route('transactionlist.appro.create')
+				->withErrors($validator)
+				->withInput();
+			};
+
+		$validator = Validator::make($request->all(), [
+			'credited' => 'required|array',
+		]);
+
+		if ($validator->fails()) {
+			return $redirect($validator);
+		}
+
+		DB::beginTransaction();
+
+		foreach ($request->get("credited") as $uid) {
+			$validator = null;
+			$validator = $factory->buildAppro($request->get("wording"),$request->get("amount"),$uid);
+
+			if($validator){
+				DB::rollback();
+				return $redirect($validator);
+			}
+		}
+
+		DB::commit();
+
+		return redirect()->route('users.accounts')->withErrors(["ok"=>count($request->get("credited"))." Utilisateurs Crédités"]);
 	}
 }
