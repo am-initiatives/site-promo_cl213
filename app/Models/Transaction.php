@@ -51,6 +51,7 @@ class Transaction extends Model
 			$isCredit = ($user->id == $this->credited_user_id);
 			$data["type"] = $isCredit ? 'credit' : 'debit';
 			$data["account"] = $isCredit ? $this->debited->nickname : $this->credited->nickname;
+			$data["account_id"] =  $isCredit ? $this->debited->id : $this->credited->id;
 			$data["amount"] = ($isCredit ? '' : '-').$this->amount;
 		}
 		else

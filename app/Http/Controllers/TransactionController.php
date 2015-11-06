@@ -111,7 +111,11 @@ class TransactionController extends Controller
 		$uid = $t->credited_user_id;
 		$t->delete();
 
-		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
+		if($t->credited_user_id == User::getBankAccount()){
+			return redirect()->back;
+		}
+
+		return redirect()->back()->with("credit_tab",true);
 	}
 
 	public function createAppro($user)

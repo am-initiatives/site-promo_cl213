@@ -7,6 +7,13 @@ return 	[
 				return !in_array($action,["show","create","index","store"]) ;
 			},
 			"getTarget" => function($item,$action) {
+				if($action=="destroy" && $item->credited_user_id==App\Models\User::getBankAccount()->id){
+				//si c'est une dépense (au sens où on déclare avoir utilisé l'argent de la proms)
+					return [
+						"action" => "outgo",
+						"target" => $item->debited_user_id,
+					];
+				}
 				return [
 					"action" => "buquage",
 					"target" => !$item ? null : $item->credited_user_id

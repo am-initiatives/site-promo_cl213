@@ -22,7 +22,7 @@
 						<td style="text-align:center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
-							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buquage",$user->idge))
+							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buquage",$user->id))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
 									{!! Form::hidden("user",$user->id) !!}
@@ -38,7 +38,23 @@
 						<td>{{ $transaction['date'] }}</td>
 						<td><strong>{{ $transaction['wording'] }}</strong></td>
 						<td>{{ $transaction['account'] }}</td>
-						<td style="text-align: right;">{!! Html::solde($transaction['amount'] / 100, '€') !!}</td>
+						<td style="text-align: right;">
+							{!! Html::solde($transaction['amount'] / 100, '€') !!}
+							@if(
+								Auth::user()->isAllowed("destory_transactions",$transaction['account_id'])
+								|| ($transaction['account_id'] == App\Models\User::getBankAccount()->id 
+								&& Auth::user()->isAllowed("destory_outgo",$user->id))
+							)
+							<span>
+							{!! Form::open(array('route' => 
+								['transactions.destroy',$transaction['id']], 'method' => 'delete','style'=>"display:inline")) !!}
+								<button type="submit" style="background-color:white;color:red;padding:0;margin:0">
+									<i class="fa fa-times-circle fa-1"></i>
+								</button>
+							{!! Form::close() !!}
+							</span>
+							@endif
+						</td>
 					</tr>
 				@endforeach
 			</tbody>

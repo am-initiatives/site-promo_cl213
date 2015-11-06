@@ -167,8 +167,8 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	//historique des transactions effectuées
 	{
 
-		$credits = $this->credits->acquited();
-		$debits = $this->debits->acquited();
+		$credits = $this->credits()->acquited()->get();
+		$debits = $this->debits()->acquited()->get();
 		$transactions = $debits->merge($credits);
 
 		$transactions = $transactions->sortByDesc(function ($item, $key) {return $item->created_at;});
