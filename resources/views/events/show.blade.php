@@ -10,9 +10,11 @@
 				Solde de l'évènement <strong>{!! Html::solde($event->getBalance() / 100, '€') !!}</strong>
 			</div>
 		</div>
+		@if(Auth::user()->isAllowed("edit_event_".$event->id))
 		<div class="column medium-7" style="text-align:right">
 			<a href="{{ route('event.edit', $event->id) }}" class="button small">Editer</a>
 		</div>
+		@endif
 	</div>
 	<img src="{{$event->getPictureLink()}}">
 	<p>{{$event->info}}</p>
