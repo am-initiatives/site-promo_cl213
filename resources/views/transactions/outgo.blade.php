@@ -6,7 +6,7 @@
 	{!! Form::open(array('route' => ['transactions.outgo.store'])) !!}
 	<div class="row">
 		<label>
-			Description
+			Intitulé
 			{!! Form::text("wording") !!}
 		</label>
 	</div>

@@ -127,7 +127,7 @@ class TransactionController extends Controller
 	public function storeAppro(Request $request,TransactionFactory $factory,$user)
 	{
 		$validator = $factory->build([
-			"wording"	=> "Appro",
+			"wording"	=> "Appro ".$request->get("wording"),
 			"amount"	=> $request->get("amount"),
 			"credited_user_id"	=> $user->id,
 			"debited_user_id"	=> User::getBankAccount()->id,

@@ -6,6 +6,14 @@
 	{!! Form::open(array('route' => ['transactions.appro.store',$user->id])) !!}
 
 	<div class="row">
+		<label>
+			Intitulé<br>
+			<i>(le buquage s'appelera "Appro &lt;intitulé&gt;")</i>
+			{!! Form::text("wording") !!}
+		</label>
+	</div>
+
+	<div class="row">
 		<label>Montant
 			{!! Form::text('amount') !!}
 		</label>
