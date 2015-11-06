@@ -11,7 +11,7 @@
 		</div>
 		<div class="large-5 columns" style="text-align:right">
 			<ul class="button-group">
-				@if(Auth::user()->isAllowed("create_appro",null) && !$user->hasRole("event"))
+				@if(Auth::user()->isAllowed("appro",null) && !$user->hasRole("event"))
 				<li>
 					<a href="{{ route('transactions.appro.create', $user->id) }}" class="button small success">Approvisionner</a>
 				</li>

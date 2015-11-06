@@ -114,27 +114,27 @@ return 	[
 			}
 		],
 		"transactions.appro.create" => [
-			"name"		=> "create_appro",
+			"name"		=> "appro",
 			"param"		=> "user",
 			'getTarget'	=> function($user){
 				return null;
 			}
 		],
 		"transactions.appro.store" => [
-			"name"		=> "store_appro",
+			"name"		=> "appro",
 			"param"		=> "user",
 			"getTarget"	=> function($user){
 				return null;
 			}
 		],
 		"transactionlist.appro.create" => [
-			"name"		=> "create_appro",
+			"name"		=> "appro",
 			'getTarget'	=> function($user){
 				return null;
 			}
 		],
 		"transactionlist.appro.store" => [
-			"name"		=> "store_appro",
+			"name"		=> "appro",
 			"getTarget"	=> function($user){
 				return null;
 			}
@@ -146,7 +146,7 @@ return 	[
 			}
 		],
 		"transactions.outgo.store" => [
-			"name"		=> "store_outgo",
+			"name"		=> "create_outgo",
 			"getTarget"	=> function($user){
 				return null;
 			}

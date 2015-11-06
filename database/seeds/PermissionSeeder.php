@@ -14,9 +14,17 @@ class PermissionSeeder extends Seeder
 		DB::statement('truncate table permissions');
 		DB::table('permissions')->insert(
 			array(
-				array('role' => "admin", "permission"=>"all"),
-				array('role' => "event", "create_outgo"=>"all"),
-				array('role' => "event", "store_outgo"=>"all"),
+				array('role' => "admin", "permission" => "all"),
+
+				array('role' => "event", "permission" => "outgo"),
+
+				array('role' => "harpags", "permission" => "appro"),
+				array('role' => "harpags", "permission" => "destroy_outgo"),
+
+				array('role' => "ddps", "permission" => "create_event"),
+				array('role' => "ddps", "permission" => "store_event"),
+				array('role' => "ddps", "permission" => "store_posts"),
+				array('role' => "ddps", "permission" => "destroy_posts"),
 			)
 		);
 	}
