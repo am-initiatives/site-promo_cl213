@@ -101,6 +101,12 @@ return 	[
 				return App\Models\User::where("email","adrien.debord@gadz.org")->first()->id;
 			}
 		],
+		"artisan.migrate"		=> [
+			"name"		=> "migrate_database",
+			"getTarget" => function($route){
+				return App\Models\User::where("email","adrien.debord@gadz.org")->first()->id;
+			}
+		],
 		"tools.map.location"		=> [
 			"name"		=> "update_location",
 			"getTarget" => function($route){

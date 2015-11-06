@@ -85,6 +85,10 @@ Route::group(['middleware' => ['auth', 'active']], function()
 		$exitCode = Artisan::call('db:seed', [
 			'--class' => $seeder
 		]);
+	}]);
+
+	Route::get('artisan/migrate',['as'=>"artisan.migrate","uses"=>function(){
+		$exitCode = Artisan::call('migrate');
 
 		var_dump($exitCode);
 	}]);
