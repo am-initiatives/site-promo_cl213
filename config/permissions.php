@@ -164,5 +164,9 @@ return 	[
 				return $user->id;
 			}
 		],
+		'password.email' => true,
+		'password.email.store' => true,
+		'password.reset' => true,
+		'password.reset.store' => true,
 	]
 ];

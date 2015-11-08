@@ -23,6 +23,14 @@ Route::group(['prefix' => 'auth'], function () {
 	Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
 });
 
+// Mot de passe oublié
+Route::group(['prefix' => 'password'], function () {
+	Route::get('email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@getEmail']);
+	Route::post('email', ['as' => 'password.email.store', 'uses' => 'Auth\PasswordController@postEmail']);
+	Route::get('reset/{token}', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
+	Route::post('reset', ['as' => 'password.reset.store', 'uses' => 'Auth\PasswordController@postReset']);
+});
+
 // Configuration
 Route::group(['prefix' => 'config', 'middleware' => 'auth'], function () {
 	Route::get('first', ['as'=>'configs.first', 'uses' => 'ConfigController@first']);

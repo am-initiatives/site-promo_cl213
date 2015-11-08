@@ -20,6 +20,9 @@ class PasswordController extends Controller
 
 	use ResetsPasswords;
 
+	protected $redirectTo = '/';
+	protected $subject = 'Réinitialisation du mot de passe';
+
 	/**
 	 * Create a new password controller instance.
 	 *

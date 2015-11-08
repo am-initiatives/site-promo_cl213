@@ -107,6 +107,7 @@ class AuthController extends Controller
 		if ( ! is_null($code))
 		{
 			// This was a callback request from google, get the token
+			// (This is a request from the server to google ! The server needs internet access)
 			$token = $googleService->requestAccessToken($code);
 			// Send a request with it
 			$result = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);

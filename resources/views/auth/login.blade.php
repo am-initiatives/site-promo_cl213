@@ -16,17 +16,14 @@
 	</div>
 
 	<div class="clearfix">
-		<div class="left switch">
-			<input id="rememberCheckboxSwitch" type="checkbox" name="remember">
-			<label for="rememberCheckboxSwitch"></label>
+		<div class="columns medium-7">
+			<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connecté</label>
+			<br/>
+			<a href="{{ route('password.email') }}">Mot de passe oublié</a>
 		</div>
 
-		<div class="left show-for-medium-up" style="margin-top: 5px; margin-left: 10px;">
-			<span>Rester connecté</span>
-		</div>
-
-		<div class="right">
-			<button type="submit" class="small-12 medium radius button">Connexion</button>
+		<div class="columns medium-5 text-right">
+			<button type="submit" class="medium radius button">Connexion</button>
 		</div>
 	</div>
 </form>
