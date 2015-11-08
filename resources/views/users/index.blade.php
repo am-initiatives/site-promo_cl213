@@ -19,12 +19,12 @@
 			@foreach($users as $user)
 			<tr>
 				<td>
-					{!! Html::userIcons($user) !!}
 					@if(Auth::user()->isAllowed("log_as"))
 						<a href="{{route('auth.log_as',$user->id)}}">
 							<i class="fa fa-sign-in"></i>
 						</a>
 					@endif
+					{!! Html::userIcons($user) !!}
 				</td>
 				<td>{{ $user->nickname }}</td>
 				<td>{{ $user->last_name }} {{ $user->first_name }}</td>
