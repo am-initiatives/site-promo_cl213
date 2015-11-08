@@ -1,5 +1,5 @@
 {{-- liste des comptes --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 

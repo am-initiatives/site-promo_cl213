@@ -1,6 +1,6 @@
 <!-- resources/views/auth/password.blade.php -->
 
-@extends('layouts.login')
+@extends('layouts.logged_out')
 
 @section('content')
 

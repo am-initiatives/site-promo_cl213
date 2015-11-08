@@ -1,5 +1,5 @@
 {{-- Page de visualisation de l'état du compte --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 

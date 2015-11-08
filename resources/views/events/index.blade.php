@@ -1,5 +1,5 @@
 {{-- liste des évènements référencés --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 

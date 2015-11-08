@@ -1,6 +1,6 @@
 <!-- resources/views/auth/ -->
 
-@extends('layouts.login')
+@extends('layouts.logged_out')
 
 @section('content')
 

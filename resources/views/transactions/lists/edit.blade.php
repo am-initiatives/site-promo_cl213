@@ -1,5 +1,5 @@
 {{-- Ajout de gens à la liste de buquages --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 <div class="panel">

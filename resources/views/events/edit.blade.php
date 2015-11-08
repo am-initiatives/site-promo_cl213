@@ -1,5 +1,5 @@
 {{-- Avertis la personne qu'elle est logguée en tant que l'event --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 

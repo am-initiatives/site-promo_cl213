@@ -1,5 +1,5 @@
 {{-- page des dernières opérations --}}
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 
