@@ -23,8 +23,8 @@ class PermissionSeeder extends Seeder
 
 				array('role' => "ddps", "permission" => "create_event"),
 				array('role' => "ddps", "permission" => "store_event"),
-				array('role' => "ddps", "permission" => "store_posts"),
-				array('role' => "ddps", "permission" => "destroy_posts"),
+				array('role' => "ddps", "permission" => "store_post"),
+				array('role' => "ddps", "permission" => "destroy_post"),
 			)
 		);
 	}
