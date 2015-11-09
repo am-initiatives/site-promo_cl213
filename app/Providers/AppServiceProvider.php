@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
 
 		Html::macro('userIcons',function($user){
 			$data = "";
-			if($user->hasPermission("admin")){
+			if($user->hasRole("admin")){
 				$data.='<i class="fa fa-star" title="Administrateur"></i>';
 			}
 			if($user->hidden){
