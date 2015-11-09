@@ -126,7 +126,7 @@ class TransactionController extends Controller
 
 	public function storeAppro(Request $request,TransactionFactory $factory,$user)
 	{
-		$validator = $factory->buildAppro($request->get("wording"),$request->get("amount"),$user);
+		$validator = $factory->buildAppro($request->get("wording"),$request->get("amount"),$user->id);
 
 		if ($validator) {
 			return redirect()->route('transactions.appro.create',$user)
