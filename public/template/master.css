@@ -74,3 +74,20 @@ body {
 .place {
 	margin-bottom: 4px;
 }
+
+
+/* Vignettes */
+
+.vignette {
+	border: solid 1px #DDD;
+	margin: 4px 2px;
+}
+
+.vignette .picture img {
+	height: 100px;
+	margin-right: 8px;
+}
+
+.vignette .actions {
+	margin-right: 5px;
+}
