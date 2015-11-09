@@ -24,19 +24,21 @@
 					{{ $user->phone }}<br/>
 				</div>
 				<div class="actions right text-right">
-					{!! Html::userIcons($user) !!}
-					@foreach($user->getRoles() as $role)
-					<br/>
-					<span class="label info">{{ $role }}</span>
-					@endforeach
-					@if(Auth::user()->isAllowed("log_as"))
-						@if(!in_array(Html::userIcons($user), [null, '']))
-						<br/>
-						@endif
-						<a href="{{route('auth.log_as',$user->id)}}">
-							<i class="fa fa-sign-in"></i>
-						</a>
-					@endif
+					<?php
+					$lines = [];
+
+					if (Html::userIcons($user) != '')
+						$lines[] = Html::userIcons($user);
+
+					foreach ($user->getRoles() as $role) {
+						$lines[] = '<span class="label info">' . $role . '</span>';
+					}
+
+					if(Auth::user()->isAllowed("log_as"))
+						$lines[] = '<a href="' . route('auth.log_as', $user->id) . '"><i class="fa fa-sign-in"></i></a>';
+					 ?>
+
+					{!! implode('<br/>', $lines) !!}
 				</div>
 			</div>
 		</div>
