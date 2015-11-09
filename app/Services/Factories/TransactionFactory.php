@@ -29,7 +29,7 @@ class TransactionFactory
 			return $validator;
 		}
 
-		$params["amount"] = (integer) 100*$params['amount'];
+		$params["amount"] = (integer) 100*floatval(str_replace(",", ".",$params['amount']));
 
 		Transaction::create($params);
 	}
