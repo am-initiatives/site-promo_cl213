@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="panel">
-	<h3>Approvisionner le compre de {!!$user->nickname!!}</h3>
+	<h3>Approvisionner le compre de {!!$user->getTitle()!!}</h3>
 	{!! Form::open(array('route' => ['transactions.appro.store',$user->id])) !!}
 
 	<div class="row">
