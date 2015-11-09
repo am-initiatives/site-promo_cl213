@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="panel">
-<p>Le solde de ce compte est de <strong>{!! Html::solde($solde / 100, '€') !!}</strong></p>
+	<h3>{{$user->getTitle()}}</h3>
+	<p>Le solde de ce compte est de <strong>{!! Html::solde($user->getBalance() / 100, '€') !!}</strong></p>
 @unless(count($transactions))
 	<p>Aucune opération sur ce compte pour le moment.</p>
 @else

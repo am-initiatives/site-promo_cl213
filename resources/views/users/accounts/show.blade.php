@@ -7,6 +7,7 @@
 
 	<div class="row">
 		<div class="large-5 columns">
+			<h3>{{$user->getTitle()}}</h3>
 			Solde du compte <strong>{!! Html::solde($solde / 100, '€') !!}</strong>
 		</div>
 		<div class="large-5 columns" style="text-align:right">

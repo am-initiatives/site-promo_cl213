@@ -54,9 +54,8 @@ class UserController extends Controller
 	public function accountDetails($account)
 	//liste des transactions effectuées
 	{
-		$data['transactions'] = $account->transactionsDetail();
-		$data['solde'] = $account->getBalance();
-
-		return view('users.accounts.details', $data);
+		return view('users.accounts.details')
+			->withUser($account)
+			->withTransactions($account->transactionsDetail());
 	}
 }
