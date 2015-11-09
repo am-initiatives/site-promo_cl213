@@ -60,7 +60,10 @@ class ToolController extends Controller
 		
 		$pos = array_map('floatval', $location);
 
-		if (Auth::user()->update(['pos'=>json_encode($pos)]))
+		$user = Auth::user();
+		$user->pos = json_encode($pos);
+
+		if ($user->update())
 			return 'Enregistré';
 		else
 			return 'Une erreur est survenue';
