@@ -10,7 +10,7 @@
 			<h3 style="position:absolute;top:0;background-color:white;">{{$event->getTitle()}}</h3>
 			</div>
 			<div>
-				Solde de l'évènement <strong>{!! Html::solde($event->getBalance() / 100, '€') !!}</strong>
+				Solde de l'évènement <strong>{!! Html::solde($event->getBalance()) !!}</strong>
 			</div>
 		</div>
 		@if(Auth::user()->isAllowed("edit_event_".$event->id))

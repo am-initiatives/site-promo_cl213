@@ -6,7 +6,7 @@
 		<h3>Ajouter des personnes à la liste de buquage</h3>
 		<!-- Forfait -->
 		<fieldset>
-			<legend>{!! $wording !!} - {!! Html::solde($amount / 100, '€') !!}</legend>
+			<legend>{!! $wording !!} - {!! Html::solde($amount) !!}</legend>
 			{!! Form::open(array('route' => ['transactionlist.update',$group_id],'method'=>'put')) !!}
 				<div class="row">
 					<div class="medium-6 columns">

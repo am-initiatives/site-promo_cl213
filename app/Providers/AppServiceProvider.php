@@ -25,11 +25,9 @@ class AppServiceProvider extends ServiceProvider
 
 		Html::macro('solde', function($value, $unit = NULL)
 		{
-			$solde[] = number_format($value, 2);
-			if (isset($unit)) {
-				$solde[] = $unit;
-			}
-
+			$solde[] = number_format($value/100, 2);
+			$solde[] = isset($unit) ? $unit : "€";
+			
 			$color = $value < 0 ? '#A00' : '#08A';
 
 			return '<strong style="color: '.$color.'">'.join(" ", $solde).'</strong>';

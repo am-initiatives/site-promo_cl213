@@ -39,14 +39,14 @@
 				<tr>
 					<td class="medium-2">{!! Html::diff($event->created_at) !!}</td>
 					<td class="medium-2"><strong>{{ $event->getTitle() }}</strong></td>
-					<td class="medium-1">{!! Html::solde($spendings/ 100, '€') !!}</td>
+					<td class="medium-1">{!! Html::solde($spendings) !!}</td>
 					<td class="medium-5">
 						<div class="progress">
 							<span class="meter alert" style="width:{{$deficit}}%"></span>
 							<span class="meter success" style="width:{{100-$deficit}}%"></span>
 						</div>
 					</td>
-					<td class="medium-1">{!! Html::solde($gains/ 100, '€') !!}</td>
+					<td class="medium-1">{!! Html::solde($gains) !!}</td>
 					<td class="medium-1" style="text-align: right; width: 50px;">
 						<a href="{{ route('event.show', $event->id) }}"><i class="fa fa-list"></i></a>
 					</td>

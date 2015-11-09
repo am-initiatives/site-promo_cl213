@@ -4,7 +4,7 @@
 
 <div class="panel">
 	<h3>{{$user->getTitle()}}</h3>
-	<p>Le solde de ce compte est de <strong>{!! Html::solde($user->getBalance() / 100, '€') !!}</strong></p>
+	<p>Le solde de ce compte est de <strong>{!! Html::solde($user->getBalance()) !!}</strong></p>
 @unless(count($transactions))
 	<p>Aucune opération sur ce compte pour le moment.</p>
 @else
@@ -22,7 +22,7 @@
 					<td>{{ $transaction['date'] }}</td>
 					<td><strong>{{ $transaction['wording'] }}</strong></td>
 					<td>{{ $transaction['account'] }}</td>
-					<td style="text-align: right;">{!! Html::solde($transaction['amount'] / 100, '€') !!}</td>
+					<td style="text-align: right;">{!! Html::solde($transaction['amount']) !!}</td>
 				</tr>
 			@endforeach
 		</tbody>

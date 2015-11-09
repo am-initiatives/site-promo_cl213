@@ -23,7 +23,7 @@
 					<td><strong>{{ $transaction['wording'] }}</strong></td>
 					<td>{{ $transaction['debited'] }}</td>
 					<td>{{ $transaction['credited'] }}</td>
-					<td style="text-align: right;">{!! Html::solde($transaction['amount'] / 100, '€') !!}</td>
+					<td style="text-align: right;">{!! Html::solde($transaction['amount']) !!}</td>
 				</tr>
 			@endforeach
 		</tbody>

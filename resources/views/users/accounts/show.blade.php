@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="large-5 columns">
 			<h3>{{$user->getTitle()}}</h3>
-			Solde du compte <strong>{!! Html::solde($solde / 100, '€') !!}</strong>
+			Solde du compte <strong>{!! Html::solde($solde) !!}</strong>
 		</div>
 		<div class="large-5 columns" style="text-align:right">
 			<ul class="button-group">

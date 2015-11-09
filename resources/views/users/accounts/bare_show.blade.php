@@ -39,7 +39,7 @@
 						<td><strong>{{ $transaction['wording'] }}</strong></td>
 						<td>{{ $transaction['account'] }}</td>
 						<td style="text-align: right;">
-							{!! Html::solde($transaction['amount'] / 100, '€') !!}
+							{!! Html::solde($transaction['amount']) !!}
 							@if(
 								Auth::user()->isAllowed("destory_transactions",$transaction['account_id'])
 								|| ($transaction['account_id'] == App\Models\User::getBankAccount()->id 
@@ -71,7 +71,7 @@
 				{{-- entête --}}
 				<a href="#a{{$gpe}}" aria-expanded="false" class="row">
 					<div class="medium-1 columns">
-						{!! Html::solde($credit['amount'] / 100, '€') !!}
+						{!! Html::solde($credit['amount']) !!}
 					</div>
 					<div class="medium-3 columns">
 						<b>{{$credit["wording"]}}</b>
