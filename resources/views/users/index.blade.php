@@ -25,6 +25,10 @@
 				</div>
 				<div class="actions right text-right">
 					{!! Html::userIcons($user) !!}
+					@foreach($user->getRoles() as $role)
+					<br/>
+					<span class="label info">{{ $role }}</span>
+					@endforeach
 					@if(Auth::user()->isAllowed("log_as"))
 						@if(!in_array(Html::userIcons($user), [null, '']))
 						<br/>
