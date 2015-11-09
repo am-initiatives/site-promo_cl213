@@ -96,23 +96,23 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public function getRoles()
 	{
-		return @json_decode($this->roles, true);
+		$roles = @json_decode($this->roles, true);
+		if(is_array($roles)){
+			return $roles;
+		}
+		else{
+			return [];
+		}
 	}
 
 	public function hasRole($role)
 	{
-		$roles = $this->getRoles();
-		if(is_array($roles)){
-			return in_array($role,$roles);
-		}
-		return false;
+		return in_array($role,$this->getRoles());
 	}
 
 	public function addRole($role)
 	{
 		$roles = $this->getRoles();
-		if(!is_array($roles))
-			$roles = [];
 
 		if(!in_array($role, $roles)){ //si on n'a pas déjà ce role
 			$roles[] = $role;
