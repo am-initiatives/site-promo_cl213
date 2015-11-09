@@ -22,7 +22,7 @@
 						<td style="text-align:center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
-							@if($solde + $transaction["amount"]>0 && Auth::user()->isAllowed("update_buquage",$user->id))
+							@if(Auth::user()->isAllowed("update_buquage",$user->id))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
 									{!! Form::hidden("user",$user->id) !!}
