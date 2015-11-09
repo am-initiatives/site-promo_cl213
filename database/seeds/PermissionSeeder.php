@@ -20,6 +20,7 @@ class PermissionSeeder extends Seeder
 
 				array('role' => "harpags", "permission" => "appro"),
 				array('role' => "harpags", "permission" => "destroy_outgo"),
+				array('role' => "harpags", "permission" => "update_buquage"),
 
 				array('role' => "ddps", "permission" => "create_event"),
 				array('role' => "ddps", "permission" => "store_event"),
