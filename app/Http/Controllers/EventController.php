@@ -92,7 +92,7 @@ class EventController extends Controller
 		}
 
 		//on donne les droits au role
-		foreach (["destroy","log_as"] as $action) {
+		foreach (["destroy","edit"] as $action) {
 			if(!Permission::add($role,$action."_event_".$event->id)){
 				return $this->redirectCreate("User permission update error");
 			}
