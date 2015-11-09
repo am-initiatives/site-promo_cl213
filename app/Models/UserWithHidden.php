@@ -22,9 +22,6 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	//The database table used by the model.
 	protected $table = 'users';
 
-	//The attributes that are mass assignable.
-	protected $fillable = ['password', 'email', 'phone', 'first_name', 'last_name', 'nickname', 'pos', 'google_pic', 'info', 'active', 'permissions', 'connected_at'];
-
 	//The attributes excluded from the model's JSON form.
 	protected $hidden = ['password', 'remember_token', 'google_id'];
 
