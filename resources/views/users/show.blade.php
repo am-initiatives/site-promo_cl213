@@ -25,6 +25,18 @@
 					<td>Buque :</td>
 					<td><strong>{{ $user->nickname }}</strong></td>
 				</tr>
+				<tr>
+					<td>Téléphone :</td>
+					<td><strong>{{ $user->phone }}</strong></td>
+				</tr>
+				<tr>
+					<td>e-mail :</td>
+					<td><strong>{{ $user->email }}</strong></td>
+				</tr>
+				<tr>
+					<td>Position géographique :</td>
+					<td><strong>{{ strtr($user->pos, ['"' => '']) }}</strong></td>
+				</tr>
 			</table>
 		</div>
 	</div>

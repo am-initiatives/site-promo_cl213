@@ -57,8 +57,8 @@ class ToolController extends Controller
 	public function storeLocation(Request $request)
 	{
 		$location = json_decode($request->input('location'), true);
-		
-		$pos = array_map('floatval', $location);
+
+		$pos = [(string) round($location[0], 7), (string) round($location[1], 7)];
 
 		$user = Auth::user();
 		$user->pos = json_encode($pos);

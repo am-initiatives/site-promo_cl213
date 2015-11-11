@@ -25,11 +25,11 @@
 								{{ $user->nickname }}<span class="show-for-medium-up" style="font-size: small"> ({{ $user->last_name }} {{ $user->first_name }})</span>
 								@endif
 							</li>
-							<li class="show-for-medium-up">
-								{{ $user->email }}
-							</li>
 							<li>
 								{{ $user->phone }}
+							</li>
+							<li class="show-for-medium-up">
+								{{ $user->email }}
 							</li>
 						</ul>
 					</div>
