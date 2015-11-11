@@ -2,27 +2,38 @@
 
 @section('content')
 
-<div class="panel">
+<div>
 @unless(count($users))
-	<p class="text-center">Aucun utilisateur.</p>
+	<div class="panel">
+		<p class="text-center">Aucun utilisateur.</p>
+	</div>
 @else
 	<div class="row">
 		@foreach($users as $user)
 		<div class="columns small-12 medium-6">
-			<div class="vignette clearfix">
-				<div class="picture left">
-					<img src="{{ $user->getPictureLink() }}">
-				</div>
-				<div class="information left">
-					@if(in_array($user->nickname, [null, '']))
-					<a href="{{ route('users.show', $user->id) }}">{{ $user->last_name }} {{ $user->first_name }}</a>
-					@else
-					<a href="{{ route('users.show', $user->id) }}">{{ $user->nickname }} <span style="font-size: small">({{ $user->last_name }} {{ $user->first_name }})</span></a>
-					@endif
-					<br/>
-					{{ $user->email }}<br/>
-					{{ $user->phone }}<br/>
-				</div>
+			<div class="panel vignette clearfix">
+				<a href="{{ route('users.show', $user->id) }}">
+					<div class="picture left">
+						<img src="{{ $user->getPictureLink() }}">
+					</div>
+					<div class="information left">
+						<ul class="no-bullet">
+							<li class="strong">
+								@if(in_array($user->nickname, [null, '']))
+								{{ $user->last_name }} {{ $user->first_name }}
+								@else
+								{{ $user->nickname }}<span class="show-for-medium-up" style="font-size: small"> ({{ $user->last_name }} {{ $user->first_name }})</span>
+								@endif
+							</li>
+							<li class="show-for-medium-up">
+								{{ $user->email }}
+							</li>
+							<li>
+								{{ $user->phone }}
+							</li>
+						</ul>
+					</div>
+				</a>
 				<div class="actions right text-right">
 					<?php
 					$lines = [];
