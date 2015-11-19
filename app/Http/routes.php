@@ -115,7 +115,7 @@ Route::bind('transactions',function($id){
 });
 
 Route::bind('transactionlist',function($id){
-	$group = App\Models\Transaction::where("group_id",$id);
+	$group = App\Models\Transaction::where("group_id",$id)->get();
 
 	if($group->count()==0){
 		abort(404);

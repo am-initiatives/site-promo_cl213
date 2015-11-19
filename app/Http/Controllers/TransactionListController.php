@@ -173,7 +173,9 @@ class TransactionListController extends Controller
 	 */
 	public function destroy($group)
 	{
-		$group->delete();
+		$uid = $group->first()->credited_user_id;
+
+		$group->each(function($t) {$t->delete();});
 
 		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
