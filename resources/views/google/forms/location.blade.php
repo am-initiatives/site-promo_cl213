@@ -1,8 +1,14 @@
 <h4>Mettre à jour ma position</h4>
 <div>
-	<label>Rechercher une adresse :
-		<input type="text" name="address" id="address" placeholder="Ex: 20 rue porte de Paris, Cluny" style="margin-bottom: 5px;">
-	</label>
+	<div class="row collapse">
+		<label>Rechercher une adresse :</label>
+		<div class="small-10 columns">
+			<input type="text" name="address" id="address" placeholder="Ex: 20 rue porte de Paris, Cluny" style="margin-bottom: 5px;">
+		</div>
+		<div class="small-2 columns">
+			<a id="search_button" href="#" class="postfix secondary button"><i class="fa fa-search"></i></a>
+		</div>
+	</div>
 </div>
 <div id="place"></div>
 
@@ -14,6 +20,10 @@ $(document).ready(function () {
 		if (e.which == 13) {
 			searchAddress(this.value);
 		}
+	});
+
+	$('#search_button').click(function() {
+		searchAddress($('#address').value);
 	});
 });
 

@@ -7,7 +7,7 @@
 		@section('styles')
 		<link rel="stylesheet" href="{{ URL::to('foundation-5.5.3/css/foundation.css') }}" />
 		<link rel="stylesheet" href="{{ URL::to('select2-foundation5.css') }}" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{ URL::to('font-awesome-4.4.0/css/font-awesome.min.css') }}">
 
 		<link rel="stylesheet" href="{{ URL::to('template/master.css') }}" />
 		@show
