@@ -89,11 +89,10 @@ class TransactionListController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Request $r,$group)
+	public function edit(Request $request, $group)
 	//vue pour ajouter une personne après coup
 	{
-			$t = clone $group;
-			$t = $t->first();
+			$t = $group->first();
 			$uid = $t->credited_user_id;
 
 			$debitables = User::all();
@@ -111,7 +110,7 @@ class TransactionListController extends Controller
 			}
 
 			//on vire les gens qui y sont déjà
-			foreach ($group->get() as $nonDebitable) {
+			foreach ($group as $nonDebitable) {
 				unset($data["debitables"][$nonDebitable->debited_user_id]);
 			}
 
@@ -122,7 +121,7 @@ class TransactionListController extends Controller
 			return view("transactions.lists.edit",$data);
 	}
 
-	public function update(Request $request, $group,TransactionFactory $factory)
+	public function update(Request $request, $group, TransactionFactory $factory)
 	//ajouter une personne après coup
 	{
 		$redirect = function($validator,$id){
@@ -148,7 +147,7 @@ class TransactionListController extends Controller
 			$validator = null;
 			$validator = $factory->build(array(
 				'wording'		   => $t->wording,
-				'amount'			=> $t->amount,
+				'amount'			=> $t->amount / 100,
 				'credited_user_id'  => $t->credited_user_id,
 				'debited_user_id'   => $debited,
 				'group_id'		  => $id
@@ -175,7 +174,11 @@ class TransactionListController extends Controller
 	{
 		$uid = $group->first()->credited_user_id;
 
+		DB::beginTransaction();
+
 		$group->each(function($t) {$t->delete();});
+
+		DB::commit();
 
 		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
@@ -216,5 +219,21 @@ class TransactionListController extends Controller
 		DB::commit();
 
 		return redirect()->route('users.accounts')->withErrors(["ok"=>count($request->get("credited"))." Utilisateurs Crédités"]);
+	}
+
+	public function acquitAll(Request $request, $group, TransactionFactory $factory)
+	{
+		$uid = $group->first()->credited_user_id;
+
+		DB::beginTransaction();
+
+		$group->each(function($t) {
+			$t->state = "acquited";
+			$t->update();
+		});
+
+		DB::commit();
+
+		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
 	}
 }

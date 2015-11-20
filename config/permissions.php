@@ -168,5 +168,6 @@ return 	[
 		'password.email.store' => true,
 		'password.reset' => true,
 		'password.reset.store' => true,
+		"transactionlist.acquit_all" => true,
 	]
 ];

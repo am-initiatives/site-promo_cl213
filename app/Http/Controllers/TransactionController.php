@@ -111,7 +111,7 @@ class TransactionController extends Controller
 		$uid = $t->credited_user_id;
 		$t->delete();
 
-		if($t->credited_user_id == User::getBankAccount()){
+		if($t->credited_user_id == User::getBankAccount()->id){
 			return redirect()->back;
 		}
 

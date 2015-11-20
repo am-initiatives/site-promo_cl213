@@ -70,9 +70,11 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::post('users/{user}/appro/store',['as' => 'transactions.appro.store', 'uses' => "TransactionController@storeAppro"]);
 	Route::get('transactionlist/appro/create',['as' => 'transactionlist.appro.create', 'uses' => "TransactionListController@createAppro"]);
 	Route::post('transactionlist/appro/store',['as' => 'transactionlist.appro.store', 'uses' => "TransactionListController@storeAppro"]);
+	Route::put('transactionlist/acquit-all/{transactionlist}', ['as' => 'transactionlist.acquit_all', 'uses' => "TransactionListController@acquitAll"]);
 
 	Route::resource('transactionlist', 'TransactionListController',
 				['except' => ['index','show']]);
+
 
 	Route::resource('event', 'EventController');
 
@@ -139,4 +141,3 @@ Route::bind('event',function($id){
 Route::get('pass/{pass}', ['as' => 'pass', 'uses' => function ($pass) {
 	echo Hash::make($pass);
 }]);
-

@@ -125,12 +125,21 @@
 						{!! Form::close() !!}
 						@endif
 						</li>
+						{{-- Bouton valider tout --}}
+						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
+						<li>
+						{!! Form::open(array('route' => 
+							['transactionlist.acquit_all',$gpe], 'method' => 'put')) !!}
+								<input type="submit" class="button tiny success" value="Valider tout">
+						{!! Form::close() !!}
+						</li>
+						@endif
 						{{-- Bouton supprimer tout --}}
 						@if(Auth::user()->isAllowed("destroy_buquage_list",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
 							['transactionlist.destroy',$gpe], 'method' => 'delete')) !!}
-								<input type="submit" class="button tiny alert" value="Supprimer Toute la liste">
+								<input type="submit" class="button tiny alert" value="Supprimer tout">
 						{!! Form::close() !!}
 						</li>
 						@endif
