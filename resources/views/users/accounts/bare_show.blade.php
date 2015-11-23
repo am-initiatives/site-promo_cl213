@@ -40,7 +40,7 @@
 								<strong>{{ $transaction['wording'] }}</strong>
 							</a>
 						</td>
-						<td>{{ $transaction['account'] }}</td>
+						<td>{!!HTML::link(route("users.account.show",$transaction["account_id"]),$transaction["account"])!!}</td>
 						<td class="text-right">
 							{!! Html::solde($transaction['amount']) !!}
 							@if(

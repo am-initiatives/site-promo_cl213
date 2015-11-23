@@ -5,7 +5,7 @@
 <div class="panel">
 	{{-- entête --}}
 	<div>
-		<h3>Compte crédité : {{ $list['credit']['account'] }}</h3>
+		<h3>Compte crédité : <strong>{{ $list['credit']['account'] }}</strong></h3>
 	</div>
 	<div class="panel row">
 		<div class="medium-1 columns">
@@ -24,6 +24,7 @@
 	</div>
 	{{-- liste des gens buqués --}}
 	<table class="large-12">
+	<caption>Comptes débités</caption>
 	@foreach($list['debits'] as $transaction)
 	<tr>
 		<td class="medium-1" style="text-align:center">
@@ -34,7 +35,7 @@
 		@endif
 		</td>
 		<td class="medium-5">
-			{{$transaction["account"]}}
+			{!!HTML::link(route("users.account.show",$transaction["account_id"]),$transaction["account"])!!}
 		</td>
 		<td class="medium-4">
 			depuis le 
