@@ -41,7 +41,7 @@ Route::group(['prefix' => 'config', 'middleware' => 'auth'], function () {
 // Routes authentifiées et activés
 Route::group(['middleware' => ['auth', 'active']], function()
 {
-	Route::get('/index', ['as' => 'home', 'uses' => 'HomeController@index']);
+	Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
 	// User
 	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index']);
