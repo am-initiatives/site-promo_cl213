@@ -1,14 +1,28 @@
 {!! Form::open(array('route' => ['transactionlist.store'])) !!}
 	<div class="row">
-		<div class="medium-6 columns">
-			<ul class="no-bullet">
-			@foreach($debitables as $idx => $name)
-				<li><label>
-					{!! Form::checkBox('debited[]',$idx) !!}
-					{!! $name !!}
-				</label></li>
-			@endforeach
-			</ul>
+		<div class="medium-12 columns">
+			<table class="small-12 sortable">
+				<thead>
+					<th></th>
+					<th>Buque</th>
+					<th>Fam's</th>
+				</thead>
+				<tbody>
+				@foreach($debitables as $idx => $name)
+					<tr>
+						<td>
+							{!! Form::checkBox('debited[]',$idx, null, ['style'=>'margin: 0px;']) !!}
+						</td>
+						<td>
+							{!! preg_replace('# [-&\d]+#', '', $name, 1) !!}
+						</td>
+						<td>
+							{!! preg_replace('#.* (?=[-&\d]+)#', '', $name, 1) !!}
+						</td>
+					</tr>
+				@endforeach
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<div class="row">

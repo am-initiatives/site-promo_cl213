@@ -27,7 +27,7 @@
 				<thead>
 					<th></th>
 					<th>Buque</th>
-					<th>Fam'sss</th>
+					<th>Fam's</th>
 					<th>NOM Prénom</th>
 				</thead>
 				<tbody>

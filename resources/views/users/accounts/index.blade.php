@@ -7,7 +7,7 @@
 @unless(count($accounts))
 	<p>Aucun compte n'est enregistré</p>
 @else
-	<table class="small-12">
+	<table class="small-12 sortable">
 		<caption>Liste des comptes</caption>
 		<thead>
 			<th></th>
@@ -35,4 +35,16 @@
 @endunless
 </div>
 
+@endsection
+
+@section('scripts')
+@parent
+<script src="{{ URL::to('tablesorter-2.0/jquery.tablesorter.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() 
+	    { 
+	        $(".sortable").tablesorter(); 
+	    } 
+	); 
+</script>
 @endsection
