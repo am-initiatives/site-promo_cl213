@@ -25,7 +25,6 @@
 							@if(Auth::user()->isAllowed("update_buquage",$user->id))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
-									{!! Form::hidden("user",$user->id) !!}
 									<input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
 								{!! Form::close() !!}
 							@else
@@ -91,7 +90,14 @@
 					<tr>
 						<td class="medium-1" style="text-align:center">
 						@if($transaction['state']=="pending")
+							@if($user->isAllowed("update_buquage"))
+							{!! Form::open(array('route' => 
+								['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
+								<input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
+							{!! Form::close() !!}
+							@else
 							<i class="fa fa-times-circle fa-2" style="color:red"></i>
+							@endif
 						@else
 							<i class="fa fa-check-circle fa-2" style="color:green"></i>
 						@endif

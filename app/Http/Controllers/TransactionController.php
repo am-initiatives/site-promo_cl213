@@ -98,7 +98,7 @@ class TransactionController extends Controller
 		$t->state = "acquited";
 		$t->update();
 
-		return redirect()->route('users.account.show',[$request->get("user")]);
+		return redirect()->back();
 	}
 
 	/**
