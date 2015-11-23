@@ -7,7 +7,7 @@
 @unless(count($transactions))
 	<p>Aucune opération pour le moment.</p>
 @else
-	<table class="small-12">
+	<table class="small-12 sortable">
 		<caption>Dernières opérations</caption>
 		<thead>
 			<th>Date</th>
@@ -31,4 +31,16 @@
 @endunless
 </div>
 
+@endsection
+
+@section('scripts')
+@parent
+<script src="{{ URL::to('tablesorter-2.0/jquery.tablesorter.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() 
+	    { 
+	        $(".sortable").tablesorter(); 
+	    } 
+	); 
+</script>
 @endsection
