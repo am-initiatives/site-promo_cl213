@@ -50,6 +50,7 @@ class TransactionController extends Controller
 	 */
 	public function create()
 	{
+		$data = ["user" => Auth::user()];
 		$data['debitables'] = [];
 
 		//consturction de la liste "id"=>"Nom" pour le select

@@ -14,9 +14,18 @@ class TransactionFactory
 
 	public function build($params)
 	{
+		if(isset($params["force"]) && !Auth::user()->isAllowed("force_buquage")) unset($params["force"]);
+
 		if(!isset($params["credited_user_id"])) $params["credited_user_id"] = Auth::user()->id;
 		if(!isset($params["group_id"])) $params["group_id"] = Uuid::uuid4()->toString();
-		if(!isset($params["state"])) $params["state"] = "pending";
+		if(!isset($params["state"])){
+			if(isset($params["force"]) && $params["force"]){
+				$params["state"] = "acquited";
+			}
+			else{
+				$params["state"] = "pending";
+			}
+		}
 
 		$validator = Validator::make($params, [
 			'credited_user_id' => 'required|integer',
