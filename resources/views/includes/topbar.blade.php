@@ -34,16 +34,16 @@
 					<a href="#"><i class="fa fa-btc"></i> Buqueur</a>
 					<ul class="dropdown">
 						<li><a href="{{ route('users.accounts') }}">Liste des comptes</a></li>
-						@if($user->isAllowed("harpags"))
-						{{-- en vrai tout le mond y a accès juste une question d'affichage --}}
-						<li><a href="{{ route('transactions.index') }}">Derniers buquage</a></li>
+						@if($user->isAllowed("last_transactions"))
+						{{-- en vrai tout le monde y a accès juste une question d'affichage --}}
+						<li><a href="{{ route('transactions.index') }}">Derniers buquages</a></li>
 						@endif
 						<li><a href="{{ route('transactions.create') }}">Faire un buquage</a></li>
 						@if($user->isAllowed("create_outgo"))
 						<li><a href="{{ route('transactions.outgo.create') }}">Déclarer une dépense</a></li>
 						@endif
 						@if($user->isAllowed("appro"))
-						<li><a href="{{ route('transactionlist.appro.create') }}">Appro multiples</a></li>
+						<li><a href="{{ route('transactionlist.appro.create') }}">Appros multiples</a></li>
 						@endif
 					</ul>
 				</li>
