@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 use App\Models\Event;
 use App\Models\Permission;
+use App\Models\UserWithHidden;
 
 use App\Services\Impersonator;
 
@@ -168,10 +169,28 @@ class EventController extends Controller
 		}
 
 		DB::transaction(function() use ($event) {
-			Permission::where("role","admin_event_".$event->id)->delete();
+			Permission::where("permission",'like',"%_event_".$event->id)->delete();
+
+			UserWithHidden::where("roles","like",'%_event_'.$event->id.'%')->get()->each(function($usr) use($event){
+				$roles = [];
+				$deleted = false;
+				foreach ($usr->getRoles() as $role) {
+					if(!preg_match('/[a-zA-Z]+_event_'.$event->id."/", $role)){
+						$roles = $role;
+					}
+					else
+					{
+						$deleted=true;
+					}
+				}
+				if($deleted){
+					$usr->roles = json_encode($roles,true);
+					$usr->update();
+				}
+			});
+
 			$event->delete();
 		});
-
 
 		return redirect()->route("event.index")
 				->withErrors(collect(["Événement supprimé"]));
