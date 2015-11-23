@@ -151,6 +151,12 @@ return 	[
 				return null;
 			}
 		],
+		"transactionlist.acquit_all" => [
+			"name"		=> "update_buquage",
+			'getTarget'	=> function($user){
+				return null;
+			}
+		],
 		"transactions.outgo.store" => [
 			"name"		=> "create_outgo",
 			"getTarget"	=> function($user){
@@ -168,6 +174,5 @@ return 	[
 		'password.email.store' => true,
 		'password.reset' => true,
 		'password.reset.store' => true,
-		"transactionlist.acquit_all" => true,
 	]
 ];

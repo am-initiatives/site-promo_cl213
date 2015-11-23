@@ -126,7 +126,7 @@
 						@endif
 						</li>
 						{{-- Bouton valider tout --}}
-						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
+						@if(Auth::user()->isAllowed("update_buquage",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
 							['transactionlist.acquit_all',$gpe], 'method' => 'put')) !!}
