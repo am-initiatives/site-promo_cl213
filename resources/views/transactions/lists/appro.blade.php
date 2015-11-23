@@ -5,7 +5,7 @@
 <div class="panel">
 	<h3>Appros Multiples</h3>
 
-	{!! Form::open(array('route' => ['transactionlist.appro.store'])) !!}
+	{!! Form::open(array('route' => ['transactionlists.appro.store'])) !!}
 	<div class="row">
 		<div class="medium-7 columns">
 			<label>Libellé

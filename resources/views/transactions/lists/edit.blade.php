@@ -7,7 +7,7 @@
 		<!-- Forfait -->
 		<fieldset>
 			<legend>{!! $wording !!} - {!! Html::solde($amount) !!}</legend>
-			{!! Form::open(array('route' => ['transactionlist.update',$group_id],'method'=>'put')) !!}
+			{!! Form::open(array('route' => ['transactionlists.update',$group_id],'method'=>'put')) !!}
 				<div class="row">
 					<div class="medium-6 columns">
 						<ul class="no-bullet">

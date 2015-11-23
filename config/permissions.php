@@ -21,7 +21,7 @@ return 	[
 			},
 		],
 
-		"transactionlist" => [
+		"transactionlists" => [
 			"isRestricted"	=> function($action){
 				return !in_array($action,["show","create","index","store"]) ;
 			},
@@ -133,13 +133,13 @@ return 	[
 				return null;
 			}
 		],
-		"transactionlist.appro.create" => [
+		"transactionlists.appro.create" => [
 			"name"		=> "appro",
 			'getTarget'	=> function($user){
 				return null;
 			}
 		],
-		"transactionlist.appro.store" => [
+		"transactionlists.appro.store" => [
 			"name"		=> "appro",
 			"getTarget"	=> function($user){
 				return null;
@@ -168,6 +168,6 @@ return 	[
 		'password.email.store' => true,
 		'password.reset' => true,
 		'password.reset.store' => true,
-		"transactionlist.acquit_all" => true,
+		"transactionlists.acquit_all" => true,
 	]
 ];

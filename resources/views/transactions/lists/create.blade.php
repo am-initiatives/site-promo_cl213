@@ -1,4 +1,4 @@
-{!! Form::open(array('route' => ['transactionlist.store'])) !!}
+{!! Form::open(array('route' => ['transactionlists.store'])) !!}
 	<div class="row">
 		<div class="medium-12 columns">
 			<table class="small-12 sortable">

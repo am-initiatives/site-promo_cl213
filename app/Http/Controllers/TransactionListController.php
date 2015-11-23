@@ -34,7 +34,7 @@ class TransactionListController extends Controller
 			$data['debitables'][$c->id] = $c->getTitle();
 		}
 
-		return view('transactionlist.create', $data);
+		return view('transactionlists.create', $data);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class TransactionListController extends Controller
 	//ajouter une personne après coup
 	{
 		$redirect = function($validator,$id){
-			return redirect()->route('transactionlist.edit',$id)
+			return redirect()->route('transactionlists.edit',$id)
 						->withErrors($validator)
 						->withInput();
 		};
@@ -191,7 +191,7 @@ class TransactionListController extends Controller
 	public function storeAppro(Request $request,TransactionFactory $factory)
 	{
 		$redirect = function($validator) {
-			return redirect()->route('transactionlist.appro.create')
+			return redirect()->route('transactionlists.appro.create')
 				->withErrors($validator)
 				->withInput();
 			};

@@ -68,11 +68,11 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	//appros
 	Route::get('users/{user}/appro/create',['as' => 'transactions.appro.create', 'uses' => "TransactionController@createAppro"]);
 	Route::post('users/{user}/appro/store',['as' => 'transactions.appro.store', 'uses' => "TransactionController@storeAppro"]);
-	Route::get('transactionlist/appro/create',['as' => 'transactionlist.appro.create', 'uses' => "TransactionListController@createAppro"]);
-	Route::post('transactionlist/appro/store',['as' => 'transactionlist.appro.store', 'uses' => "TransactionListController@storeAppro"]);
-	Route::put('transactionlist/acquit-all/{transactionlist}', ['as' => 'transactionlist.acquit_all', 'uses' => "TransactionListController@acquitAll"]);
+	Route::get('transactionlists/appro/create',['as' => 'transactionlists.appro.create', 'uses' => "TransactionListController@createAppro"]);
+	Route::post('transactionlists/appro/store',['as' => 'transactionlists.appro.store', 'uses' => "TransactionListController@storeAppro"]);
+	Route::put('transactionlists/acquit-all/{transactionlists}', ['as' => 'transactionlists.acquit_all', 'uses' => "TransactionListController@acquitAll"]);
 
-	Route::resource('transactionlist', 'TransactionListController',
+	Route::resource('transactionlists', 'TransactionListController',
 				['except' => ['index','show']]);
 
 
@@ -116,7 +116,7 @@ Route::bind('transactions',function($id){
 	return App\Models\Transaction::findOrFail($id);
 });
 
-Route::bind('transactionlist',function($id){
+Route::bind('transactionlists',function($id){
 	$group = App\Models\Transaction::where("group_id",$id)->get();
 
 	if($group->count()==0){

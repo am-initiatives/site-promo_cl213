@@ -120,7 +120,7 @@
 						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
-							['transactionlist.edit',$gpe], 'method' => 'get')) !!}
+							['transactionlists.edit',$gpe], 'method' => 'get')) !!}
 							<input type="submit" class="button tiny" value="Ajouter quelqu'un">
 						{!! Form::close() !!}
 						@endif
@@ -129,7 +129,7 @@
 						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
-							['transactionlist.acquit_all',$gpe], 'method' => 'put')) !!}
+							['transactionlists.acquit_all',$gpe], 'method' => 'put')) !!}
 								<input type="submit" class="button tiny success" value="Valider tout">
 						{!! Form::close() !!}
 						</li>
@@ -138,7 +138,7 @@
 						@if(Auth::user()->isAllowed("destroy_buquage_list",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
-							['transactionlist.destroy',$gpe], 'method' => 'delete')) !!}
+							['transactionlists.destroy',$gpe], 'method' => 'delete')) !!}
 								<input type="submit" class="button tiny alert" value="Supprimer tout">
 						{!! Form::close() !!}
 						</li>

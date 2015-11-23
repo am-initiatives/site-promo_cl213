@@ -43,7 +43,7 @@
 						<li><a href="{{ route('transactions.outgo.create') }}">Déclarer une dépense</a></li>
 						@endif
 						@if($user->isAllowed("appro"))
-						<li><a href="{{ route('transactionlist.appro.create') }}">Appros multiples</a></li>
+						<li><a href="{{ route('transactionlists.appro.create') }}">Appros multiples</a></li>
 						@endif
 					</ul>
 				</li>
