@@ -16,7 +16,7 @@ class PermissionSeeder extends Seeder
 			array(
 				array('role' => "admin", "permission" => "all"),
 
-				array('role' => "event", "permission" => "outgo"),
+				array('role' => "event", "permission" => "create_outgo"),
 
 				array('role' => "harpags", "permission" => "appro"),
 				array('role' => "harpags", "permission" => "destroy_outgo"),
