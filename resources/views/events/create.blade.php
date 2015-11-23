@@ -11,7 +11,7 @@
 	{!! Form::textArea("description") !!}
 </label>
 
-<div class="row" style="text-align:right">
+<div class="row text-right">
 {!! Form::submit('Créer', ['class' => 'small button']) !!}
 </div>
 

@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="panel">
-	<div class="row" style="text-align:right">
+	<div class="row text-right">
 		<ul class="button-group">
 			@if(Auth::user()->isAllowed("create_event",null))
 			<li>
@@ -47,7 +47,7 @@
 						</div>
 					</td>
 					<td class="medium-1">{!! Html::solde($gains) !!}</td>
-					<td class="medium-1" style="text-align: right; width: 50px;">
+					<td class="medium-1 text-right" style="width: 50px;">
 						<a href="{{ route('event.show', $event->id) }}"><i class="fa fa-list"></i></a>
 					</td>
 				</tr>

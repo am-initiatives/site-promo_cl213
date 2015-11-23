@@ -10,7 +10,7 @@
 			<h3>{{$user->getTitle()}}</h3>
 			Solde du compte <strong>{!! Html::solde($solde) !!}</strong>
 		</div>
-		<div class="large-5 columns" style="text-align:right">
+		<div class="large-5 columns text-right">
 			<ul class="button-group">
 				@if(Auth::user()->isAllowed("appro",null) && !$user->hasRole("event"))
 				<li>

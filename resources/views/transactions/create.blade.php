@@ -32,6 +32,16 @@
 						</label>
 					</div>
 				</div>
+				@if($user->isAllowed("force_buquage"))
+				<div class="row">
+					<div class="column">
+						<label>
+							{!! Form::checkBox("force",1,true)!!}
+							Buquage validé d'office
+						</label>
+					</div>
+				</div>
+				@endif
 				<div class="row">
 					<div class="columns">
 						{!! Form::submit('Enregister', ['class' => 'small radius button']) !!}

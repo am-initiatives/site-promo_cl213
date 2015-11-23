@@ -19,13 +19,12 @@
 			<tbody>
 				@foreach($debits as $transaction)
 					<tr>
-						<td style="text-align:center">
+						<td class="text-center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
 							@if(Auth::user()->isAllowed("update_buquage",$user->id))
 								{!! Form::open(array('route' => 
 									['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
-									{!! Form::hidden("user",$user->id) !!}
 									<input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
 								{!! Form::close() !!}
 							@else
@@ -42,7 +41,7 @@
 							</a>
 						</td>
 						<td>{{ $transaction['account'] }}</td>
-						<td style="text-align: right;">
+						<td class="text-right">
 							{!! Html::solde($transaction['amount']) !!}
 							@if(
 								Auth::user()->isAllowed("destory_transactions",$transaction['account_id'])
@@ -84,7 +83,7 @@
 						<span class="meter" style="width: {{$credit['acquited']/$credit['total']*100}}%">
 						</span>
 					</div>
-					<div class="medium-1 columns" style="text-align: center;">
+					<div class="medium-1 columns text-center">
 						{{$credit['acquited']}}/{{$credit['total']}}
 					</div>
 				</a>
@@ -93,21 +92,28 @@
 					<table class="large-12">
 					@foreach($credit["rows"] as $transaction)
 					<tr>
-						<td class="medium-1" style="text-align:center">
+						<td class="medium-1 text-center">
 						@if($transaction['state']=="pending")
+							@if($user->isAllowed("update_buquage"))
+							{!! Form::open(array('route' => 
+								['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
+								<input type="submit" class="tiny button alert" value ="Valider" style="margin:0" />
+							{!! Form::close() !!}
+							@else
 							<i class="fa fa-times-circle fa-2" style="color:red"></i>
+							@endif
 						@else
 							<i class="fa fa-check-circle fa-2" style="color:green"></i>
 						@endif
 						</td>
 						<td class="medium-5">
-							{{$transaction["account"]}}
+							{!!HTML::link(route("users.account.show",$transaction["account_id"]),$transaction["account"])!!}
 						</td>
 						<td class="medium-4">
 							depuis le 
 							{{$transaction["date"]}}
 						</td>
-						<td class="medium-2" style="text-align:right">
+						<td class="medium-2 text-right">
 							{{-- Bouton Retirer une personne --}}
 							@if(Auth::user()->isAllowed("destroy_buquage",$user->id))
 							{!! Form::open(array('route' => 
@@ -130,7 +136,7 @@
 						@endif
 						</li>
 						{{-- Bouton valider tout --}}
-						@if(Auth::user()->isAllowed("edit_buquage",$user->id))
+						@if(Auth::user()->isAllowed("update_buquage",$user->id))
 						<li>
 						{!! Form::open(array('route' => 
 							['transactionlists.acquit_all',$gpe], 'method' => 'put')) !!}

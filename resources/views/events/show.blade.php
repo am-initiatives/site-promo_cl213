@@ -13,11 +13,23 @@
 				Solde de l'évènement <strong>{!! Html::solde($event->getBalance()) !!}</strong>
 			</div>
 		</div>
-		@if(Auth::user()->isAllowed("edit_event_".$event->id))
-		<div class="column medium-7" style="text-align:right">
-			<a href="{{ route('event.edit', $event->id) }}" class="button small">Editer</a>
+		<div class="column medium-7 text-right">
+		<ul class="button-group">
+			@if(Auth::user()->isAllowed("edit_event_".$event->id))
+			<li><a href="{{ route('event.edit', $event->id) }}" class="button small">Editer</a></li>
+			@endif
+			@if(Auth::user()->isAllowed("destroy_event_".$event->id))
+			<li>
+				{!! Form::open(array('route' => 
+								['event.destroy',$event->id], 'method' => 'delete','style'=>"display:inline")) !!}
+					<button type="submit" class="small alert">
+						Supprimer
+					</button>
+				{!! Form::close() !!}
+			</li>
+			@endif
+		</ul>
 		</div>
-		@endif
 	</div>
 	<fieldset>
 		<legend>Description</legend>

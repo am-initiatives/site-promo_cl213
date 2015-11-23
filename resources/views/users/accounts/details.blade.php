@@ -22,7 +22,7 @@
 					<td>{{ $transaction['date'] }}</td>
 					<td><strong>{{ $transaction['wording'] }}</strong></td>
 					<td>{{ $transaction['account'] }}</td>
-					<td style="text-align: right;">{!! Html::solde($transaction['amount']) !!}</td>
+					<td class="text-right">{!! Html::solde($transaction['amount']) !!}</td>
 				</tr>
 			@endforeach
 		</tbody>

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 use App\Models\Event;
 use App\Models\Permission;
+use App\Models\UserWithHidden;
 
 use App\Services\Impersonator;
 
@@ -83,16 +84,23 @@ class EventController extends Controller
 		}
 
 		//on authorise l'utilisateur
-		$role = "admin_event_".$event->id;
+		$admin = "admin_event_".$event->id;
 		$user = Auth::user();
 		if(!$user->hasPermission("all")){
-				if(!$user->addRole($role)){
+				if(!$user->addRole($admin)){
 					return $this->redirectCreate("User permission update error");
 				}
 		}
 
-		//on donne les droits au role
-		foreach (["destroy","edit"] as $action) {
+		//on initialise les permissions
+		foreach ([
+				["destroy",$admin],
+				["edit",$admin],
+				["edit","edit_event_".$event->id]
+			] as $row) {
+
+			$role = $row[1];
+			$action = $row[0];
 			if(!Permission::add($role,$action."_event_".$event->id)){
 				return $this->redirectCreate("User permission update error");
 			}
@@ -107,7 +115,7 @@ class EventController extends Controller
 	{
 		DB::rollback();
 		return redirect()->route('event.create')
-					->withErrors(["save"=>$msg])
+					->withErrors(collect([$msg]))
 					->withInput();
 	}
 
@@ -155,8 +163,43 @@ class EventController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy(Event $event)
 	{
-		//
+		if($event->debits->count()+$event->credits->count()!=0){
+			return back()
+				->withErrors(collect(["Des opérations ont déjà été effectuées pour cet événement, il est impossible de le supprimer"]));
+		}
+
+		if(!$event->hasRole("event")){
+			return back()
+				->withErrors(collect(["Impossible de supprimer un utilisateur"]));
+		}
+
+		DB::transaction(function() use ($event) {
+			Permission::where("permission",'like',"%_event_".$event->id)->delete();
+
+			UserWithHidden::where("roles","like",'%_event_'.$event->id.'%')->get()->each(function($usr) use($event){
+				$roles = [];
+				$deleted = false;
+				foreach ($usr->getRoles() as $role) {
+					if(!preg_match('/[a-zA-Z]+_event_'.$event->id."/", $role)){
+						$roles = $role;
+					}
+					else
+					{
+						$deleted=true;
+					}
+				}
+				if($deleted){
+					$usr->roles = json_encode($roles,true);
+					$usr->update();
+				}
+			});
+
+			$event->delete();
+		});
+
+		return redirect()->route("event.index")
+				->withErrors(collect(["Événement supprimé"]));
 	}
 }

@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
 			'info' => '[]',
 			'active' => 1,
 			'hidden' => 0,
-			'roles' => '[]',
+			'roles' => '["ddps","harpags"]',
 			]);
 
 		$users[] = App\Models\User::create([
