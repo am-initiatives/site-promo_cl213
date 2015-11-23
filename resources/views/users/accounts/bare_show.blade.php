@@ -19,7 +19,7 @@
 			<tbody>
 				@foreach($debits as $transaction)
 					<tr>
-						<td style="text-align:center">
+						<td class="text-center">
 						@if($transaction['state']=="pending")
 							{{-- bouton payer --}}
 							@if(Auth::user()->isAllowed("update_buquage",$user->id))
@@ -37,7 +37,7 @@
 						<td>{{ $transaction['date'] }}</td>
 						<td><strong>{{ $transaction['wording'] }}</strong></td>
 						<td>{{ $transaction['account'] }}</td>
-						<td style="text-align: right;">
+						<td class="text-right">
 							{!! Html::solde($transaction['amount']) !!}
 							@if(
 								Auth::user()->isAllowed("destory_transactions",$transaction['account_id'])
@@ -79,7 +79,7 @@
 						<span class="meter" style="width: {{$credit['acquited']/$credit['total']*100}}%">
 						</span>
 					</div>
-					<div class="medium-1 columns" style="text-align: center;">
+					<div class="medium-1 columns text-center">
 						{{$credit['acquited']}}/{{$credit['total']}}
 					</div>
 				</a>
@@ -88,7 +88,7 @@
 					<table class="large-12">
 					@foreach($credit["rows"] as $transaction)
 					<tr>
-						<td class="medium-1" style="text-align:center">
+						<td class="medium-1 text-center">
 						@if($transaction['state']=="pending")
 							@if($user->isAllowed("update_buquage"))
 							{!! Form::open(array('route' => 
@@ -109,7 +109,7 @@
 							depuis le 
 							{{$transaction["date"]}}
 						</td>
-						<td class="medium-2" style="text-align:right">
+						<td class="medium-2 text-right">
 							{{-- Bouton Retirer une personne --}}
 							@if(Auth::user()->isAllowed("destroy_buquage",$user->id))
 							{!! Form::open(array('route' => 

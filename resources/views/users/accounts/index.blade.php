@@ -22,10 +22,10 @@
 					<td>{!! Html::userIcons($account) !!}</td>
 					<td><strong>{{ $account->getTitle() }}</strong></td>
 					<td>{!! Html::diff($account->connected_at) !!}</td>
-					<td style="text-align: right;">
+					<td class="text-right">
 						{!! Html::solde($account->getBalance()) !!}
 					</td>
-					<td style="text-align: right; width: 50px;">
+					<td class="text-right" style="width: 50px;">
 						<a href="{{ route('users.account.show', $account->id) }}"><i class="fa fa-list"></i></a>
 					</td>
 				</tr>

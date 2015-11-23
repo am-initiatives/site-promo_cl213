@@ -13,7 +13,7 @@
 				Solde de l'évènement <strong>{!! Html::solde($event->getBalance()) !!}</strong>
 			</div>
 		</div>
-		<div class="column medium-7" style="text-align:right">
+		<div class="column medium-7 text-right">
 		<ul class="button-group">
 			@if(Auth::user()->isAllowed("edit_event_".$event->id))
 			<li><a href="{{ route('event.edit', $event->id) }}" class="button small">Editer</a></li>
