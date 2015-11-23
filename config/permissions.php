@@ -23,7 +23,7 @@ return 	[
 
 		"transactionlists" => [
 			"isRestricted"	=> function($action){
-				return !in_array($action,["show","create","index","store"]) ;
+				return !in_array($action,["create","index","store"]) ;
 			},
 			"getTarget" => function($item,$action) {
 				return [

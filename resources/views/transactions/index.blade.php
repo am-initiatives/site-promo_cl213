@@ -1,5 +1,5 @@
 {{-- page des dernières opérations --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Derniers buquages'])
 
 @section('content')
 
@@ -20,7 +20,11 @@
 			@foreach($transactions as $transaction)
 				<tr>
 					<td>{{ $transaction['date'] }}</td>
-					<td><strong>{{ $transaction['wording'] }}</strong></td>
+					<td>
+						<a href="{{ route('transactionlists.show', $transaction['group_id']) }}">
+							<strong>{{ $transaction['wording'] }}</strong>
+						</a>
+					</td>
 					<td>{{ $transaction['debited'] }}</td>
 					<td>{{ $transaction['credited'] }}</td>
 					<td style="text-align: right;">{!! Html::solde($transaction['amount']) !!}</td>

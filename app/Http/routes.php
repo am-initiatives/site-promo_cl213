@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::put('transactionlists/acquit-all/{transactionlists}', ['as' => 'transactionlists.acquit_all', 'uses' => "TransactionListController@acquitAll"]);
 
 	Route::resource('transactionlists', 'TransactionListController',
-				['except' => ['index','show']]);
+				['except' => ['index']]);
 
 
 	Route::resource('event', 'EventController');

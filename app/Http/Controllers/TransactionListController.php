@@ -19,7 +19,50 @@ use DB;
 
 class TransactionListController extends Controller
 {
-	public function index(){}
+	public function show($group)
+	{
+		$data = [
+			'list_alert' => false,
+		];
+
+		// $data['credited'] = $group->first()->credited;
+		// $data['amount'] = $group->first()->amount;
+
+		// foreach ($group as $transaction) {
+		// 	if ($data['credited']->id != $transaction->credited_user_id or $data['amount'] != $transaction->amount)
+		// 		$data['list_alert'] = true;
+
+		// 	$data['debits'][] = $transaction->format();
+		// }
+
+		// /!\ Fait à partir de la fonction User()->recap()
+
+		$total = 0;
+		$acquited = 0;
+		$list = [];
+
+		$group_id = $group->first()->group_id;
+
+		foreach ($group->sortBy('state') as $transaction) {
+			$list["debits"][] = $transaction->format($transaction->credited);
+			if($transaction->state=="acquited")
+				$acquited++;
+			$total++;
+		}
+
+		// Récupère les informations générales
+		$list["wording"] = $list["debits"][0]["wording"];
+		$list["amount"] = $list["debits"][0]["amount"];
+		$list["total"] = $total;
+		$list["acquited"] = $acquited;
+
+		$list['credit'] = $transaction->format($transaction->debited);
+
+		$data["list"] = $list;
+		$data['gpe'] = $group_id;
+
+		return view('transactions.lists.show', $data);
+	}
 
 	/**
 	 * Show the form for creating a new resource.

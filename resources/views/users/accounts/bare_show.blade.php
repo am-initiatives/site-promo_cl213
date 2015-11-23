@@ -36,7 +36,11 @@
 						@endif
 						</td>
 						<td>{{ $transaction['date'] }}</td>
-						<td><strong>{{ $transaction['wording'] }}</strong></td>
+						<td>
+							<a href="{{ route('transactionlists.show', $transaction['group_id']) }}">
+								<strong>{{ $transaction['wording'] }}</strong>
+							</a>
+						</td>
 						<td>{{ $transaction['account'] }}</td>
 						<td style="text-align: right;">
 							{!! Html::solde($transaction['amount']) !!}

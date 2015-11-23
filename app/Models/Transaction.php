@@ -45,6 +45,7 @@ class Transaction extends Model
 			'date'	  => utf8_encode($date->formatLocalized('%d %B %Y &agrave; %H:%m')),
 			'wording'   => $this->wording,
 			'state'	 => $this->state,
+			'group_id' => $this->group_id,
 			);
 
 		if($user){
