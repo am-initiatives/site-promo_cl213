@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Appro'])
 
 @section('content')
 <div class="panel">

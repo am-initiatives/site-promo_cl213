@@ -1,5 +1,5 @@
 {{-- Avertis la personne qu'elle est logguée en tant que l'event --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Connecté en tant qu'évènement])
 
 @section('content')
 

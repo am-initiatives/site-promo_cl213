@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Carte de Prom\'sss'])
 
 @section('content')
 	<div class="panel">

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => $user->getTitle()])
 
 @section('content')
 

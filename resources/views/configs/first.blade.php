@@ -1,4 +1,4 @@
-@extends('layouts.config')
+@extends('layouts.config', ['page_title' => 'Première connexion'])
 
 @section('content')
 <div class="main" id="moving-container">

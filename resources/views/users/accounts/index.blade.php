@@ -1,5 +1,5 @@
 {{-- liste des comptes --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Liste des comptes'])
 
 @section('content')
 

@@ -1,6 +1,6 @@
 <!-- resources/views/auth/login.blade.php -->
 
-@extends('layouts.login')
+@extends('layouts.login', ['page_title' => 'Connexion'])
 
 @section('content')
 

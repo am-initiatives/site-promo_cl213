@@ -1,5 +1,5 @@
 {{-- liste des évènements référencés --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Évènements'])
 
 @section('content')
 

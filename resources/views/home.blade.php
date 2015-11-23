@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Accueil'])
 
 @section('content')
 	<div class="row">

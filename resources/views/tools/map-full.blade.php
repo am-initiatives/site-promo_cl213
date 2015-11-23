@@ -1,4 +1,4 @@
-@extends('layouts.full')
+@extends('layouts.full', ['page_title' => 'Carte plein écran'])
 
 @section('styles')
 @parent

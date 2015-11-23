@@ -1,4 +1,4 @@
-@extends('layouts.config')
+@extends('layouts.config', ['page_title' => 'Erreur 403'])
 
 @section('content')
 <div class="alert-box alert">

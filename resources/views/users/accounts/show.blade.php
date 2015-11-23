@@ -1,5 +1,5 @@
 {{-- Page de visualisation de l'état du compte --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Compte de ' . $user->getTitle()])
 
 @section('content')
 

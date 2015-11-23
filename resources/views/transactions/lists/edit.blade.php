@@ -1,5 +1,5 @@
 {{-- Ajout de gens à la liste de buquages --}}
-@extends('layouts.main')
+@extends('layouts.main', ['page_title' => 'Ajouter des participants'])
 
 @section('content')
 <div class="panel">
