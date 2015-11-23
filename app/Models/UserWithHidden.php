@@ -12,6 +12,8 @@ use Auth;
 use Hash;
 use Carbon\Carbon;
 use DB;
+use Storage;
+use File;
 
 class UserWithHidden extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -47,7 +49,11 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		} else if ($this->google_pic) {
 			return $this->google_pic;
 		} else {
-			return url('images/default_picture.png');
+			$files = File::files(public_path('images/crapauds'));
+			$file = $files[$this->id % count($files)];
+			$file_name = trim(str_replace(public_path(), '', $file), '/\\');
+
+			return url($file_name);
 		}
 	}
 
