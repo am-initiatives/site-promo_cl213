@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Event;
 
 class HomeController extends Controller
 {
@@ -25,6 +26,7 @@ class HomeController extends Controller
 		$data['positions'] = json_encode(User::getPositions());
 
 		$data['posts'] = Post::where('category', 'general')->orderBy('created_at', 'desc')->get();
+		$data["events"] = Event::orderBy("created_at","desc")->get();
 
 		return view('home', $data);
 	}
