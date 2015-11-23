@@ -234,6 +234,6 @@ class TransactionListController extends Controller
 
 		DB::commit();
 
-		return redirect()->route('users.account.show',[$uid])->with("credit_tab",true);
+		return redirect()->back()->with("credit_tab",true);
 	}
 }
