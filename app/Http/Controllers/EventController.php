@@ -107,7 +107,7 @@ class EventController extends Controller
 	{
 		DB::rollback();
 		return redirect()->route('event.create')
-					->withErrors(["save"=>$msg])
+					->withErrors(collect([$msg]))
 					->withInput();
 	}
 
@@ -155,8 +155,25 @@ class EventController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy(Event $event)
 	{
-		//
+		if($event->debits->count()+$event->credits->count()!=0){
+			return back()
+				->withErrors(collect(["Des opérations ont déjà été effectuées pour cet événement, il est impossible de le supprimer"]));
+		}
+
+		if(!$event->hasRole("event")){
+			return back()
+				->withErrors(collect(["Impossible de supprimer un utilisateur"]));
+		}
+
+		DB::transaction(function() use ($event) {
+			Permission::where("role","admin_event_".$event->id)->delete();
+			$event->delete();
+		});
+
+
+		return redirect()->route("event.index")
+				->withErrors(collect(["Événement supprimé"]));
 	}
 }

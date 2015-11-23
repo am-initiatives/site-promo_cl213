@@ -519,10 +519,12 @@ return array(
     'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => $vendorDir . '/sebastian/recursion-context/src/InvalidArgumentException.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Resources/stubs/SessionHandlerInterface.php',
+    'SoftdeleteOnUsersTable' => $baseDir . '/database/migrations/2015_11_23_165521_softdelete_on_users_table.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
     'UpdateFacturesTable' => $baseDir . '/database/migrations/2015_10_22_162419_update_factures_table.php',
     'UpdateUsersForPicture' => $baseDir . '/database/migrations/2015_11_05_154729_update_users_for_picture.php',
     'UpdateUsersTable' => $baseDir . '/database/migrations/2015_10_25_180922_update_users_table.php',
+    'UpdateUsersTableLengths' => $baseDir . '/database/migrations/2015_11_23_150218_update_users_table_lengths.php',
     'UserSeeder' => $baseDir . '/database/seeds/UserSeeder.php',
 );
