@@ -93,7 +93,7 @@
 							@if($user->isAllowed("update_buquage"))
 							{!! Form::open(array('route' => 
 								['transactions.update',$transaction["id"]], 'method' => 'put')) !!}
-								<input type="submit" class="tiny button alert" value ="Payer" style="margin:0" />
+								<input type="submit" class="tiny button alert" value ="Valider" style="margin:0" />
 							{!! Form::close() !!}
 							@else
 							<i class="fa fa-times-circle fa-2" style="color:red"></i>
@@ -103,7 +103,7 @@
 						@endif
 						</td>
 						<td class="medium-5">
-							{{$transaction["account"]}}
+							{!!HTML::link(route("users.account.show",$transaction["account_id"]),$transaction["account"])!!}
 						</td>
 						<td class="medium-4">
 							depuis le 
