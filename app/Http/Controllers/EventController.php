@@ -84,16 +84,23 @@ class EventController extends Controller
 		}
 
 		//on authorise l'utilisateur
-		$role = "admin_event_".$event->id;
+		$admin = "admin_event_".$event->id;
 		$user = Auth::user();
 		if(!$user->hasPermission("all")){
-				if(!$user->addRole($role)){
+				if(!$user->addRole($admin)){
 					return $this->redirectCreate("User permission update error");
 				}
 		}
 
-		//on donne les droits au role
-		foreach (["destroy","edit"] as $action) {
+		//on initialise les permissions
+		foreach ([
+				["destroy",$admin],
+				["edit",$admin],
+				["edit","edit_event_".$event->id]
+			] as $row) {
+
+			$role = $row[1];
+			$action = $row[0];
 			if(!Permission::add($role,$action."_event_".$event->id)){
 				return $this->redirectCreate("User permission update error");
 			}
