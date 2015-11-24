@@ -1,4 +1,4 @@
-@extends('layouts.main', , ['page_title' => $event->getTitle()])
+@extends('layouts.main', ['page_title' => $event->getTitle()])
 
 @section('content')
 
@@ -39,9 +39,11 @@
 </div>
 
 <div class="panel">
-	@include('users.accounts.bare_show',array_merge(
-		$event->recap(),
-		['solde' => $event->getBalance()])
+	@include(
+		'users.accounts.bare_show',array_merge(
+			$event->recap(),
+			['solde' => $event->getBalance()]
+		)
 	)
 </div>
 @endsection
