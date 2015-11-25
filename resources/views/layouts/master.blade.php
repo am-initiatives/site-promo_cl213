@@ -28,8 +28,8 @@
 		</script>
 		@show
 
-		<div style="position:absolute;bottom:0;right:10px;">
-			<h5><small style="color:black;">Site de prom's v1.2.1 usiné avec amoür par G109 et T154</small></h5>
+		<div style="position:fixed;bottom:0;right:10px;">
+			<h5><small style="color:black;">Site de prom's v1.2.2 usiné avec amoür par G109 et T154</small></h5>
 		</div>
 	</body>
 </html>
