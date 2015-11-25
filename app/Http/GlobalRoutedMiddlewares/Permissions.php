@@ -29,7 +29,17 @@ class Permissions implements GlobalRoutedMiddleware
 		}
 		else
 		{
-			abort(403);
+			if(Config::get("app.debug")){
+				echo "<h3>Erreur 403</h3>";
+				echo "Route name :";
+				var_dump($route->getName());
+				var_dump($route);
+				exit;
+			}
+			else
+			{
+				abort(403);
+			}
 		}
 	}
 
