@@ -1,4 +1,4 @@
-@extends('layouts.main', ['page_title' => 'Accueil'])
+@extends('layouts.main', ['page_title' => 'Changelog'])
 
 @section('content')
 
