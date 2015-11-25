@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
-@if(App::make("impersonator")->isImpersonating())
-	@section('styles')
-	@parent
-<style type="text/css">body {background-color: yellow;}</style>
-	@endsection
-@endif
+@section('styles')
+@parent
+	@if(App::make("impersonator")->isImpersonating())
+		<style type="text/css">body {background-color: yellow;}</style>
+	@endif
+@endsection
 
 @section('body')
 <div id="header">
@@ -24,4 +24,9 @@
 		@yield('content')
 	</div>
 </div>
+
+<div style="position:absolute;bottom:0;right:10px;">
+	<h5><small>Site de prom's v1.2 usiné avec amoür par G109 et T154</small></h5>
+</div>
+
 @endsection
