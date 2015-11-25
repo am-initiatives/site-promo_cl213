@@ -81,6 +81,7 @@ return 	[
 	"basic" => [
 		"pass"						=> true,
 		"home"						=> true,
+		"changelog"					=> true,
 		"auth.login"				=> true,
 		"auth.signin"				=> true,
 		"auth.google"				=> true,

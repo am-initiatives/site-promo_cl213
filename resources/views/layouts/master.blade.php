@@ -29,7 +29,17 @@
 		@show
 
 		<div style="position:fixed;bottom:0;right:10px;">
-			<h5><small style="color:black;">Site de prom's v1.2.3 usiné avec amoür par G109 et T154</small></h5>
+			<h5>
+				<small style="color:black;">
+				@if(Auth::user())
+					<a href="{{route('changelog')}}">
+						@include("includes.version")
+					</a>
+				@else
+					@include("includes.version")
+				@endif
+				</small>
+			</h5>
 		</div>
 	</body>
 </html>

@@ -30,4 +30,9 @@ class HomeController extends Controller
 
 		return view('home', $data);
 	}
+
+	public function changelog()
+	{
+		return view("changelog");
+	}
 }

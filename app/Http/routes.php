@@ -38,6 +38,8 @@ Route::group(['prefix' => 'config', 'middleware' => 'auth'], function () {
 	Route::post('first/location', ['as'=>'configs.first.location', 'uses' => 'ConfigController@postFirstLocation']);
 });
 
+Route::get('/changelog', ['as' => 'changelog', 'uses' => 'HomeController@changelog']);
+
 // Routes authentifiées et activés
 Route::group(['middleware' => ['auth', 'active']], function()
 {
