@@ -29,3 +29,15 @@
 </div>
 
 @endsection
+
+@section('scripts')
+@parent
+<script src="{{ URL::to('tablesorter-2.0/jquery.tablesorter.min.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() 
+	    { 
+	        $(".sortable").tablesorter(); 
+	    } 
+	); 
+</script>
+@endsection
