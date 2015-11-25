@@ -91,14 +91,25 @@ body {
 	border: solid 1px #DDD;
 	margin: 4px 2px;
 	padding: 0px;
+	overflow: hidden;
+}
+
+.vignette ul {
+	margin-bottom: 0px;
 }
 
 .vignette .picture img {
-	height: 100px;
+	height: 110px;
 	margin-right: 8px;
 	border-right: 1px solid #DDD;
 }
 
+.vignette .information {
+	margin-right: -100%;
+}
+
 .vignette .actions {
+	float: right;
 	margin-right: 5px;
+	background-color: #FFF;
 }
