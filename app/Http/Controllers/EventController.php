@@ -218,7 +218,7 @@ class EventController extends Controller
 				$deleted = false;
 				foreach ($usr->getRoles() as $role) {
 					if(!preg_match('/[a-zA-Z]+_event_'.$event->id."/", $role)){
-						$roles = $role;
+						$roles[] = $role;
 					}
 					else
 					{
