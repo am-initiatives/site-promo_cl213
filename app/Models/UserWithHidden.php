@@ -132,6 +132,18 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 		return true;
 	}
+
+	public function removeRole($role)
+	{
+		$roles = $this->getRoles();
+
+		if(($key = array_search($role, $roles)) !== false) {
+		    unset($roles[$key]);
+		}
+
+		$this->roles = @json_encode($roles,true);
+		return $this->update();
+	}
 	
 	/*=====  End of Permissions  ======*/
 	

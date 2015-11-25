@@ -164,10 +164,21 @@ return 	[
 				return $user->id;
 			}
 		],
+		"transactionlist.acquit_all" => [
+			"name"		=> "update_buquage",
+			'getTarget'	=> function($user){
+				return null;
+			}
+		],
+		"event.manage" => [
+			"name"		=> "manage_event",
+			"getTarget" => function($event){
+				return "manage_event_".$event->id;
+			}
+		],
 		'password.email' => true,
 		'password.email.store' => true,
 		'password.reset' => true,
 		'password.reset.store' => true,
-		"transactionlists.acquit_all" => true,
 	]
 ];

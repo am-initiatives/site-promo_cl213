@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth', 'active']], function()
 
 
 	Route::resource('event', 'EventController');
+	Route::get("event/manage/{event}",["as"=>"event.manage","uses"=>"EventController@manage"]);
 
 	// Map plein écran
 	Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);

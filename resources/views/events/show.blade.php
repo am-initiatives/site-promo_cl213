@@ -16,6 +16,7 @@
 		<div class="column medium-7 text-right">
 		<ul class="button-group">
 			@if(Auth::user()->isAllowed("edit_event_".$event->id))
+			<li><a href="{{ route('event.manage', $event->id) }}" class="button small success">Gérer les harpags</a></li>
 			<li><a href="{{ route('event.edit', $event->id) }}" class="button small">Editer</a></li>
 			@endif
 			@if(Auth::user()->isAllowed("destroy_event_".$event->id))

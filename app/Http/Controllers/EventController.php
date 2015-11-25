@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 use App\Models\Event;
 use App\Models\Permission;
+use App\Models\User;
 use App\Models\UserWithHidden;
 
 use App\Services\Impersonator;
@@ -96,6 +97,7 @@ class EventController extends Controller
 		foreach ([
 				["destroy",$admin],
 				["edit",$admin],
+				["update",$admin],
 				["edit","edit_event_".$event->id]
 			] as $row) {
 
@@ -145,16 +147,49 @@ class EventController extends Controller
 		return view("events.edit");
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id)
+	public function manage(Event $event)
+	//utilisé pour ajouter ou retirer des harpags ou admin de l'event
 	{
-		//
+		return view("events.manage")
+			->withUser(Auth::user())
+			->withEvent($event)
+			->withPgs(User::all());
+	}
+
+	public function update(Request $request,Event $event)
+	//utilisé pour ajouter ou retirer des harpags ou admin de l'event
+	{
+		$this->validate($request,["role"=>"required|array"]);
+
+		DB::transaction(function() use ($request,$event){
+			foreach ($request->get("role") as $uid => $role) {
+				$validator = Validator::make(["uid"=>$uid,"role"=>$role],[
+					"uid"	=> "required|exists:users,id",
+					"role"	=> "required|in:admin,harpags,none"]);
+				if($validator->fails()){
+					return redirect()->back()->withErrors($validator)->withInput();
+				}
+
+				$user = User::findOrFail($uid);
+
+				if($user->hasPermission("all")) continue;
+
+				$user->removeRole("admin_event_".$event->id);
+				$user->removeRole("edit_event_".$event->id);
+
+				switch ($role) {
+					case 'admin':
+						$user->addRole("admin_event_".$event->id);
+						break;
+					case 'harpags':
+						$user->addRole("edit_event_".$event->id);
+						break;
+				}
+			}
+
+		});
+
+		return redirect()->back()->withErrors(collect(["Droits mis à jour"]));
 	}
 
 	/**
