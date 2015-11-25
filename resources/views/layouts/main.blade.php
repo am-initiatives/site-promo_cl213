@@ -35,21 +35,6 @@
 <script src="{{ URL::to('tablesorter-2.0/jquery.tablesorter.min.js') }}"></script>
 <script type="text/javascript">
 
-	// mettre un tag pour le tri oblige à surcharcher l'extraction de texte ce qui fout la merde
-	// pour le tri des chiffres du type <strong>100</strong> qui sera alors interprété comme chaine 
-	//  $.tablesorter.addParser({ 
-	// 	// set a unique id 
-	// 	id: 'byTag', 
-	// 	is: function(s) { 
-	// 		var data = s.match(/sortby="([^"]+)"/);
-	// 		return data ? true : false; 
-	// 	}, 
-	// 	format: function(s) { 
-	// 		// format your data for normalization 
-	// 		var res =  s.match(/sortby="([^"]+)"/)[1]; 
-	// 		return res;
-	// 	}
-	// }); 
 	var solde = /(-?[0-9]{1,2}\.[0-9]{2})\s?€/;
 	 $.tablesorter.addParser({ 
 		// set a unique id 
@@ -67,8 +52,27 @@
 	}); 
 	$(document).ready(function() 
 		{ 
-			// $(".sortable").tablesorter( {textExtraction: function(node){return node.innerHTML;}}); 
-			$(".sortable").tablesorter(); 
+			$(".sortable").tablesorter( {textExtraction: function(node){
+				//va chercher un éventuel tag "sortby" dans le noeud parent
+				//pour l'utiliser pour le tri
+				var text = node.getAttribute("sortby");
+				if(!text)
+				{
+					//etrait de la lib de base
+					var supportsTextContent = node.textContent || false;
+					if (supportsTextContent) {
+						text = node.textContent;
+					} else {
+						if (node.childNodes[0] && node.childNodes[0].hasChildNodes()) {
+							text = node.childNodes[0].innerHTML;
+						} else {
+							text = node.innerHTML;
+						}
+					}
+				}
+
+				return text;
+			}}); 
 		} 
 	); 
 </script>
