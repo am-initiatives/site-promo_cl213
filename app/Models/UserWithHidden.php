@@ -46,7 +46,7 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 	public function getPictureLink()
 	{
 		if ($this->picture) {
-			return url('uploads/pictures',$this->picture);
+			return $this->picture;
 		} else if ($this->google_pic) {
 			return $this->google_pic;
 		} else {
