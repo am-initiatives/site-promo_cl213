@@ -88,7 +88,7 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 
 	public function hasPermission($perm)
 	{
-		if ( $roles = @json_decode($this->roles, true) ){
+		if ( $roles = $this->getRoles() ){
 			foreach ($roles as $role) {
 				if(Permission::where("role",$role)->where("permission",$perm)->count()!=0){
 					return true;
@@ -106,6 +106,9 @@ class UserWithHidden extends Model implements AuthenticatableContract, CanResetP
 		$roles = @json_decode($this->roles, true);
 		if(is_array($roles)){
 			return $roles;
+		}
+		elseif ($roles){
+			return [$roles];
 		}
 		else{
 			return [];
