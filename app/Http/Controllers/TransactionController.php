@@ -113,7 +113,7 @@ class TransactionController extends Controller
 		$t->delete();
 
 		if($t->credited_user_id == User::getBankAccount()->id){
-			return redirect()->back;
+			return redirect()->back();
 		}
 
 		return redirect()->back()->with("credit_tab",true);
