@@ -15,6 +15,7 @@
 
 	<ul>
 		<li>tri des comptes par solde</li>
+		<li>bouton rechercher pour la carte marchait pas</li>
 	</ul>
 
 </div>
