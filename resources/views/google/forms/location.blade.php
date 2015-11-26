@@ -23,7 +23,7 @@ $(document).ready(function () {
 	});
 
 	$('#search_button').click(function() {
-		searchAddress($('#address').value);
+		searchAddress($('#address').val());
 	});
 });
 
