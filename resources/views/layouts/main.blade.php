@@ -35,7 +35,7 @@
 <script src="{{ URL::to('tablesorter-2.0/jquery.tablesorter.min.js') }}"></script>
 <script type="text/javascript">
 
-	var solde = /(-?[0-9]{1,2}\.[0-9]{2})\s?€/;
+	var solde = /(-?[0-9]{1,3}(,[0-9]{3})*\.[0-9]{2})\s?€/;
 	 $.tablesorter.addParser({ 
 		// set a unique id 
 		id: 'solde', 
@@ -45,7 +45,7 @@
 		}, 
 		format: function(s) { 
 			// format your data for normalization 
-			var res =  s.match(solde)[1]; 
+			var res =  s.match(solde)[1].replace(",",""); 
 			return res;
 		},
 		type:"numeric"
