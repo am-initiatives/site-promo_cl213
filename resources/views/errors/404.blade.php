@@ -1,11 +1,7 @@
-@extends('layouts.config', ['page_title' => 'Erreur 404'])
+@extends('layouts.master', ['page_title' => 'Erreur 404'])
 
-@section('content')
+@section('body')
 <div class="alert-box">
 	<h1 class="text-center">Erreur 404 : Page non trouvée</h1>
 </div>
-@endsection
-
-@section('scripts')
-@parent
 @endsection
