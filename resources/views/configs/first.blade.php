@@ -70,6 +70,7 @@
 @endsection
 
 @section('scripts')
+@parent
 <script>
 	$(document).ready(function() {
 		$('.mover').click(function () {
