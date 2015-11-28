@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -75,12 +74,7 @@ class TransactionController extends Controller
 	 */
 	public function store(Request $request,TransactionFactory $factory)
 	{
-		if($validator = $factory->build($request->all()))
-		{
-			return redirect()->route('transactions.create')
-						->withErrors($validator)
-						->withInput();
-		}
+		$factory->build($request->all());
 
 		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
@@ -127,13 +121,7 @@ class TransactionController extends Controller
 
 	public function storeAppro(Request $request,TransactionFactory $factory,$user)
 	{
-		$validator = $factory->buildAppro($request->get("wording"),$request->get("amount"),$user->id);
-
-		if ($validator) {
-			return redirect()->route('transactions.appro.create',$user)
-						->withErrors($validator)
-						->withInput();
-		}
+		$factory->buildAppro($request->get("wording"),$request->get("amount"),$user->id);
 
 		return redirect()->route('users.account.show',[$user->id])->with("credit_tab",true);
 	}
@@ -146,20 +134,14 @@ class TransactionController extends Controller
 	public function storeOutgo(Request $request,TransactionFactory $factory)
 	{
 		$user = Auth::user();
-		$validator = $factory->build([
+		$factory->build([
 			"wording"	=> $request->get("wording"),
 			"amount"	=> $request->get("amount"),
 			"credited_user_id"	=> User::getBankAccount()->id,
 			"debited_user_id"	=> $user->id,
 			"state"		=> "acquited",
 			]);
-
-		if ($validator) {
-			return redirect()->route('transactions.outgo.create',$user)
-						->withErrors($validator)
-						->withInput();
-		}
-
+		
 		return redirect()->route('users.account.show',[$user->id]);
 	}
 }

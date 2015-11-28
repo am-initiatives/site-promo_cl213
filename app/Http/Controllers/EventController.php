@@ -15,7 +15,6 @@ use App\Models\UserWithHidden;
 use App\Services\Impersonator;
 
 use Auth;
-use Validator;
 use DB;
 
 class EventController extends Controller
@@ -51,16 +50,10 @@ class EventController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$validator = Validator::make($request->all(),[
+		$this->validate($request,[
 			"name" 	=> "required|string",
 			"description"			=> "required|string|between:5,1090"
 			]);
-
-		if($validator->fails()){
-			return redirect()->route('event.create')
-						->withErrors($validator)
-						->withInput();
-		}
 
 		$data = $request->all();
 		$data["picture"] = url('images/default_picture.png');
@@ -163,12 +156,9 @@ class EventController extends Controller
 
 		DB::transaction(function() use ($request,$event){
 			foreach ($request->get("role") as $uid => $role) {
-				$validator = Validator::make(["uid"=>$uid,"role"=>$role],[
+				$this->validate(["uid"=>$uid,"role"=>$role],[
 					"uid"	=> "required|exists:users,id",
 					"role"	=> "required|in:admin,harpags,none"]);
-				if($validator->fails()){
-					return redirect()->back()->withErrors($validator)->withInput();
-				}
 
 				$user = User::findOrFail($uid);
 

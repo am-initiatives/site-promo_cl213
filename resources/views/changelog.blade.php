@@ -3,6 +3,17 @@
 @section('content')
 
 <div class="panel">
+	<h3>V1.2.4</h3>
+
+	<h4>Résolutions de bugs</h4>
+
+	<ul>
+		<li>liste de buquage validée d'office validaient pas</li>
+		<li>bouton valider tout marchait plus</li>
+	</ul>
+</div>
+
+<div class="panel">
 	<h3>V1.2.3</h3>
 
 	<h4>Fonctionnalités</h4>

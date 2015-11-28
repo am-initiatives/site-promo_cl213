@@ -165,7 +165,7 @@ return 	[
 				return $user->id;
 			}
 		],
-		"transactionlist.acquit_all" => [
+		"transactionlists.acquit_all" => [
 			"name"		=> "update_buquage",
 			'getTarget'	=> function($user){
 				return null;

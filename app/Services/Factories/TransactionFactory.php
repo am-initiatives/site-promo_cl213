@@ -8,9 +8,11 @@ use Auth;
 use Ramsey\Uuid\Uuid;
 
 use App\Models\Transaction;
+use App\Traits\Validates;
 
 class TransactionFactory
 {
+	use Validates;
 
 	public function build($params)
 	{
@@ -27,16 +29,12 @@ class TransactionFactory
 			}
 		}
 
-		$validator = Validator::make($params, [
+		$this->validate($params, [
 			'credited_user_id' => 'required|integer',
 			'debited_user_id' => 'required|integer|not_in:'.$params["credited_user_id"],
 			'wording' => 'required|between:5,255',
-			'amount' => 'required|min:1',
+			'amount' => 'required|numeric|min:1',
 		]);
-
-		if ($validator->fails()) {
-			return $validator;
-		}
 
 		$params["amount"] = (integer) 100 * abs(floatval(str_replace(",", ".",$params['amount'])));
 

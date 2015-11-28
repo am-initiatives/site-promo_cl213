@@ -49,7 +49,7 @@ class ConfigController extends Controller
 			return 'OK';
 		}
 		else
-			return "Validation error";
+			return "Update error";
 	}
 
 	/**
@@ -71,6 +71,6 @@ class ConfigController extends Controller
 		if ($user->update())
 			return 'OK';
 		else
-			return 'Validation error';
+			return 'Update error';
 	}
 }
