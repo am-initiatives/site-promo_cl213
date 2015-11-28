@@ -5,6 +5,12 @@
 <div class="panel">
 	<h3>V1.2.4</h3>
 
+	<h4>Fonctionnalités</h4>
+
+	<ul>
+		<li>ajout du champ validation d'office pour l'ajout de personnes sur les listes de buquages</li>
+	</ul>
+
 	<h4>Résolutions de bugs</h4>
 
 	<ul>

@@ -127,7 +127,7 @@ class TransactionListController extends Controller
 			$data["amount"] = $t->amount;
 			$data["group_id"] = $t->group_id;
 
-			return view("transactions.lists.edit",$data);
+			return view("transactions.lists.edit",$data)->withUser(Auth::user());
 	}
 
 	public function update(Request $request, $group, TransactionFactory $factory)
@@ -143,11 +143,12 @@ class TransactionListController extends Controller
 		DB::transaction(function() use ($t,$id,$factory,$request){
 			foreach ($request->get("debited") as $debited) {
 				$factory->build(array(
-					'wording'		   => $t->wording,
+					'wording'		   	=> $t->wording,
 					'amount'			=> $t->amount / 100,
 					'credited_user_id'  => $t->credited_user_id,
 					'debited_user_id'   => $debited,
-					'group_id'		  => $id
+					'group_id'		 	=> $id,
+					'force'				=> $request->get("force")
 					));
 			}
 		});
