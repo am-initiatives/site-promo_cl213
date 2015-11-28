@@ -18,6 +18,8 @@ use DB;
 
 class TransactionListController extends Controller
 {
+	protected $actions = ["store","update","destroy","storeAppro","acquitAll"];
+
 	public function show($group)
 	{
 		$data = [
@@ -63,13 +65,12 @@ class TransactionListController extends Controller
 		return view('transactions.lists.show', $data);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request,TransactionFactory $factory)
+	public function canStore()
+	{
+		return true;
+	}
+
+	public function executeStore(Request $request,TransactionFactory $factory)
 	{
 		$this->validate($request,[
 			'debited' => 'required|array',
@@ -130,7 +131,12 @@ class TransactionListController extends Controller
 			return view("transactions.lists.edit",$data)->withUser(Auth::user());
 	}
 
-	public function update(Request $request, $group, TransactionFactory $factory)
+	public function canUpdate($group)
+	{
+		return Auth::user()->isAllowed("update_buquage", $group->first()->credited_user_id);
+	}
+
+	public function executeUpdate(Request $request, $group, TransactionFactory $factory)
 	//ajouter une personne après coup
 	{
 		$this->validate($request, [
@@ -156,13 +162,12 @@ class TransactionListController extends Controller
 		return redirect()->route('users.account.show',[$t->credited_user_id])->with("credit_tab",true);
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($group)
+	public function canDestroy($group)
+	{
+		return Auth::user()->isAllowed("destroy_buquage", $group->first()->credited_user_id);
+	}
+
+	public function executeDestroy($group)
 	{
 		$uid = $group->first()->credited_user_id;
 
@@ -180,7 +185,12 @@ class TransactionListController extends Controller
 		return view("transactions.lists.appro")->with("creditables",User::all());
 	}
 
-	public function storeAppro(Request $request,TransactionFactory $factory)
+	public function canStoreAppro()
+	{
+		return Auth::user()->isAllowed("appro");
+	}
+
+	public function executeStoreAppro(Request $request,TransactionFactory $factory)
 	{
 		$this->validate($request, [
 			'credited' => 'required|array',
@@ -195,7 +205,12 @@ class TransactionListController extends Controller
 		return redirect()->route('users.accounts')->withErrors(["ok"=>count($request->get("credited"))." Utilisateurs Crédités"]);
 	}
 
-	public function acquitAll(Request $request, $group, TransactionFactory $factory)
+	public function canAcquitAll()
+	{
+		return Auth::user()->isAllowed("update_buquage");
+	}
+
+	public function executeAcquitAll(Request $request, $group, TransactionFactory $factory)
 	{
 		$uid = $group->first()->credited_user_id;
 

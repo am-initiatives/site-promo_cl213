@@ -88,23 +88,17 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
 
 	// Login en tant que
-	Route::get('auth/as/{user}', ['as' => 'auth.log_as', 'uses' => function ($user) {
-		App::make('impersonator')->impersonate($user);
-		return redirect()->route('home');
-	}]);
+	Route::get('auth/as/{user}', ['as' => 'auth.log_as', 'uses' => 'Auth\AuthController@logAs']);
+
+	/*========================================
+	=            Gestion de la DB            =
+	========================================*/
 
 	//seed de la db
-	Route::get('artisan/seed/{seeder}',['as'=>"artisan.seed","uses"=>function($seeder){
-		$exitCode = Artisan::call('db:seed', [
-			'--class' => $seeder
-		]);
-	}]);
+	Route::get('artisan/seed/{seeder}',['as'=>"artisan.seed","uses"=>'ArtisanController@seed']);
 
-	Route::get('artisan/migrate',['as'=>"artisan.migrate","uses"=>function(){
-		$exitCode = Artisan::call('migrate');
-
-		var_dump($exitCode);
-	}]);
+	//migration de la db
+	Route::get('artisan/migrate',['as'=>"artisan.migrate","uses"=>'ArtisanController@migrate']);
 });
 
 /*======================================

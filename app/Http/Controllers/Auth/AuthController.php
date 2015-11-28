@@ -21,6 +21,8 @@ use Collective\Html\HtmlFacade as Html;
 
 class AuthController extends Controller
 {
+
+	protected $actions = ["logAs"];
 	/*
 	|--------------------------------------------------------------------------
 	| Registration & Login Controller
@@ -159,5 +161,16 @@ class AuthController extends Controller
 		{
 			return $this->parentGetLogout();
 		}
+	}
+
+	public function canLogAs(User $user)
+	{
+		return Auth::user()->isAllowed("log_as", $user->id);
+	}
+
+	public function executeLogAs(User $user)
+	{
+		App::make('impersonator')->impersonate($user);
+		return redirect()->route('home');
 	}
 }

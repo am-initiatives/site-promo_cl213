@@ -13,7 +13,14 @@ use Auth;
 class PostController extends Controller
 {
 
-	public function store(Request $request)
+	protected $actions = ["store","update","destroy"];
+
+	public function canStore()
+	{
+		return true;
+	}
+
+	public function executeStore(Request $request)
 	{
 		$inputs = $request->only(['category', 'body']);
 
@@ -28,8 +35,12 @@ class PostController extends Controller
 		return view('posts.edit', $data);
 	}
 
+	public function canUpdate(Post $post)
+	{
+		return Auth::user()->isAllowed(null, $post->user->id);
+	}
 
-	public function update(Request $request, $post)
+	public function executeUpdate(Request $request, Post $post)
 	{
 		$inputs = $request->only(['body']);
 
@@ -38,7 +49,12 @@ class PostController extends Controller
 		return $post->showBody();
 	}
 
-	public function destroy($post)
+	public function canDestroy(Post $post)
+	{
+		return Auth::user()->isAllowed("destroy_post", $post->user->id);
+	}
+
+	public function executeDestroy(Post $post)
 	{
 		$post->delete();
 

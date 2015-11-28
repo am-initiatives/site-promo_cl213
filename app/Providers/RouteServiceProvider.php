@@ -53,10 +53,5 @@ class RouteServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		foreach (Config::get("app.globalmiddlewares") as $name => $classname) {
-			$this->app->singleton($name,$classname);
-		}
-
-		$this->app->singleton('router', 'App\Services\RouterHook');
 	}
 }

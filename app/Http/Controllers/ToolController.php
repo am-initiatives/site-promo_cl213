@@ -12,6 +12,7 @@ use Auth;
 
 class ToolController extends Controller
 {
+	protected $actions = ["storeLocation"];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -48,17 +49,16 @@ class ToolController extends Controller
 		return view('tools.map-full', ['locations' => $locations]);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  Request  $request
-	 * @return Response
-	 */
-	public function storeLocation(Request $request)
+	public function canStoreLocation()
+	{
+		return true;
+	}
+
+	public function executeStoreLocation(Request $request)
 	{
 		$location = json_decode($request->input('location'), true);
 
-		$pos = [(string) round($location[0], 7), (string) round($location[1], 7)];
+		$pos = [(float) round($location[0], 7), (float) round($location[1], 7)];
 
 		$user = Auth::user();
 		$user->pos = json_encode($pos);

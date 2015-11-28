@@ -19,6 +19,8 @@ use DB;
 
 class EventController extends Controller
 {
+
+	protected $actions = ["edit","store","update","destroy"];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -42,13 +44,12 @@ class EventController extends Controller
 			->with("user",Auth::user());
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request)
+	public function canStore()
+	{
+		return Auth::user()->isAllowed("store_event");
+	}
+
+	public function executeStore(Request $request)
 	{
 		$this->validate($request,[
 			"name" 	=> "required|string",
@@ -127,13 +128,12 @@ class EventController extends Controller
 			->with("user",Auth::user());
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($event,Impersonator $imp)
+	public function canEdit(Event $event)
+	{
+		return Auth::user()->isAllowed("edit_event",$event->id);
+	}
+
+	public function executeEdit(Event $event,Impersonator $imp)
 	{
 		$imp->impersonate($event);
 
@@ -149,7 +149,13 @@ class EventController extends Controller
 			->withPgs(User::all());
 	}
 
-	public function update(Request $request,Event $event)
+
+	public function canUpdate(Event $event)
+	{
+		return Auth::user()->isAllowed("update_event",$event->id);
+	}
+
+	public function executeUpdate(Request $request,Event $event)
 	//utilisé pour ajouter ou retirer des harpags ou admin de l'event
 	{
 		$this->validate($request,["role"=>"required|array"]);
@@ -182,13 +188,12 @@ class EventController extends Controller
 		return redirect()->back()->withErrors(collect(["Droits mis à jour"]));
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy(Event $event)
+	public function canDestroy(Event $event)
+	{
+		return Auth::user()->isAllowed("destroy_event",$event->id);
+	}
+	
+	public function executeDestroy(Event $event)
 	{
 		if($event->debits->count()+$event->credits->count()!=0){
 			return back()

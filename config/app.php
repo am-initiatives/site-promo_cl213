@@ -200,9 +200,4 @@ return [
 
 		'OAuth' => Artdarek\OAuth\Facade\OAuth::class,
 	],
-
-
-	"globalmiddlewares" => [
-		"permissions" => "App\Http\GlobalRoutedMiddlewares\Permissions",
-	],
 ];

@@ -20,6 +20,7 @@ use DB;
 class TransactionController extends Controller
 {
 
+	protected $actions = ["destroy","update","store","storeOutgo","storeAppro"];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -65,13 +66,11 @@ class TransactionController extends Controller
 		return view('transactions.create', $data);
 	}
 
+	public function canStore()
+	{
+		return true;
+	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  Request  $request
-	 * @return Response
-	 */
 	public function store(Request $request,TransactionFactory $factory)
 	{
 		$factory->build($request->all());
@@ -79,14 +78,12 @@ class TransactionController extends Controller
 		return redirect()->route('users.account.show',Auth::user()->id)->with("credit_tab",true);
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Request  $request
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update(Request $request, $t)
+	public function canUpdate(Transaction $t)
+	{
+		return Auth::user()->isAllowed("update_buquage", $t->credited_user_id);
+	}
+
+	public function executeUpdate(Request $request, $t)
 	//utilisé pour la validation d'un buquage
 	{
 		$t->state = "acquited";
@@ -95,13 +92,17 @@ class TransactionController extends Controller
 		return redirect()->back();
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy(Request $request,$t)
+	
+	public function canDestroy(Transaction $t)
+	{
+		if($t->credited_user_id==User::getBankAccount()->id){
+		//si c'est une dépense (au sens où on déclare avoir utilisé l'argent de la proms)
+			return Auth::user()->isAllowed("outgo",$t->debited_user_id);
+		}
+		return Auth::user()->isAllowed("destroy_buquage", $t->credited_user_id);
+	}
+
+	public function executeDestroy(Request $request,Transaction $t)
 	{
 		$uid = $t->credited_user_id;
 		$t->delete();
@@ -119,7 +120,12 @@ class TransactionController extends Controller
 		return view("transactions.appro")->with("user",$user);
 	}
 
-	public function storeAppro(Request $request,TransactionFactory $factory,$user)
+	public function canStoreAppro($user)
+	{
+		return Auth::user()->isAllowed("appro");
+	}
+
+	public function executeStoreAppro(Request $request,TransactionFactory $factory,$user)
 	{
 		$factory->buildAppro($request->get("wording"),$request->get("amount"),$user->id);
 
@@ -131,7 +137,12 @@ class TransactionController extends Controller
 		return view("transactions.outgo");
 	}
 
-	public function storeOutgo(Request $request,TransactionFactory $factory)
+	public function canStoreOutgo()
+	{
+		return Auth::user()->isAllowed("create_outgo");
+	}
+
+	public function ExecuteStoreOutgo(Request $request,TransactionFactory $factory)
 	{
 		$user = Auth::user();
 		$factory->build([
