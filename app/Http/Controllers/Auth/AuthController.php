@@ -52,7 +52,7 @@ class AuthController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('guest', ['except' => 'getLogout']);
+		$this->middleware('guest', ['except' => ['getLogout','logAs']]);
 	}
 
 	/**
@@ -69,24 +69,6 @@ class AuthController extends Controller
 			'password' => 'required|confirmed|min:6',
 		]);
 	}
-
-	/**
-	 * Create a new user instance after a valid registration.
-	 *
-	 * @param  array  $data
-	 * @return User
-	 */
-	protected function create(array $data)
-	{
-		return User::create([
-			'name' => $data['name'],
-			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
-		]);
-	}
-
-
-
 
 	/**
 	 * Login user using Google
