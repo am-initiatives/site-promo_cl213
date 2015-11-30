@@ -28,7 +28,7 @@
 			@endif
 		</div>
 	</div>
-	<div id="post_{{ $post->id }}">
+	<div class="content" id="post_{{ $post->id }}">
 		{!! $post->showBody() !!}
 	</div>
 </div>

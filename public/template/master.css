@@ -76,6 +76,12 @@ body {
 	display: inline-block;
 	vertical-align: bottom;
 }
+.panel.post .content p {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	line-height: 1.38;
+	margin-bottom: 0.2rem;
+}
 
 
 /* Map */

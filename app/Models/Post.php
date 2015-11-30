@@ -44,16 +44,24 @@ class Post extends Model
 	{
 		$body = htmlentities($this->body);
 
+		$url_rule = '(?:http|ftp|https)://(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?';
+
+		// Défini les règles de reformattages
 		$rules = array(
-			'[*]{1}' => 'strong',
-			'[_]{1}' => 'i',
+			'[*]{1}(.+?)[*]{1}' => '<strong>$1</strong>',
+			'[_]{1}(.+?)[_]{1}' => '<i>$1</i>',
+			$url_rule => '<a href="$0" target="_blank">$0</a>',
 			);
 
-		foreach ($rules as $rule => $tag) {
-			$body = preg_replace("#$rule(.+?)$rule#", "<$tag>$1</$tag>", $body);
+		// Ajoute le formattage
+		foreach ($rules as $regex => $replacement) {
+			$body = preg_replace("#".$regex."#", $replacement, $body);
 		}
 
-		return nl2br($body);
+		// Sépare les paragraphes
+		$body = "<p>" . preg_replace("#\r\n?|\n#", "</p><p>", $body) . "</p>";
+
+		return $body;
 	}
 
 	/**
