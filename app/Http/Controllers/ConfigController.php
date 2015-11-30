@@ -59,7 +59,7 @@ class ConfigController extends Controller
 	 */
 	public function postFirstLocation(Request $request)
 	{
-		$location = json_decode($request->input('location'), true);
+		$location = $request->input('location');
 		
 		$pos = array_map('floatval', $location);
 

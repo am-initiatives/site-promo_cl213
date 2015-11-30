@@ -37,18 +37,10 @@
 			<h3>Où es-tu en ce moment ?</h3>
 		</div>
 		<div class="container" style="max-width: 1080px;">
-			<div class="columns medium-8" style="height:500px; margin-bottom: 20px;">
-				@include('google.map', ['noInit' => true])
+			<div style="height: 500px;">
+				@include('includes.map', ['mapOptions' => ['search']])
 			</div>
-			<div class="columns medium-4">
-				@include('google.forms.location')
-			</div>
-			<div class="columns small-12">
-			{!! Form::open(array('route' => 'configs.first.location','id' => 'location_form')) !!}
-				<input type="hidden" name="location">
-				<input type="submit" name="save_location" class="right button small" value="Enregistrer">
-			{!! Form::close() !!}
-			</div>
+			{{-- <input type="submit" name="pac-input-button" class="right button small" value="Enregistrer"> --}}
 		</div>
 	</div>
 	<div class="moving">
@@ -77,7 +69,7 @@
 			move($(this).parents(".moving").first());
 		});
 
-		$('#password_form, #location_form').submit(function (e) {
+		$('#password_form').submit(function (e) {
 			e.preventDefault();
 
 			$.ajax({
@@ -86,6 +78,25 @@
 				url: $(this).attr('action'),
 				data: $(this).serialize(),
 				context: this,
+				success: function(data) {
+					if (data == "OK") {
+						move($(this).parents(".moving").first());
+					}
+				}
+			});
+		});
+
+		$('#pac-input-button').click(function () {
+			var location = window.markers[0].getPosition();
+
+			$.ajax({
+				method: "POST",
+				cache: false,
+				url: "{{ route('configs.first.location') }}",
+				data: {
+					location: [location.lat(), location.lng()]
+				},
+				context: $(this),
 				success: function(data) {
 					if (data == "OK") {
 						move($(this).parents(".moving").first());
@@ -109,7 +120,8 @@
 				left: '50%'
 			}, 500, function () {
 				if($(this).find("#map").size()) {
-					$("body").append("\<script async defer src=\"http://maps.googleapis.com/maps/api/js?key={{ env('API_KEY') }}&callback=initMap\"\>\</script\>");
+					// Initialise au dernier moment
+					initMap();
 				}
 			});
 	}

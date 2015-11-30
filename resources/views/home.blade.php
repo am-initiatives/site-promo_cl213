@@ -17,7 +17,7 @@
 				</a>
 			</div>
 			<div class="show-for-medium-up">
-				<a href="{{ route('tools.map') }}">
+				<a href="{{ route('map.show') }}">
 					<div class="panel">
 						<h5>Où sont mes prom'squets ?</h5>
 						<img style="width: 100%;" src="{{ url('images/map.png') }}">

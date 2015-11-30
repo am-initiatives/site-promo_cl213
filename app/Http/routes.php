@@ -82,10 +82,9 @@ Route::group(['middleware' => ['auth', 'active']], function()
 	Route::get("event/manage/{event}",["as"=>"event.manage","uses"=>"EventController@manage"]);
 
 	// Map plein écran
-	Route::get('tools/map', ['as'=>'tools.map', 'uses' => 'ToolController@map']);
-	Route::get('tools/map/full', ['as'=>'tools.map.full', 'uses' => 'ToolController@mapFull']);
-	Route::get('tools/map/location', ['as'=>'tools.map.location', 'uses' => 'ToolController@mapUpdate']);
-	Route::post('tools/map/location', ['as'=>'tools.map.store-location', 'uses' => 'ToolController@storeLocation']);
+	Route::get('map', ['as'=>'map.show', 'uses' => 'MapController@show']);
+	Route::get('map/full', ['as'=>'map.full', 'uses' => 'MapController@full']);
+	Route::post('map/location', ['as'=>'map.store-location', 'uses' => 'MapController@storeLocation']);
 
 	// Login en tant que
 	Route::get('auth/as/{user}', ['as' => 'auth.log_as', 'uses' => 'Auth\AuthController@logAs']);
