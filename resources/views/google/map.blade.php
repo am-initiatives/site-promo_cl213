@@ -9,8 +9,8 @@ function initMap() {
 	var france = new google.maps.LatLng(46.2157467, 2.2088258);
 
 	var mapOptions = {
-	  zoom: 5,
-	  center: france
+		zoom: 5,
+		center: france
 	}
 
 	window.map = new google.maps.Map(document.getElementById("map"), mapOptions);
