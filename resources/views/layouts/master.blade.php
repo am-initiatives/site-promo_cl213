@@ -28,7 +28,7 @@
 		</script>
 		@show
 
-		<div style="position:fixed;bottom:0;right:10px;">
+		<div style="position:fixed;bottom:0;right:10px;" class="show-for-medium-up">
 			<h5>
 				<small style="color:black;">
 				@if(Auth::user())
