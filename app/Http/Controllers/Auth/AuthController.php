@@ -152,7 +152,7 @@ class AuthController extends Controller
 
 	public function executeLogAs(User $user)
 	{
-		App::make('impersonator')->impersonate($user);
+		\App::make('impersonator')->impersonate($user);
 		return redirect()->route('home');
 	}
 }
