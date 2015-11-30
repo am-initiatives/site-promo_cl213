@@ -3,6 +3,19 @@
 @section('content')
 
 <div class="panel">
+	<h3>V1.2.5</h3>
+
+	<h4>Améliorations</h4>
+
+	<ul>
+		<li>Amélioration dans l'affichage des posts (les liens sont maintenant pris en compte)</li>
+		<li>Caché le numéro de version sur les smartphones</li>
+		<li>Possibilté de scoll dans la page de première configuration (Problème sur les petits écrans et smartphones)</li>
+		<li>Amélioration générale de la carte</li>
+	</ul>
+</div>
+
+<div class="panel">
 	<h3>V1.2.4</h3>
 
 	<h4>Fonctionnalités</h4>
