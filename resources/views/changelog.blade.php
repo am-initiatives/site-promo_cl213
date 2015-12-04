@@ -12,6 +12,7 @@
 		<li>Caché le numéro de version sur les smartphones</li>
 		<li>Possibilté de scoll dans la page de première configuration (Problème sur les petits écrans et smartphones)</li>
 		<li>Amélioration générale de la carte</li>
+		<li>fix : droits pour gestion des events</li>
 	</ul>
 </div>
 

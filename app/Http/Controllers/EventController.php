@@ -130,7 +130,7 @@ class EventController extends Controller
 
 	public function canEdit(Event $event)
 	{
-		return Auth::user()->isAllowed("edit_event",$event->id);
+		return Auth::user()->isAllowed("edit_event_".$event->id,$event->id);
 	}
 
 	public function executeEdit(Event $event,Impersonator $imp)
@@ -152,7 +152,7 @@ class EventController extends Controller
 
 	public function canUpdate(Event $event)
 	{
-		return Auth::user()->isAllowed("update_event",$event->id);
+		return Auth::user()->isAllowed("update_event_".$event->id,$event->id);
 	}
 
 	public function executeUpdate(Request $request,Event $event)
