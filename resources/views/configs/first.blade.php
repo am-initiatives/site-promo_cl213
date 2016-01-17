@@ -21,13 +21,13 @@
 		</div>
 		<div class="container">
 			<p class="small text-justify">
-				Tu devrais configurer un mot de passe pour pouvoir aussi accèder au site quand tu n'es pas connecté avec Gadz.org :
+				Tu devrais configurer un mot de passe pour accèder au site sans être connecté via Gadz.org.
 			</p>
 			{!! Form::open(array('route' => 'configs.first.password','id' => 'password_form')) !!}
 				@include('auth.forms.new_password')
 				<div>
-					<input type="button" class="left button small info mover" value="Passer">
 					<input type="submit" name="save_password" class="right button small" value="Enregistrer">
+					<input type="button" class="left button small info mover" value="Passer">
 				</div>
 			{!! Form::close() !!}
 		</div>

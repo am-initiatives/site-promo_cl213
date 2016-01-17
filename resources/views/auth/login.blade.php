@@ -8,7 +8,7 @@
 	{!! csrf_field() !!}
 
 	<div>
-		<input type="text" name="email" value="{{ old('email') }}" placeholder="Nom d'utilisateur">
+		<input type="text" name="email" value="{{ old('email') }}" placeholder="Adresse e-mail (gadz.org)">
 	</div>
 
 	<div>
@@ -28,8 +28,11 @@
 	</div>
 </form>
 
-<hr style="margin-top:0px" />
-
-<a href="{{route('auth.google')}}" class="small-12 medium radius alert button">Se connecter avec Gadz.org</a>
+<div style="height: 30px">
+	<div style="width: 100%; height: 15px; border-bottom: 1px solid #AAA; text-align: center">
+	  <span style="font-size: 20px; background-color: #FFF; padding: 0 10px;">OU</span>
+	</div>
+</div>
+<a href="{{route('auth.google')}}" class="small-12 medium radius alert button">Connexion via Gadz.org</a>
 
 @endsection
