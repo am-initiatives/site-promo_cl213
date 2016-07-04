@@ -18,7 +18,13 @@ class DatabaseSeeder extends Seeder
 		DB::transaction(function(){
 
 			$this->call(PermissionSeeder::class);
-			$this->call(UserSeeder::class);
+			$this->call(CustomUserSeeder::class);
+
+			// Random users
+			foreach(factory(App\Models\User::class, 20)->make()->all() as $user)
+			{
+				$user->save();
+			}
 
 			DB::statement('truncate table posts');
 			DB::table('posts')->insert(
